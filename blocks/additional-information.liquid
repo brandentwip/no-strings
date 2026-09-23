@@ -1,0 +1,165 @@
+{%- assign block_settings = block.settings -%}
+<div
+  class="additional-info-accordion"
+  {{ block.shopify_attributes }}
+>
+  <details class="additional-info-accordion__details">
+    <summary class="additional-info-accordion__summary">
+      <span>Additional Information</span>
+      <span class="additional-info-accordion__icon">
+        {{- 'icon-caret.svg' | inline_asset_content -}}
+      </span>
+    </summary>
+
+    <div class="additional-info-accordion__content">
+      <table class="additional-info-table">
+        <tbody>
+          <tr>
+            <th>Description</th>
+            <td>
+              Step into elegance with the Gold and Peach Mirror Work Lehenga Set by renowned designer Abhinav Mishra — now available on rent exclusively at nostringscouture. This breathtaking ensemble features a beautifully embroidered net silk kurta paired with a net lehenga and dupatta, embellished with signature mirror work and gota accents. The subtle gold-peach color palette enhances your glow in natural and festive lighting. Ideal for modern brides­maids and fashion-conscious wedding guests looking to rent a designer lehenga online at a fraction of the price.
+            </td>
+          </tr>
+
+          <tr>
+            <th>Occasions</th>
+            <td>Making it a perfect pick for weddings, mehendi, or reception events</td>
+          </tr>
+
+          <tr>
+            <th>Why Should You Rent From Nostringscouture?</th>
+            <td>
+              <ul class="additional-info-checklist">
+                <li>Available in multiple sizes</li>
+                <li>Includes kurta, lehenga, and dupatta</li>
+                <li>Dry-cleaned and quality-checked before every rental</li>
+                <li>Hassle-free doorstep delivery and easy return process</li>
+                <li>Nationwide delivery available</li>
+              </ul>
+            </td>
+          </tr>
+
+          <tr>
+            <th>Sizes Available</th>
+            <td>XS, S, M</td>
+          </tr>
+
+          <tr>
+            <th>Colors</th>
+            <td>Gold</td>
+          </tr>
+
+          <tr>
+            <th>Security Deposit</th>
+            <td>
+              We take a 100% refundable security deposit with all bookings as an assurance in case of incidental damages. This amount is equal to the rental value of the garment and is used in case of irreparable damage.
+            </td>
+          </tr>
+
+          <tr>
+            <th>Occasions</th>
+            <td>Reception, Wedding</td>
+          </tr>
+
+          <tr>
+            <th>How It Works?</th>
+            <td><a href="#" class="additional-info-link">Know More</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+</div>
+
+{% stylesheet %}
+  .additional-info-accordion {
+    border-top: 1px solid rgb(var(--color-foreground-rgb) / 0.1);
+    border-bottom: 1px solid rgb(var(--color-foreground-rgb) / 0.1);
+  }
+
+  .additional-info-accordion__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    padding: var(--padding-md, 16px) 0;
+    font-weight: var(--font-weight-semibold);
+    list-style: none;
+  }
+
+  .additional-info-accordion__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .additional-info-accordion__icon svg {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.2s ease;
+  }
+
+  .additional-info-accordion__details[open] .additional-info-accordion__icon svg {
+    transform: rotate(180deg);
+  }
+
+  .additional-info-accordion__content {
+    padding-bottom: var(--padding-md, 16px);
+  }
+
+  .additional-info-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .additional-info-table th,
+  .additional-info-table td {
+    text-align: left;
+    vertical-align: top;
+    padding: 12px 10px;
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.12);
+    font-size: var(--font-paragraph-small--size);
+    line-height: 1.5;
+  }
+
+  .additional-info-table th {
+    width: 32%;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-foreground);
+  }
+
+  .additional-info-checklist {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .additional-info-checklist li {
+    padding-left: 1.4em;
+    position: relative;
+    margin-bottom: 4px;
+  }
+
+  .additional-info-checklist li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-foreground);
+  }
+
+  .additional-info-link {
+    text-decoration: underline;
+  }
+
+  @media screen and (max-width: 749px) {
+    .additional-info-table th {
+      width: 40%;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Additional Information",
+  "tag": null,
+  "settings": []
+}
+{% endschema %}

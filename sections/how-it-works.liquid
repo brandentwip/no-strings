@@ -1,0 +1,322 @@
+{{ 'https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Fraunces:ital,opsz,wght@1,9..144,400&family=Jost:wght@300;400;500&display=swap' | stylesheet_tag }}
+
+{%- liquid
+  assign icons = 'choose,measure,customise,flaunt,return'
+-%}
+
+<section class="hiw-{{ section.id }}" id="hiw-{{ section.id }}">
+<style>
+#hiw-{{ section.id }}{
+  --ink:{{ section.settings.color_ink }};
+  --ivory:{{ section.settings.color_ivory }};
+  --ivory-deep:{{ section.settings.color_ivory_deep }};
+  --gold:{{ section.settings.color_gold }};
+  --gold-bright:{{ section.settings.color_gold_bright }};
+  --text-soft:{{ section.settings.color_text_soft }};
+  background:var(--ivory);
+  color:var(--ink);
+  font-family:'Jost', sans-serif;
+  font-weight:300;
+  overflow-x:hidden;
+  position:relative;
+}
+#hiw-{{ section.id }} *{box-sizing:border-box;}
+#hiw-{{ section.id }} h1,
+#hiw-{{ section.id }} h2,
+#hiw-{{ section.id }} h3,
+#hiw-{{ section.id }} .serif{
+  font-family:'Fraunces', serif;
+  font-weight:500;
+  letter-spacing:-0.01em;
+  color:var(--ink);
+  margin:0;
+}
+#hiw-{{ section.id }} p{margin:0;}
+#hiw-{{ section.id }} .eyebrow{
+  font-family:'Jost',sans-serif;
+  text-transform:uppercase;
+  letter-spacing:0.22em;
+  font-size:11px;
+  color:var(--gold);
+  font-weight:500;
+}
+#hiw-{{ section.id }} a{color:inherit; text-decoration:none;}
+#hiw-{{ section.id }} .wrap{max-width:1240px; margin:0 auto; padding:0 48px;}
+@media(max-width:768px){#hiw-{{ section.id }} .wrap{padding:0 22px;}}
+
+#hiw-{{ section.id }} .drape-svg{position:absolute; pointer-events:none;}
+#hiw-{{ section.id }} .drape-path{
+  fill:none; stroke:var(--gold); stroke-width:1.4;
+  stroke-dasharray:1400; stroke-dashoffset:1400;
+  animation:hiwDraw-{{ section.id }} 2.6s ease forwards 0.3s;
+}
+@keyframes hiwDraw-{{ section.id }}{to{stroke-dashoffset:0;}}
+@media (prefers-reduced-motion: reduce){#hiw-{{ section.id }} .drape-path{animation:none; stroke-dashoffset:0;}}
+
+#hiw-{{ section.id }} .hiw-hero{padding:80px 0 50px; position:relative; overflow:hidden;}
+#hiw-{{ section.id }} .hiw-hero-drape{position:absolute; top:-20px; right:8%; width:180px; height:400px; opacity:0.6; pointer-events:none;}
+#hiw-{{ section.id }} .hiw-hero-grid{display:grid; grid-template-columns:1.3fr 1fr; gap:40px; align-items:end; position:relative; z-index:1;}
+@media(max-width:768px){#hiw-{{ section.id }} .hiw-hero-grid{grid-template-columns:1fr; gap:18px;}}
+#hiw-{{ section.id }} .hiw-hero h1{font-size:clamp(32px,4.2vw,52px); line-height:1.08; margin-top:14px;}
+#hiw-{{ section.id }} .hiw-hero h1 .ital{font-style:italic; font-weight:400; color:var(--gold);}
+#hiw-{{ section.id }} .hiw-hero-sub{font-size:15px; color:var(--text-soft); line-height:1.75; max-width:380px;}
+
+#hiw-{{ section.id }} .stepper-nav{
+  display:flex; border-top:1px solid rgba(42,16,21,0.15); border-bottom:1px solid rgba(42,16,21,0.15);
+  margin-top:50px; position:relative; flex-wrap:wrap;
+}
+#hiw-{{ section.id }} .stepper-tab{
+  flex:1; min-width:60px; text-align:center; padding:20px 10px; cursor:pointer; position:relative;
+  border-right:1px solid rgba(42,16,21,0.15); transition:background .25s ease; background:none;
+}
+#hiw-{{ section.id }} .stepper-tab:last-child{border-right:none;}
+#hiw-{{ section.id }} .stepper-tab .t-icon{display:block; margin:0 auto 10px; opacity:0.55; transition:opacity .25s ease;}
+#hiw-{{ section.id }} .stepper-tab .t-icon svg{width:26px; height:26px; stroke:var(--ink); fill:none; stroke-width:1.3;}
+#hiw-{{ section.id }} .stepper-tab.active .t-icon{opacity:1;}
+#hiw-{{ section.id }} .stepper-tab.active .t-icon svg{stroke:var(--gold);}
+#hiw-{{ section.id }} .stepper-tab .t-num{font-family:'Fraunces'; font-style:italic; color:var(--gold); font-size:13px; display:block; margin-bottom:4px;}
+#hiw-{{ section.id }} .stepper-tab .t-label{font-size:11.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-soft); transition:color .25s ease;}
+#hiw-{{ section.id }} .stepper-tab.active .t-label{color:var(--ink); font-weight:500;}
+#hiw-{{ section.id }} .stepper-tab.active{background:var(--ivory-deep);}
+#hiw-{{ section.id }} .stepper-tab::after{
+  content:''; position:absolute; left:0; bottom:-1px; width:0; height:2px; background:var(--gold);
+  transition:width .3s ease;
+}
+#hiw-{{ section.id }} .stepper-tab.active::after{width:100%;}
+@media(max-width:768px){#hiw-{{ section.id }} .stepper-tab .t-label{display:none;} #hiw-{{ section.id }} .stepper-tab{padding:16px 4px;}}
+
+#hiw-{{ section.id }} .stepper-panels{position:relative; min-height:460px; margin-bottom:0;}
+#hiw-{{ section.id }} .stepper-panel{
+  display:none; grid-template-columns:0.9fr 1.1fr; gap:60px; align-items:center;
+  padding:70px 0;
+}
+#hiw-{{ section.id }} .stepper-panel.active{display:grid;}
+@media(max-width:860px){#hiw-{{ section.id }} .stepper-panel{grid-template-columns:1fr; gap:26px; padding:40px 0;}}
+#hiw-{{ section.id }} .p-media{height:420px; border-radius:2px; overflow:hidden; position:relative; background:linear-gradient(150deg,#D9C4A8 0%, #C79A66 45%, #8C5A44 100%);}
+#hiw-{{ section.id }} .p-media img{width:100%; height:100%; object-fit:cover; display:block;}
+@media(max-width:860px){#hiw-{{ section.id }} .p-media{height:300px;}}
+#hiw-{{ section.id }} .p-copy .ghost-num{
+  font-family:'Fraunces'; font-size:110px; line-height:0.8; color:var(--ivory-deep);
+  -webkit-text-stroke:1.5px rgba(184,147,90,0.35); display:block; margin-bottom:6px;
+}
+@media(max-width:860px){#hiw-{{ section.id }} .p-copy .ghost-num{font-size:70px;}}
+#hiw-{{ section.id }} .p-copy .eyebrow{margin-bottom:10px; display:block;}
+#hiw-{{ section.id }} .p-copy h2{font-size:clamp(26px,3vw,36px); margin-bottom:16px;}
+#hiw-{{ section.id }} .p-copy p{font-size:15px; line-height:1.8; color:var(--text-soft); max-width:400px;}
+
+#hiw-{{ section.id }} .stepper-controls{display:flex; justify-content:space-between; align-items:center; padding-bottom:60px;}
+#hiw-{{ section.id }} .stepper-dots{display:flex; gap:8px;}
+#hiw-{{ section.id }} .stepper-dots span{width:8px; height:8px; border-radius:50%; background:rgba(42,16,21,0.15); cursor:pointer; transition:all .25s ease; display:inline-block;}
+#hiw-{{ section.id }} .stepper-dots span.active{background:var(--gold); width:24px; border-radius:4px;}
+#hiw-{{ section.id }} .stepper-arrows{display:flex; gap:12px;}
+#hiw-{{ section.id }} .stepper-arrows button{
+  width:42px; height:42px; border:1px solid rgba(42,16,21,0.25); border-radius:50%; background:transparent;
+  font-size:15px; color:var(--ink); cursor:pointer; transition:all .25s ease;
+}
+#hiw-{{ section.id }} .stepper-arrows button:hover{border-color:var(--gold); color:var(--gold);}
+
+#hiw-{{ section.id }} .btn-primary{
+  background:var(--ink); color:var(--ivory); padding:16px 34px;
+  border-radius:2px; font-size:13px; letter-spacing:0.08em; text-transform:uppercase;
+  transition:background .3s ease; display:inline-block; border:none; cursor:pointer;
+}
+#hiw-{{ section.id }} .btn-primary:hover{background:var(--gold-bright); color:var(--ink);}
+
+#hiw-{{ section.id }} .quote-band{
+  position:relative; padding:110px 0; text-align:center;
+  background:var(--ink); color:var(--ivory);
+  overflow:hidden;
+}
+#hiw-{{ section.id }} .quote-band blockquote{
+  font-family:'Fraunces'; font-style:italic; font-weight:400;
+  font-size:clamp(26px,3.6vw,46px); line-height:1.35; max-width:820px; margin:0 auto;
+}
+#hiw-{{ section.id }} .quote-band .ital{font-style:italic; color:var(--gold-bright);}
+#hiw-{{ section.id }} .quote-band .quote-sub{color:rgba(247,241,230,0.65); max-width:440px; margin:22px auto 0; font-size:14px; line-height:1.8;}
+#hiw-{{ section.id }} .quote-band .btn-primary{background:var(--ivory); color:var(--ink); margin-top:34px;}
+</style>
+
+<section class="hiw-hero">
+  <svg class="drape-svg hiw-hero-drape" viewBox="0 0 180 400" preserveAspectRatio="none">
+    <path class="drape-path" style="stroke-width:1;" d="M 20 0 C 140 60, 20 180, 130 260 C 200 320, 90 360, 140 400"/>
+  </svg>
+  <div class="wrap hiw-hero-grid">
+    <div>
+      <span class="eyebrow">{{ section.settings.eyebrow | escape }}</span>
+      <h1>{{ section.settings.heading | escape }} <span class="ital">{{ section.settings.heading_italic | escape }}</span></h1>
+    </div>
+    <p class="hiw-hero-sub">{{ section.settings.subheading | escape }}</p>
+  </div>
+
+  <div class="wrap">
+    <div class="stepper-nav">
+      {%- for block in section.blocks -%}
+        {%- assign step_index = forloop.index -%}
+        <div class="stepper-tab{% if forloop.first %} active{% endif %}" data-step="{{ step_index }}" {{ block.shopify_attributes }}>
+          <span class="t-icon">
+            {%- case block.settings.icon -%}
+              {%- when 'choose' -%}
+                <svg viewBox="0 0 24 24"><path d="M4 6h16M4 6l1.5 12a1.5 1.5 0 0 0 1.5 1.3h10a1.5 1.5 0 0 0 1.5-1.3L20 6M9 6V4.5A1.5 1.5 0 0 1 10.5 3h3A1.5 1.5 0 0 1 15 4.5V6"/></svg>
+              {%- when 'measure' -%}
+                <svg viewBox="0 0 24 24"><path d="M4 8v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V8M4 8V6a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2M4 8h16M7 11v1.5M10.5 11v1.5M14 11v1.5M17.5 11v1.5M7 15v1.5M10.5 15v1.5"/></svg>
+              {%- when 'customise' -%}
+                <svg viewBox="0 0 24 24"><path d="M6 4.5 12 3l6 1.5v6c0 5-2.7 8-6 10-3.3-2-6-5-6-10v-6Z"/><path d="M9.5 12l1.8 1.8L15 10"/></svg>
+              {%- when 'flaunt' -%}
+                <svg viewBox="0 0 24 24"><path d="M12 3c1.2 2.2 3.3 3.4 5.5 3.6-.4 4.6-2.4 8.6-5.5 9.9-3.1-1.3-5.1-5.3-5.5-9.9C8.7 6.4 10.8 5.2 12 3Z"/><path d="M12 16.5V21M9 21h6"/></svg>
+              {%- else -%}
+                <svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.5-5.8"/><path d="M4 4v4h4"/></svg>
+            {%- endcase -%}
+          </span>
+          <span class="t-num">{{ block.settings.number | escape }}</span><span class="t-label">{{ block.settings.label | escape }}</span>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <div class="stepper-panels">
+      {%- for block in section.blocks -%}
+        {%- assign step_index = forloop.index -%}
+        <div class="stepper-panel{% if forloop.first %} active{% endif %}" data-panel="{{ step_index }}">
+          <div class="p-media">
+            {%- if block.settings.image -%}
+              <img src="{{ block.settings.image | image_url: width: 900 }}" loading="lazy" alt="{{ block.settings.label | escape }}">
+            {%- endif -%}
+          </div>
+          <div class="p-copy">
+            <span class="ghost-num">{{ block.settings.number | escape }}</span>
+            <span class="eyebrow">{{ block.settings.step_label | escape }}</span>
+            <h2>{{ block.settings.label | escape }}</h2>
+            <p>{{ block.settings.description | escape }}</p>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <div class="stepper-controls">
+      <div class="stepper-dots">
+        {%- for block in section.blocks -%}
+          <span{% if forloop.first %} class="active"{% endif %} data-dot="{{ forloop.index }}"></span>
+        {%- endfor -%}
+      </div>
+      <div class="stepper-arrows">
+        <button type="button" class="hiwPrev" aria-label="Previous step">←</button>
+        <button type="button" class="hiwNext" aria-label="Next step">→</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+{%- if section.settings.show_quote -%}
+<section class="quote-band">
+  <svg class="drape-svg" viewBox="0 0 1200 400" style="top:0; left:0; width:100%; height:100%; opacity:0.5;" preserveAspectRatio="none">
+    <path class="drape-path" style="stroke-width:1;" d="M -50 350 C 250 250, 350 450, 650 300 C 900 180, 1050 380, 1250 220"/>
+  </svg>
+  <div class="wrap">
+    <span class="eyebrow" style="color:var(--gold-bright);">{{ section.settings.quote_eyebrow | escape }}</span>
+    <blockquote style="margin-top:18px;">{{ section.settings.quote_text | escape }} <span class="ital">{{ section.settings.quote_text_italic | escape }}</span></blockquote>
+    <p class="quote-sub">{{ section.settings.quote_subtext | escape }}</p>
+    {%- if section.settings.quote_button_label != blank -%}
+      <div><a href="{{ section.settings.quote_button_link | default: '#' }}" class="btn-primary">{{ section.settings.quote_button_label | escape }}</a></div>
+    {%- endif -%}
+  </div>
+</section>
+{%- endif -%}
+</section>
+
+<script>
+(function(){
+  var root = document.getElementById('hiw-{{ section.id }}');
+  if(!root) return;
+  var tabs = root.querySelectorAll('.stepper-tab');
+  var panels = root.querySelectorAll('.stepper-panel');
+  var dots = root.querySelectorAll('.stepper-dots span');
+  var total = tabs.length;
+  var current = 1;
+
+  function goTo(step){
+    step = parseInt(step, 10);
+    if(step < 1) step = total;
+    if(step > total) step = 1;
+    current = step;
+    tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.step == current); });
+    panels.forEach(function(p){ p.classList.toggle('active', p.dataset.panel == current); });
+    dots.forEach(function(d){ d.classList.toggle('active', d.dataset.dot == current); });
+  }
+
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ goTo(this.dataset.step); }); });
+  dots.forEach(function(d){ d.addEventListener('click', function(){ goTo(this.dataset.dot); }); });
+
+  var prevBtn = root.querySelector('.hiwPrev');
+  var nextBtn = root.querySelector('.hiwNext');
+  if(nextBtn) nextBtn.addEventListener('click', function(){ goTo(current + 1); });
+  if(prevBtn) prevBtn.addEventListener('click', function(){ goTo(current - 1); });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "How It Works",
+  "tag": "section",
+  "class": "section-how-it-works",
+  "settings": [
+    { "type": "header", "content": "Page header" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow text", "default": "The process" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Couture, made" },
+    { "type": "text", "id": "heading_italic", "label": "Heading (italic word)", "default": "simple." },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Because finding the perfect outfit for your special occasion should feel exciting — not complicated. Five steps, start to finish, no strings attached." },
+    { "type": "header", "content": "Quote band" },
+    { "type": "checkbox", "id": "show_quote", "label": "Show quote band", "default": true },
+    { "type": "text", "id": "quote_eyebrow", "label": "Quote eyebrow", "default": "Your next occasion" },
+    { "type": "text", "id": "quote_text", "label": "Quote text", "default": "The perfect look is" },
+    { "type": "text", "id": "quote_text_italic", "label": "Quote text (italic word)", "default": "waiting." },
+    { "type": "textarea", "id": "quote_subtext", "label": "Quote subtext", "default": "Choose the piece that makes the occasion unforgettable. We'll take care of the rest." },
+    { "type": "text", "id": "quote_button_label", "label": "Quote button label", "default": "Explore the collection" },
+    { "type": "url", "id": "quote_button_link", "label": "Quote button link" },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "color_ink", "label": "Ink (dark text/bg)", "default": "#2A1015" },
+    { "type": "color", "id": "color_ivory", "label": "Ivory (background)", "default": "#F7F1E6" },
+    { "type": "color", "id": "color_ivory_deep", "label": "Ivory deep (accent bg)", "default": "#EFE5D4" },
+    { "type": "color", "id": "color_gold", "label": "Gold", "default": "#B8935A" },
+    { "type": "color", "id": "color_gold_bright", "label": "Gold bright", "default": "#D4AC72" },
+    { "type": "color", "id": "color_text_soft", "label": "Soft text", "default": "#6B4C48" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        { "type": "text", "id": "number", "label": "Step number", "default": "01" },
+        { "type": "text", "id": "label", "label": "Step name (tab + heading)", "default": "Choose" },
+        { "type": "text", "id": "step_label", "label": "Step eyebrow (e.g. Step 1)", "default": "Step 1" },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "choose", "label": "Hanger (Choose)" },
+            { "value": "measure", "label": "Ruler (Measure)" },
+            { "value": "customise", "label": "Shield/check (Customise)" },
+            { "value": "flaunt", "label": "Sparkle (Flaunt)" },
+            { "value": "return", "label": "Return arrow (Return)" }
+          ],
+          "default": "choose"
+        },
+        { "type": "image_picker", "id": "image", "label": "Step image" },
+        { "type": "textarea", "id": "description", "label": "Description", "default": "Describe this step." }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "How It Works",
+      "blocks": [
+        { "type": "step", "settings": { "number": "01", "label": "Choose", "step_label": "Step 1", "icon": "choose", "description": "Browse our curated collection and find the piece that feels made for your occasion — filter by designer, moment, or the mood you're going for." } },
+        { "type": "step", "settings": { "number": "02", "label": "Measure", "step_label": "Step 2", "icon": "measure", "description": "Share your measurements through our simple size guide — our styling team double-checks fit before your piece ever leaves the atelier." } },
+        { "type": "step", "settings": { "number": "03", "label": "Customise", "step_label": "Step 3", "icon": "customise", "description": "Need a length adjusted or a fall stitched in? We handle light customisation so the piece feels tailored to you, not just borrowed." } },
+        { "type": "step", "settings": { "number": "04", "label": "Flaunt", "step_label": "Step 4", "icon": "flaunt", "description": "Your piece arrives cleaned, pressed and boxed, in time for the big day. Wear it, dance in it, own the room in it." } },
+        { "type": "step", "settings": { "number": "05", "label": "Return", "step_label": "Step 5", "icon": "return", "description": "Pack it back into the box it arrived in and schedule a pickup. No dry cleaning, no storage, no strings attached." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

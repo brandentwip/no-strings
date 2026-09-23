@@ -1,0 +1,487 @@
+{% doc %}
+  @prompt
+    need section to display blocks on text one side and image onother. direction should be alternate left image and right text then left text and right image., need to add 1 more block
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-alternate-content-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    padding: {{ block.settings.section_padding }}px 0;
+    background-color: {{ block.settings.background_color }};
+  }
+
+  .ai-alternate-content__container-{{ ai_gen_id }} {
+    max-width: {{ block.settings.container_width }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-alternate-content__row-{{ ai_gen_id }} {
+    display: flex;
+    align-items: {{ block.settings.vertical_alignment }};
+    gap: {{ block.settings.gap }}px;
+    margin-bottom: {{ block.settings.row_spacing }}px;
+  }
+
+  .ai-alternate-content__row-{{ ai_gen_id }}:last-child {
+    margin-bottom: 0;
+  }
+
+  .ai-alternate-content__row-{{ ai_gen_id }}--reverse {
+    flex-direction: row-reverse;
+  }
+
+  .ai-alternate-content__column-{{ ai_gen_id }} {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .ai-alternate-content__image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: {{ block.settings.image_border_radius }}px;
+  }
+
+  .ai-alternate-content__image-{{ ai_gen_id }} {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+
+  .ai-alternate-content__image-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .ai-alternate-content__image-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-alternate-content__empty-state-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 20px;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .ai-alternate-content__text-wrapper-{{ ai_gen_id }} {
+    padding: {{ block.settings.text_padding }}px;
+  }
+
+  .ai-alternate-content__heading-{{ ai_gen_id }} {
+    margin: 0 0 {{ block.settings.heading_spacing }}px;
+    color: {{ block.settings.heading_color }};
+    font-size: {{ block.settings.heading_size }}px;
+    line-height: 1.2;
+  }
+
+  .ai-alternate-content__text-{{ ai_gen_id }} {
+    margin: 0;
+    color: {{ block.settings.text_color }};
+    font-size: {{ block.settings.text_size }}px;
+    line-height: 1.6;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-alternate-content__row-{{ ai_gen_id }},
+    .ai-alternate-content__row-{{ ai_gen_id }}--reverse {
+      flex-direction: column;
+    }
+
+    .ai-alternate-content__text-wrapper-{{ ai_gen_id }} {
+      padding: {{ block.settings.text_padding | times: 0.5 }}px;
+    }
+
+    .ai-alternate-content__heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size | times: 0.7 }}px;
+    }
+
+    .ai-alternate-content__text-{{ ai_gen_id }} {
+      font-size: {{ block.settings.text_size | times: 0.9 }}px;
+    }
+  }
+{% endstyle %}
+
+<alternate-content-{{ ai_gen_id }} class="ai-alternate-content-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-alternate-content__container-{{ ai_gen_id }}">
+    {% for i in (1..4) %}
+      {% liquid
+        assign row_enabled_key = 'row_' | append: i | append: '_enabled'
+        assign heading_key = 'row_' | append: i | append: '_heading'
+        assign text_key = 'row_' | append: i | append: '_text'
+        assign image_key = 'row_' | append: i | append: '_image'
+
+        assign row_enabled = block.settings[row_enabled_key]
+        assign heading = block.settings[heading_key]
+        assign text = block.settings[text_key]
+        assign image = block.settings[image_key]
+
+        assign is_reverse = false
+        if i == 2 or i == 4 or i == 6
+          assign is_reverse = true
+        endif
+      %}
+
+      {% if row_enabled %}
+        <div class="ai-alternate-content__row-{{ ai_gen_id }} {% if is_reverse %}ai-alternate-content__row-{{ ai_gen_id }}--reverse{% endif %}">
+          <div class="ai-alternate-content__column-{{ ai_gen_id }}">
+            <div class="ai-alternate-content__text-wrapper-{{ ai_gen_id }}">
+              {% if heading != blank %}
+                <h2 class="ai-alternate-content__heading-{{ ai_gen_id }}">{{ heading }}</h2>
+              {% endif %}
+              {% if text != blank %}
+                <div class="ai-alternate-content__text-{{ ai_gen_id }}">{{ text }}</div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="ai-alternate-content__column-{{ ai_gen_id }}">
+            <div class="ai-alternate-content__image-wrapper-{{ ai_gen_id }}">
+              {% if image %}
+                <img
+                  src="{{ image | image_url: width: 1200 }}"
+                  alt="{{ image.alt | escape }}"
+                  loading="lazy"
+                  width="{{ image.width }}"
+                  height="{{ image.height }}"
+                  class="ai-alternate-content__image-{{ ai_gen_id }}"
+                >
+              {% else %}
+                <div class="ai-alternate-content__image-placeholder-{{ ai_gen_id }}">
+                  {{ 'image' | placeholder_svg_tag }}
+                  <div class="ai-alternate-content__empty-state-{{ ai_gen_id }}">
+                    Add an image for row {{ i }}
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</alternate-content-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class AlternateContent{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.setupObserver();
+      }
+
+      setupObserver() {
+        const images = this.querySelectorAll('.ai-alternate-content__image-{{ ai_gen_id }}');
+        
+        if ('IntersectionObserver' in window) {
+          const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                const img = entry.target;
+                img.style.opacity = '0';
+                img.style.transition = 'opacity 0.5s ease-in-out';
+                
+                if (img.complete) {
+                  img.style.opacity = '1';
+                } else {
+                  img.addEventListener('load', () => {
+                    img.style.opacity = '1';
+                  });
+                }
+                
+                observer.unobserve(img);
+              }
+            });
+          }, {
+            rootMargin: '50px'
+          });
+
+          images.forEach(img => imageObserver.observe(img));
+        }
+      }
+    }
+
+    customElements.define('alternate-content-{{ ai_gen_id }}', AlternateContent{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Alternate text and image",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "label": "Container width",
+      "min": 800,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap between columns",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "row_spacing",
+      "label": "Space between rows",
+      "min": 20,
+      "max": 150,
+      "step": 10,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "select",
+      "id": "vertical_alignment",
+      "label": "Vertical alignment",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Bottom"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Text style"
+    },
+    {
+      "type": "range",
+      "id": "text_padding",
+      "label": "Text padding",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 16,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing",
+      "label": "Heading spacing",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Text size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Image style"
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "label": "Image border radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Row 1"
+    },
+    {
+      "type": "checkbox",
+      "id": "row_1_enabled",
+      "label": "Enable row 1",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "row_1_heading",
+      "label": "Heading",
+      "default": "Discover our story"
+    },
+    {
+      "type": "richtext",
+      "id": "row_1_text",
+      "label": "Text",
+      "default": "<p>Share your brand's journey and values with your customers. Tell them what makes you unique.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "row_1_image",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Row 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "row_2_enabled",
+      "label": "Enable row 2",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "row_2_heading",
+      "label": "Heading",
+      "default": "Quality craftsmanship"
+    },
+    {
+      "type": "richtext",
+      "id": "row_2_text",
+      "label": "Text",
+      "default": "<p>Every product is carefully crafted with attention to detail and premium materials.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "row_2_image",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Row 3"
+    },
+    {
+      "type": "checkbox",
+      "id": "row_3_enabled",
+      "label": "Enable row 3",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "row_3_heading",
+      "label": "Heading",
+      "default": "Sustainable practices"
+    },
+    {
+      "type": "richtext",
+      "id": "row_3_text",
+      "label": "Text",
+      "default": "<p>We're committed to sustainable and ethical practices in everything we do.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "row_3_image",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Row 4"
+    },
+    {
+      "type": "checkbox",
+      "id": "row_4_enabled",
+      "label": "Enable row 4",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "row_4_heading",
+      "label": "Heading",
+      "default": "Customer focused"
+    },
+    {
+      "type": "richtext",
+      "id": "row_4_text",
+      "label": "Text",
+      "default": "<p>Your satisfaction is our priority. We're here to provide exceptional service and support.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "row_4_image",
+      "label": "Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Alternate text and image"
+    }
+  ]
+}
+{% endschema %}

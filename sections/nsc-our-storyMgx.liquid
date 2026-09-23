@@ -1,0 +1,1311 @@
+{% comment %}
+  Our Story — nostringscouture
+  Shopify section conversion of the supplied HTML design.
+
+  Notes:
+  - Scoped to this section to avoid conflicts with the Shopify theme.
+  - Theme header/footer are intentionally not duplicated; use the theme's
+    native header/footer.
+  - All main content is editable through the Theme Editor.
+{% endcomment %}
+
+{%- liquid
+  assign section_id = 'nsc-story-' | append: section.id
+  assign featured_image = section.settings.story_image
+-%}
+
+<style>
+  #{{ section_id }} {
+    --nsc-ink: {{ section.settings.color_ink }};
+    --nsc-ink-soft: {{ section.settings.color_ink_soft }};
+    --nsc-ivory: {{ section.settings.color_ivory }};
+    --nsc-ivory-deep: {{ section.settings.color_ivory_deep }};
+    --nsc-gold: {{ section.settings.color_gold }};
+    --nsc-gold-bright: {{ section.settings.color_gold_bright }};
+    --nsc-rose: {{ section.settings.color_rose }};
+    --nsc-text: {{ section.settings.color_text }};
+    --nsc-text-soft: {{ section.settings.color_text_soft }};
+    --nsc-max-width: {{ section.settings.max_width }}px;
+    --nsc-section-padding: {{ section.settings.section_padding }}px;
+    background: var(--nsc-ivory);
+    color: var(--nsc-text);
+    overflow: hidden;
+  }
+
+  #{{ section_id }},
+  #{{ section_id }} * {
+    box-sizing: border-box;
+  }
+
+  #{{ section_id }} a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  #{{ section_id }} .nsc-wrap {
+    width: min(100%, var(--nsc-max-width));
+    margin: 0 auto;
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+
+  #{{ section_id }} .nsc-eyebrow {
+    font-family: {{ section.settings.sans_font }}, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: .22em;
+    font-size: 11px;
+    line-height: 1.4;
+    color: var(--nsc-gold);
+    font-weight: 500;
+  }
+
+  #{{ section_id }} .nsc-serif {
+    font-family: {{ section.settings.serif_font }}, serif;
+  }
+
+  #{{ section_id }} h1,
+  #{{ section_id }} h2,
+  #{{ section_id }} h3 {
+    margin: 0;
+    font-family: {{ section.settings.serif_font }}, serif;
+    font-weight: 500;
+    letter-spacing: -.01em;
+    color: var(--nsc-ink);
+  }
+
+  /* Breadcrumb */
+  #{{ section_id }} .nsc-breadcrumb {
+    border-bottom: 1px solid rgba(42,16,21,.08);
+    background: var(--nsc-ivory);
+  }
+
+  #{{ section_id }} .nsc-breadcrumb-inner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 48px;
+    font-family: {{ section.settings.sans_font }}, sans-serif;
+    font-size: 12px;
+    color: var(--nsc-text-soft);
+  }
+
+  #{{ section_id }} .nsc-breadcrumb a:hover {
+    color: var(--nsc-gold);
+  }
+
+  #{{ section_id }} .nsc-breadcrumb .sep {
+    opacity: .45;
+  }
+
+  #{{ section_id }} .nsc-breadcrumb .current {
+    color: var(--nsc-ink);
+  }
+
+  /* Decorative drape */
+  #{{ section_id }} .nsc-drape-svg {
+    position: absolute;
+    pointer-events: none;
+  }
+
+  #{{ section_id }} .nsc-drape-path {
+    fill: none;
+    stroke: var(--nsc-gold);
+    stroke-width: 1.4;
+    stroke-dasharray: 1400;
+    stroke-dashoffset: 1400;
+    animation: nsc-drape-draw 2.6s ease forwards .3s;
+  }
+
+  @keyframes nsc-drape-draw {
+    to { stroke-dashoffset: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #{{ section_id }} .nsc-drape-path {
+      animation: none;
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* Story hero */
+  #{{ section_id }} .nsc-story-hero {
+    padding: 70px 0 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #{{ section_id }} .nsc-story-hero-drape {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 240px;
+    height: 80px;
+    opacity: .6;
+  }
+
+  #{{ section_id }} .nsc-story-hero h1 {
+    margin-top: 14px;
+    font-size: clamp(32px, 4.4vw, 54px);
+    line-height: 1.05;
+  }
+
+  #{{ section_id }} .nsc-story-intro {
+    margin: 10px 0 70px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+    background:
+      linear-gradient(150deg, rgba(42,16,21,.94), rgba(24,10,13,.98)),
+      var(--nsc-ink);
+    {% if featured_image != blank %}
+      background-image:
+        linear-gradient(180deg, rgba(20,7,9,.15), rgba(20,7,9,.55)),
+        url('{{ featured_image | image_url: width: 1800 }}');
+      background-size: cover;
+      background-position: {{ section.settings.story_image_position }};
+    {% endif %}
+    aspect-ratio: 16 / 9;
+    max-height: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #{{ section_id }} .nsc-story-intro::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(150deg, rgba(42,16,21,.15), rgba(24,10,13,.4));
+    pointer-events: none;
+  }
+
+  #{{ section_id }} .nsc-story-wordmark {
+    position: relative;
+    z-index: 1;
+    font-family: {{ section.settings.serif_font }}, serif;
+    font-style: italic;
+    color: var(--nsc-gold-bright);
+    font-size: clamp(30px, 5vw, 54px);
+    opacity: .92;
+  }
+
+  /* Why us */
+  #{{ section_id }} .nsc-whyus {
+    padding: 100px 0 110px;
+  }
+
+  #{{ section_id }} .nsc-whyus-head {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  #{{ section_id }} .nsc-whyus-head .nsc-eyebrow {
+    display: block;
+    margin-bottom: 14px;
+  }
+
+  #{{ section_id }} .nsc-whyus-head h2 {
+    font-size: clamp(28px, 3.4vw, 42px);
+  }
+
+  #{{ section_id }} .nsc-bento {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-auto-rows: minmax(140px, auto);
+    gap: 2px;
+    background: rgba(42,16,21,.1);
+    border: 1px solid rgba(42,16,21,.1);
+  }
+
+  #{{ section_id }} .nsc-bento-cell {
+    background: var(--nsc-ivory);
+    padding: 36px 34px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: background .3s ease;
+  }
+
+  #{{ section_id }} .nsc-bento-cell:hover {
+    background: var(--nsc-ivory-deep);
+  }
+
+  #{{ section_id }} .nsc-bento-cell .nsc-b-num {
+    font-family: {{ section.settings.serif_font }}, serif;
+    font-style: italic;
+    color: rgba(184,147,90,.4);
+    position: absolute;
+    top: 10px;
+    right: 18px;
+    line-height: 1;
+  }
+
+  #{{ section_id }} .nsc-b-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(184,147,90,.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    flex-shrink: 0;
+  }
+
+  #{{ section_id }} .nsc-b-icon svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--nsc-gold);
+    fill: none;
+    stroke-width: 1.3;
+  }
+
+  #{{ section_id }} .nsc-bento-cell h3 {
+    line-height: 1.25;
+  }
+
+  #{{ section_id }} .nsc-bento-cell p {
+    color: var(--nsc-text-soft);
+    line-height: 1.7;
+    margin: 12px 0 0;
+  }
+
+  #{{ section_id }} .nsc-bento-1 {
+    grid-column: span 4;
+    grid-row: span 2;
+    background: var(--nsc-ink);
+  }
+
+  #{{ section_id }} .nsc-bento-1:hover {
+    background: var(--nsc-ink-soft);
+  }
+
+  #{{ section_id }} .nsc-bento-1 .nsc-b-num {
+    color: rgba(212,172,114,.3);
+    font-size: 64px;
+  }
+
+  #{{ section_id }} .nsc-bento-1 .nsc-b-icon {
+    border-color: rgba(212,172,114,.4);
+    width: 52px;
+    height: 52px;
+  }
+
+  #{{ section_id }} .nsc-bento-1 .nsc-b-icon svg {
+    stroke: var(--nsc-gold-bright);
+    width: 21px;
+    height: 21px;
+  }
+
+  #{{ section_id }} .nsc-bento-1 h3 {
+    color: var(--nsc-ivory);
+    font-size: 26px;
+    max-width: 340px;
+  }
+
+  #{{ section_id }} .nsc-bento-1 p {
+    color: rgba(247,241,230,.65);
+    font-size: 14.5px;
+    max-width: 360px;
+  }
+
+  #{{ section_id }} .nsc-bento-2,
+  #{{ section_id }} .nsc-bento-3,
+  #{{ section_id }} .nsc-bento-4,
+  #{{ section_id }} .nsc-bento-5 {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+  #{{ section_id }} .nsc-bento-2 .nsc-b-num,
+  #{{ section_id }} .nsc-bento-3 .nsc-b-num,
+  #{{ section_id }} .nsc-bento-4 .nsc-b-num,
+  #{{ section_id }} .nsc-bento-5 .nsc-b-num {
+    font-size: 44px;
+  }
+
+  #{{ section_id }} .nsc-bento-2 h3,
+  #{{ section_id }} .nsc-bento-3 h3,
+  #{{ section_id }} .nsc-bento-4 h3,
+  #{{ section_id }} .nsc-bento-5 h3 {
+    font-size: 17px;
+  }
+
+  #{{ section_id }} .nsc-bento-2 p,
+  #{{ section_id }} .nsc-bento-3 p,
+  #{{ section_id }} .nsc-bento-4 p,
+  #{{ section_id }} .nsc-bento-5 p {
+    font-size: 12.5px;
+  }
+
+  #{{ section_id }} .nsc-bento-4 {
+    background: var(--nsc-gold);
+  }
+
+  #{{ section_id }} .nsc-bento-4:hover {
+    background: var(--nsc-gold-bright);
+  }
+
+  #{{ section_id }} .nsc-bento-4 .nsc-b-num {
+    color: rgba(42,16,21,.25);
+  }
+
+  #{{ section_id }} .nsc-bento-4 .nsc-b-icon {
+    border-color: rgba(42,16,21,.35);
+  }
+
+  #{{ section_id }} .nsc-bento-4 .nsc-b-icon svg {
+    stroke: var(--nsc-ink);
+  }
+
+  #{{ section_id }} .nsc-bento-4 h3 {
+    color: var(--nsc-ink);
+  }
+
+  #{{ section_id }} .nsc-bento-4 p {
+    color: rgba(42,16,21,.65);
+  }
+
+  #{{ section_id }} .nsc-bento-6 {
+    grid-column: span 6;
+    grid-row: span 1;
+    flex-direction: row;
+    align-items: center;
+    gap: 28px;
+    padding: 30px 34px;
+  }
+
+  #{{ section_id }} .nsc-bento-6 .nsc-b-icon {
+    margin-bottom: 0;
+  }
+
+  #{{ section_id }} .nsc-bento-6 .nsc-b-num {
+    position: static;
+    font-size: 36px;
+    margin-right: 4px;
+  }
+
+  #{{ section_id }} .nsc-bento-6 h3 {
+    font-size: 17px;
+  }
+
+  #{{ section_id }} .nsc-bento-6 p {
+    margin-top: 4px;
+    font-size: 13px;
+  }
+
+  #{{ section_id }} .nsc-bento-6 .nsc-b-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* Testimonials */
+  #{{ section_id }} .nsc-customers {
+    background: var(--nsc-ivory-deep);
+    padding: 100px 0 110px;
+  }
+
+  #{{ section_id }} .nsc-customers-head {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  #{{ section_id }} .nsc-customers-head h2 {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--nsc-gold);
+    font-size: clamp(30px, 3.6vw, 46px);
+    margin-top: 14px;
+  }
+
+  #{{ section_id }} .nsc-testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 26px;
+  }
+
+  #{{ section_id }} .nsc-testi-card {
+    background: var(--nsc-ivory);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  #{{ section_id }} .nsc-testi-media {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: linear-gradient(150deg,#D9C4A8 0%,#C79A66 45%,#8C5A44 100%);
+  }
+
+  #{{ section_id }} .nsc-testi-media img,
+  #{{ section_id }} .nsc-testi-media video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  #{{ section_id }} .nsc-testi-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(150deg,#D9C4A8 0%,#C79A66 45%,#8C5A44 100%);
+  }
+
+  #{{ section_id }} .nsc-testi-unmute {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 2;
+    background: rgba(20,7,9,.55);
+    color: var(--nsc-ivory);
+    font-family: {{ section.settings.sans_font }}, sans-serif;
+    font-size: 10.5px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: 100px;
+  }
+
+  #{{ section_id }} .nsc-testi-caption {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 16px;
+    z-index: 2;
+    background: rgba(20,7,9,.6);
+    color: var(--nsc-ivory);
+    font-size: 12px;
+    padding: 8px 12px;
+    border-radius: 2px;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  #{{ section_id }} .nsc-testi-body {
+    padding: 22px 20px;
+  }
+
+  #{{ section_id }} .nsc-testi-body h4 {
+    margin: 0 0 10px;
+    font-family: {{ section.settings.serif_font }}, serif;
+    font-size: 15.5px;
+    font-weight: 500;
+    line-height: 1.35;
+    color: var(--nsc-ink);
+  }
+
+  #{{ section_id }} .nsc-testi-body p {
+    margin: 0 0 16px;
+    font-size: 12.5px;
+    color: var(--nsc-text-soft);
+    line-height: 1.65;
+    font-style: italic;
+  }
+
+  #{{ section_id }} .nsc-testi-meta {
+    border-top: 1px solid rgba(42,16,21,.08);
+    padding-top: 12px;
+    font-size: 11.5px;
+    color: var(--nsc-text-soft);
+  }
+
+  #{{ section_id }} .nsc-t-name {
+    color: var(--nsc-ink);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  #{{ section_id }} .nsc-testi-save {
+    margin-top: 10px;
+    display: inline-block;
+    background: var(--nsc-ivory-deep);
+    color: var(--nsc-gold);
+    font-size: 10.5px;
+    letter-spacing: .03em;
+    padding: 5px 10px;
+    border-radius: 100px;
+    font-weight: 500;
+  }
+
+  /* CTA */
+  #{{ section_id }} .nsc-cta {
+    padding: 110px 0;
+    text-align: center;
+  }
+
+  #{{ section_id }} .nsc-cta h2 {
+    font-size: clamp(30px, 4vw, 50px);
+    max-width: 640px;
+    margin: 0 auto 30px;
+  }
+
+  #{{ section_id }} .nsc-cta-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  #{{ section_id }} .nsc-btn-primary {
+    display: inline-block;
+    background: var(--nsc-ink);
+    color: #fff;
+    padding: 16px 34px;
+    border-radius: 2px;
+    font-family: {{ section.settings.sans_font }}, sans-serif;
+    font-size: 13px;
+    line-height: 1;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    transition: background .3s ease;
+  }
+
+  #{{ section_id }} .nsc-btn-primary:hover {
+    background: var(--nsc-ink-soft);
+  }
+
+  #{{ section_id }} .nsc-btn-ghost {
+    display: inline-block;
+    font-family: {{ section.settings.sans_font }}, sans-serif;
+    font-size: 13px;
+    letter-spacing: .05em;
+    border-bottom: 1px solid var(--nsc-gold);
+    padding-bottom: 3px;
+  }
+
+  #{{ section_id }} .nsc-btn-ghost:hover {
+    color: var(--nsc-gold);
+  }
+
+  /* Mobile */
+  @media (max-width: 900px) {
+    #{{ section_id }} .nsc-bento {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    #{{ section_id }} .nsc-bento-1,
+    #{{ section_id }} .nsc-bento-2,
+    #{{ section_id }} .nsc-bento-3,
+    #{{ section_id }} .nsc-bento-4,
+    #{{ section_id }} .nsc-bento-5 {
+      grid-column: span 2;
+      grid-row: span 1;
+    }
+
+    #{{ section_id }} .nsc-bento-1 h3 {
+      font-size: 21px;
+    }
+
+    #{{ section_id }} .nsc-bento-1 p,
+    #{{ section_id }} .nsc-bento-2 p,
+    #{{ section_id }} .nsc-bento-3 p,
+    #{{ section_id }} .nsc-bento-4 p,
+    #{{ section_id }} .nsc-bento-5 p {
+      display: block;
+      font-size: 12.5px;
+    }
+
+    #{{ section_id }} .nsc-bento-6 {
+      grid-column: span 2;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    #{{ section_id }} .nsc-bento-6 .nsc-b-num {
+      position: absolute;
+      top: 10px;
+      right: 18px;
+    }
+
+    #{{ section_id }} .nsc-testimonial-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    #{{ section_id }} .nsc-wrap {
+      padding-left: 22px;
+      padding-right: 22px;
+    }
+
+    #{{ section_id }} .nsc-story-hero {
+      padding-top: 56px;
+      padding-bottom: 40px;
+    }
+
+    #{{ section_id }} .nsc-story-intro {
+      margin-bottom: 50px;
+    }
+
+    #{{ section_id }} .nsc-whyus {
+      padding: 70px 0 80px;
+    }
+
+    #{{ section_id }} .nsc-customers {
+      padding: 70px 0 80px;
+    }
+
+    #{{ section_id }} .nsc-cta {
+      padding: 80px 0;
+    }
+
+    #{{ section_id }} .nsc-bento-cell {
+      padding: 30px 24px;
+    }
+
+    #{{ section_id }} .nsc-bento-6 {
+      padding: 28px 24px;
+    }
+  }
+
+  @media (max-width: 560px) {
+    #{{ section_id }} .nsc-testimonial-grid {
+      grid-template-columns: 1fr;
+    }
+
+    #{{ section_id }} .nsc-bento-cell {
+      padding: 26px 22px;
+    }
+
+    #{{ section_id }} .nsc-bento-1 h3 {
+      font-size: 20px;
+    }
+
+    #{{ section_id }} .nsc-cta-actions {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+</style>
+
+<div id="{{ section_id }}">
+  {% if section.settings.show_breadcrumb %}
+    <div class="nsc-breadcrumb">
+      <div class="nsc-wrap nsc-breadcrumb-inner">
+        <a href="{{ routes.root_url }}">{{ section.settings.breadcrumb_home_label }}</a>
+        <span class="sep">/</span>
+        <span class="current">{{ section.settings.breadcrumb_current }}</span>
+      </div>
+    </div>
+  {% endif %}
+
+  <section class="nsc-story-hero">
+    <svg class="nsc-drape-svg nsc-story-hero-drape" viewBox="0 0 240 80" preserveAspectRatio="none" aria-hidden="true">
+      <path class="nsc-drape-path" d="M 10 8 C 80 60, 140 -10, 230 40"></path>
+    </svg>
+
+    <div class="nsc-wrap">
+      {% if section.settings.hero_eyebrow != blank %}
+        <span class="nsc-eyebrow">{{ section.settings.hero_eyebrow }}</span>
+      {% endif %}
+      <h1>{{ section.settings.hero_heading }}</h1>
+    </div>
+  </section>
+
+  {% if section.settings.show_story_image %}
+    <div class="nsc-wrap">
+      <div class="nsc-story-intro">
+        <span class="nsc-story-wordmark">{{ section.settings.story_wordmark }}</span>
+      </div>
+    </div>
+  {% endif %}
+
+  <section class="nsc-whyus">
+    <div class="nsc-wrap">
+      <div class="nsc-whyus-head">
+        {% if section.settings.why_eyebrow != blank %}
+          <span class="nsc-eyebrow">{{ section.settings.why_eyebrow }}</span>
+        {% endif %}
+        <h2>{{ section.settings.why_heading }}</h2>
+      </div>
+
+      <div class="nsc-bento">
+        {% for block in section.blocks %}
+          {% if block.type == 'benefit' %}
+            {%- liquid
+              assign benefit_class = 'nsc-bento-' | append: block.settings.position
+            -%}
+            <div class="nsc-bento-cell {{ benefit_class }}" {{ block.shopify_attributes }}>
+              <span class="nsc-b-num">{{ block.settings.number }}</span>
+
+              <div class="nsc-b-icon">
+                {% case block.settings.icon %}
+                  {% when 'price' %}
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h12M6 9h12M6 5c4 0 7 1.5 7 4.5S10 14 6 14h9M6 14l8 6"></path></svg>
+                  {% when 'limited' %}
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="15" r="4"></circle><path d="M11 12l8-8M16 5l2.5 2.5M19 2l2.5 2.5"></path></svg>
+                  {% when 'fresh' %}
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2a1.6 1.6 0 1 0-1.6 1.6c0 .45.2.8.4 1.05L4.3 10.5A1.1 1.1 0 0 0 4.8 12.5H19.2a1.1 1.1 0 0 0 .5-2L13.2 5.85c.2-.25.4-.6.4-1.05A1.6 1.6 0 0 0 12 3.2Z"></path><path d="M4 16h16"></path></svg>
+                  {% when 'delivery' %}
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h10v9H3z"></path><path d="M13 11h3.5L19.5 14v2H13v-5Z"></path><circle cx="7" cy="18.5" r="1.6"></circle><circle cx="17" cy="18.5" r="1.6"></circle></svg>
+                  {% when 'custom' %}
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="2.2"></circle><circle cx="6" cy="18" r="2.2"></circle><path d="M20.5 4 7.5 12M20.5 20 7.5 12M8.5 12h3.5"></path></svg>
+                  {% when 'flexibility' %}
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3.5l8 10H19M4 17h3.5l2-2.6M15.5 7H19M15.5 7l2-2M15.5 7l2 2M17 17l2 2M17 17l2-2"></path></svg>
+                  {% else %}
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v8M8 12h8"></path></svg>
+                {% endcase %}
+              </div>
+
+              {% if block.settings.position == '6' %}
+                <div class="nsc-b-text">
+                  <h3>{{ block.settings.heading }}</h3>
+                  <p>{{ block.settings.text }}</p>
+                </div>
+              {% else %}
+                <h3>{{ block.settings.heading }}</h3>
+                <p>{{ block.settings.text }}</p>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="nsc-customers">
+    <div class="nsc-wrap">
+      <div class="nsc-customers-head">
+        {% if section.settings.testimonial_eyebrow != blank %}
+          <span class="nsc-eyebrow">{{ section.settings.testimonial_eyebrow }}</span>
+        {% endif %}
+        <h2>{{ section.settings.testimonial_heading }}</h2>
+      </div>
+
+      <div class="nsc-testimonial-grid">
+        {% for block in section.blocks %}
+          {% if block.type == 'testimonial' %}
+            <article class="nsc-testi-card" {{ block.shopify_attributes }}>
+              <div class="nsc-testi-media">
+                {% if block.settings.video != blank %}
+                  {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true }}
+                  <span class="nsc-testi-unmute">{{ block.settings.video_label }}</span>
+                {% elsif block.settings.image != blank %}
+                  {{ block.settings.image | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '400,600,800,1000', sizes: '(max-width: 560px) 100vw, (max-width: 900px) 50vw, 25vw', alt: block.settings.name }}
+                {% else %}
+                  <div class="nsc-testi-placeholder" aria-hidden="true"></div>
+                {% endif %}
+
+                {% if block.settings.caption != blank %}
+                  <div class="nsc-testi-caption">{{ block.settings.caption }}</div>
+                {% endif %}
+              </div>
+
+              <div class="nsc-testi-body">
+                <h4>{{ block.settings.heading }}</h4>
+                <p>{{ block.settings.quote }}</p>
+
+                <div class="nsc-testi-meta">
+                  {% if block.settings.name != blank %}
+                    <span class="nsc-t-name">{{ block.settings.name }}</span>
+                  {% endif %}
+                  {% if block.settings.location != blank %}
+                    <span>{{ block.settings.location }}</span>
+                  {% endif %}
+
+                  {% if block.settings.saved != blank %}
+                    <span class="nsc-testi-save">{{ block.settings.saved }}</span>
+                  {% endif %}
+                </div>
+              </div>
+            </article>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="nsc-cta">
+    <div class="nsc-wrap">
+      <h2>{{ section.settings.cta_heading }}</h2>
+
+      <div class="nsc-cta-actions">
+        {% if section.settings.cta_primary_label != blank %}
+          <a class="nsc-btn-primary" href="{{ section.settings.cta_primary_link | default: routes.all_products_collection_url }}">
+            {{ section.settings.cta_primary_label }}
+          </a>
+        {% endif %}
+
+        {% if section.settings.cta_secondary_label != blank %}
+          <a class="nsc-btn-ghost" href="{{ section.settings.cta_secondary_link | default: '#' }}">
+            {{ section.settings.cta_secondary_label }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "NSC Our Story_Mgx",
+  "tag": "section",
+  "class": "section-nsc-our-story",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumb",
+      "label": "Show breadcrumb",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "breadcrumb_home_label",
+      "label": "Breadcrumb home label",
+      "default": "Home"
+    },
+    {
+      "type": "text",
+      "id": "breadcrumb_current",
+      "label": "Breadcrumb current label",
+      "default": "Our Story"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Content max width",
+      "min": 960,
+      "max": 1500,
+      "step": 20,
+      "unit": "px",
+      "default": 1240
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Base section padding",
+      "min": 40,
+      "max": 160,
+      "step": 10,
+      "unit": "px",
+      "default": 120
+    },
+    {
+      "type": "select",
+      "id": "serif_font",
+      "label": "Serif font",
+      "options": [
+        { "value": "Fraunces", "label": "Fraunces" },
+        { "value": "Georgia", "label": "Georgia" },
+        { "value": "Times New Roman", "label": "Times New Roman" }
+      ],
+      "default": "Fraunces"
+    },
+    {
+      "type": "select",
+      "id": "sans_font",
+      "label": "Sans font",
+      "options": [
+        { "value": "Jost", "label": "Jost" },
+        { "value": "Arial", "label": "Arial" },
+        { "value": "Helvetica Neue", "label": "Helvetica Neue" }
+      ],
+      "default": "Jost"
+    },
+    {
+      "type": "header",
+      "content": "Story hero"
+    },
+    {
+      "type": "text",
+      "id": "hero_eyebrow",
+      "label": "Eyebrow",
+      "default": "Our story"
+    },
+    {
+      "type": "text",
+      "id": "hero_heading",
+      "label": "Heading",
+      "default": "Why nostringscouture?"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_story_image",
+      "label": "Show story image block",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "story_image",
+      "label": "Story image"
+    },
+    {
+      "type": "select",
+      "id": "story_image_position",
+      "label": "Story image position",
+      "options": [
+        { "value": "center center", "label": "Center" },
+        { "value": "center top", "label": "Top" },
+        { "value": "center bottom", "label": "Bottom" },
+        { "value": "left center", "label": "Left" },
+        { "value": "right center", "label": "Right" }
+      ],
+      "default": "center center"
+    },
+    {
+      "type": "text",
+      "id": "story_wordmark",
+      "label": "Story wordmark",
+      "default": "nostringscouture"
+    },
+    {
+      "type": "header",
+      "content": "Why us"
+    },
+    {
+      "type": "text",
+      "id": "why_eyebrow",
+      "label": "Eyebrow",
+      "default": "Why rent with us"
+    },
+    {
+      "type": "text",
+      "id": "why_heading",
+      "label": "Heading",
+      "default": "A better way to wear couture"
+    },
+    {
+      "type": "header",
+      "content": "Testimonials"
+    },
+    {
+      "type": "text",
+      "id": "testimonial_eyebrow",
+      "label": "Eyebrow",
+      "default": "Real stories"
+    },
+    {
+      "type": "text",
+      "id": "testimonial_heading",
+      "label": "Heading",
+      "default": "Know our customers"
+    },
+    {
+      "type": "header",
+      "content": "CTA"
+    },
+    {
+      "type": "text",
+      "id": "cta_heading",
+      "label": "Heading",
+      "default": "Ready to find your piece?"
+    },
+    {
+      "type": "text",
+      "id": "cta_primary_label",
+      "label": "Primary button label",
+      "default": "Browse the edit"
+    },
+    {
+      "type": "url",
+      "id": "cta_primary_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "cta_secondary_label",
+      "label": "Secondary button label",
+      "default": "How renting works"
+    },
+    {
+      "type": "url",
+      "id": "cta_secondary_link",
+      "label": "Secondary button link"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "color_ink",
+      "label": "Ink",
+      "default": "#2A1015"
+    },
+    {
+      "type": "color",
+      "id": "color_ink_soft",
+      "label": "Soft ink",
+      "default": "#3D1E22"
+    },
+    {
+      "type": "color",
+      "id": "color_ivory",
+      "label": "Ivory",
+      "default": "#F7F1E6"
+    },
+    {
+      "type": "color",
+      "id": "color_ivory_deep",
+      "label": "Deep ivory",
+      "default": "#EFE5D4"
+    },
+    {
+      "type": "color",
+      "id": "color_gold",
+      "label": "Gold",
+      "default": "#B8935A"
+    },
+    {
+      "type": "color",
+      "id": "color_gold_bright",
+      "label": "Bright gold",
+      "default": "#D4AC72"
+    },
+    {
+      "type": "color",
+      "id": "color_rose",
+      "label": "Rose",
+      "default": "#C79088"
+    },
+    {
+      "type": "color",
+      "id": "color_text",
+      "label": "Text",
+      "default": "#2A1015"
+    },
+    {
+      "type": "color",
+      "id": "color_text_soft",
+      "label": "Soft text",
+      "default": "#6B4C48"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "select",
+          "id": "position",
+          "label": "Layout position",
+          "options": [
+            { "value": "1", "label": "01 — Large feature" },
+            { "value": "2", "label": "02" },
+            { "value": "3", "label": "03" },
+            { "value": "4", "label": "04 — Gold" },
+            { "value": "5", "label": "05" },
+            { "value": "6", "label": "06 — Full width" }
+          ],
+          "default": "1"
+        },
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number",
+          "default": "01"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "price", "label": "Price" },
+            { "value": "limited", "label": "Limited access" },
+            { "value": "fresh", "label": "Fresh catalog" },
+            { "value": "delivery", "label": "Delivery" },
+            { "value": "custom", "label": "Customised" },
+            { "value": "flexibility", "label": "Flexibility" }
+          ],
+          "default": "price"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Cost effective"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "default": "We've got every function of the wedding covered, at a fraction of what buying would cost you outright."
+        }
+      ]
+    },
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Customer image"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Customer video"
+        },
+        {
+          "type": "text",
+          "id": "video_label",
+          "label": "Video label",
+          "default": "Unmute"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Media caption",
+          "default": "A seamless rental experience"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Testimonial heading",
+          "default": "Experiment with your style, without the stress of repeating"
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "You never have to repeat an outfit, because pieces are given for just one-time use, and the pricing is a cherry on top."
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Customer name",
+          "default": "Arushi Sharma"
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "Location",
+          "default": "Chandigarh"
+        },
+        {
+          "type": "text",
+          "id": "saved",
+          "label": "Saved label",
+          "default": "Saved ₹98,500"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "NSC Our Story",
+      "blocks": [
+        {
+          "type": "benefit",
+          "settings": {
+            "position": "1",
+            "number": "01",
+            "icon": "price",
+            "heading": "Cost effective",
+            "text": "We've got every function of the wedding covered, at a fraction of what buying would cost you outright."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "position": "2",
+            "number": "02",
+            "icon": "limited",
+            "heading": "Limited access",
+            "text": "Each piece is offered only a limited number of times, to keep the collection exclusive."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "position": "5",
+            "number": "05",
+            "icon": "custom",
+            "heading": "Customised couture",
+            "text": "Every garment is tailored to your exact measurements, so it fits like a glove."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "position": "3",
+            "number": "03",
+            "icon": "fresh",
+            "heading": "Fresh catalog",
+            "text": "Sourced straight from designer houses, part of their newest collections."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "position": "4",
+            "number": "04",
+            "icon": "delivery",
+            "heading": "Short delivery",
+            "text": "Orders as late as 7 days before your occasion."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "position": "6",
+            "number": "06",
+            "icon": "flexibility",
+            "heading": "Flexibility to experiment",
+            "text": "Play with your style, without the pressure of investing only in \"evergreen\" outfits."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "caption": "...and found so many designer outfits",
+            "heading": "Experiment with your style, without the stress of repeating",
+            "quote": "You never have to repeat an outfit, because pieces are given for just one-time use, and the pricing is a cherry on top.",
+            "name": "Arushi Sharma",
+            "location": "Chandigarh",
+            "saved": "Saved ₹98,500"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "caption": "I chose a platform...",
+            "heading": "The perfect companion for a happy closet",
+            "quote": "nostringscouture is a great fit for someone like me who doesn't like repeating outfits or storing heavy lehengas in my closet.",
+            "name": "Anushka Sharma",
+            "location": "Toronto, Canada",
+            "saved": "Saved ₹98,500"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "caption": "...free experience",
+            "heading": "NSC was the perfect choice for me",
+            "quote": "The seamless process spared me the whole experience and trouble of going to multiple stores and trying on several garments.",
+            "name": "Nilfa Saha Karmakar",
+            "location": "Delhi",
+            "saved": "Saved ₹75,500"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "caption": "...to actually choose and wear",
+            "heading": "It was seamless, start to finish",
+            "quote": "What I love most is that I don't need to spend a fortune on an outfit I'd probably only wear once or twice.",
+            "name": "Reeti Sahai",
+            "location": "New Delhi",
+            "saved": "Saved ₹98,500"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

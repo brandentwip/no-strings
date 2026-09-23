@@ -1,0 +1,589 @@
+{% comment %}
+  Collection Editorial Intro
+  - Dynamic collection title
+  - Dynamic breadcrumbs
+  - Placeholder description for now
+  - Description can later be connected to a collection metafield
+{% endcomment %}
+
+<section
+  id="collection-editorial-intro-{{ section.id }}"
+  class="collection-editorial-intro"
+  style="
+    --cei-background: {{ section.settings.background_color }};
+    --cei-eyebrow-color: {{ section.settings.eyebrow_color }};
+    --cei-title-color: {{ section.settings.title_color }};
+    --cei-description-color: {{ section.settings.description_color }};
+    --cei-breadcrumb-color: {{ section.settings.breadcrumb_color }};
+    --cei-breadcrumb-separator: {{ section.settings.breadcrumb_separator_color }};
+
+    --cei-eyebrow-size: {{ section.settings.eyebrow_size }}px;
+    --cei-title-size: {{ section.settings.title_size }}px;
+    --cei-description-size: {{ section.settings.description_size }}px;
+
+    --cei-content-width: {{ section.settings.content_width }}px;
+
+    --cei-padding-top: {{ section.settings.padding_top }}px;
+    --cei-padding-bottom: {{ section.settings.padding_bottom }}px;
+
+    --cei-mobile-title-size: {{ section.settings.mobile_title_size }}px;
+    --cei-mobile-description-size: {{ section.settings.mobile_description_size }}px;
+  "
+>
+
+  <div class="collection-editorial-intro__container">
+
+    {% comment %}
+      =========================================================
+      BREADCRUMBS
+      =========================================================
+    {% endcomment %}
+
+    {% if section.settings.show_breadcrumbs and collection != blank %}
+
+      <nav
+        class="collection-editorial-intro__breadcrumbs"
+        aria-label="Breadcrumb"
+      >
+
+        <a
+          href="{{ routes.root_url }}"
+          class="collection-editorial-intro__breadcrumb-home"
+        >
+          Home
+        </a>
+
+        <span
+          class="collection-editorial-intro__breadcrumb-separator"
+          aria-hidden="true"
+        >
+          /
+        </span>
+
+        <span
+          class="collection-editorial-intro__breadcrumb-current"
+          aria-current="page"
+        >
+          {{ collection.title }}
+        </span>
+
+      </nav>
+
+    {% endif %}
+
+
+    {% comment %}
+      =========================================================
+      EDITORIAL CONTENT
+      =========================================================
+    {% endcomment %}
+
+    {% if section.settings.eyebrow != blank %}
+      <div class="collection-editorial-intro__eyebrow">
+        {{ section.settings.eyebrow }}
+      </div>
+    {% endif %}
+
+
+    {% if collection != blank %}
+      <h1 class="collection-editorial-intro__title">
+        {{ collection.title }}
+      </h1>
+    {% endif %}
+
+
+    {% if section.settings.description != blank %}
+      <div class="collection-editorial-intro__description">
+        {{ section.settings.description }}
+      </div>
+    {% endif %}
+
+  </div>
+
+</section>
+
+
+<style>
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+#collection-editorial-intro-{{ section.id }} {
+  width: 100%;
+
+  background: var(--cei-background);
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+#collection-editorial-intro-{{ section.id }}
+.collection-editorial-intro__container {
+  width: min(
+    var(--cei-content-width),
+    calc(100% - 40px)
+  );
+
+  margin: 0 auto;
+
+  padding-top: var(--cei-padding-top);
+  padding-bottom: var(--cei-padding-bottom);
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   BREADCRUMBS
+========================================================= */
+
+#collection-editorial-intro-{{ section.id }}
+.collection-editorial-intro__breadcrumbs {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  margin: 0 0 106px;
+
+  font-size: 16px;
+  line-height: 1.2;
+
+  font-weight: 400;
+
+  letter-spacing: 0.01em;
+
+  color: var(--cei-breadcrumb-color);
+}
+
+
+/* Home */
+
+#collection-editorial-intro-{{ section.id }}
+.collection-editorial-intro__breadcrumb-home {
+  color: var(--cei-breadcrumb-color);
+
+  text-decoration: none;
+
+  transition: opacity 0.2s ease;
+}
+
+
+#collection-editorial-intro-{{ section.id }}
+.collection-editorial-intro__breadcrumb-home:hover {
+  opacity: 0.65;
+}
+
+
+/* Separator */
+
+#collection-editorial-intro-{{ section.id }}
+.collection-editorial-intro__breadcrumb-separator {
+  color: var(--cei-breadcrumb-separator);
+
+  opacity: 0.55;
+}
+
+
+/* Current collection */
+
+#collection-editorial-intro-{{ section.id }}
+.collection-editorial-intro__breadcrumb-current {
+  color: var(--cei-breadcrumb-color);
+}
+
+
+/* =========================================================
+   EYEBROW
+========================================================= */
+
+#collection-editorial-intro-{{ section.id }}
+.collection-editorial-intro__eyebrow {
+  margin: 0 0 34px;
+
+  font-size: var(--cei-eyebrow-size);
+  line-height: 1.2;
+
+  font-weight: 500;
+
+  letter-spacing: 0.22em;
+
+  text-transform: uppercase;
+
+  color: var(--cei-eyebrow-color);
+}
+
+
+/* =========================================================
+   COLLECTION TITLE
+========================================================= */
+
+#collection-editorial-intro-{{ section.id }}
+.collection-editorial-intro__title {
+  margin: 0 0 22px;
+
+  font-size: var(--cei-title-size);
+  line-height: 0.95;
+
+  font-weight: 400;
+
+  letter-spacing: -0.045em;
+
+  color: var(--cei-title-color);
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+#collection-editorial-intro-{{ section.id }}
+.collection-editorial-intro__description {
+  max-width: 720px;
+
+  margin: 0;
+
+  font-size: var(--cei-description-size);
+  line-height: 1.65;
+
+  font-weight: 400;
+
+  letter-spacing: 0.01em;
+
+  color: var(--cei-description-color);
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media screen and (max-width: 990px) {
+
+  #collection-editorial-intro-{{ section.id }}
+  .collection-editorial-intro__container {
+    width: min(
+      var(--cei-content-width),
+      calc(100% - 48px)
+    );
+  }
+
+
+  #collection-editorial-intro-{{ section.id }}
+  .collection-editorial-intro__breadcrumbs {
+    margin-bottom: 75px;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media screen and (max-width: 749px) {
+
+  #collection-editorial-intro-{{ section.id }}
+  .collection-editorial-intro__container {
+    width: calc(100% - 44px);
+
+    padding-top: calc(
+      var(--cei-padding-top) * 0.7
+    );
+
+    padding-bottom: calc(
+      var(--cei-padding-bottom) * 0.7
+    );
+  }
+
+
+  /* Breadcrumbs */
+
+  #collection-editorial-intro-{{ section.id }}
+  .collection-editorial-intro__breadcrumbs {
+    gap: 10px;
+
+    margin-bottom: 55px;
+
+    font-size: 13px;
+  }
+
+
+  /* Eyebrow */
+
+  #collection-editorial-intro-{{ section.id }}
+  .collection-editorial-intro__eyebrow {
+    margin-bottom: 22px;
+
+    font-size: 10px;
+
+    letter-spacing: 0.18em;
+  }
+
+
+  /* Title */
+
+  #collection-editorial-intro-{{ section.id }}
+  .collection-editorial-intro__title {
+    margin-bottom: 18px;
+
+    font-size: var(--cei-mobile-title-size);
+
+    line-height: 0.98;
+
+    letter-spacing: -0.035em;
+  }
+
+
+  /* Description */
+
+  #collection-editorial-intro-{{ section.id }}
+  .collection-editorial-intro__description {
+    max-width: none;
+
+    font-size: var(--cei-mobile-description-size);
+
+    line-height: 1.6;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media screen and (max-width: 480px) {
+
+  #collection-editorial-intro-{{ section.id }}
+  .collection-editorial-intro__container {
+    width: calc(100% - 36px);
+  }
+
+
+  #collection-editorial-intro-{{ section.id }}
+  .collection-editorial-intro__breadcrumbs {
+    margin-bottom: 45px;
+
+    font-size: 12px;
+  }
+
+
+  #collection-editorial-intro-{{ section.id }}
+  .collection-editorial-intro__title {
+    font-size: calc(
+      var(--cei-mobile-title-size) * 0.92
+    );
+  }
+
+}
+
+</style>
+
+
+{% schema %}
+
+{
+  "name": "Collection_intro",
+  "tag": "section",
+  "class": "section-collection-editorial-intro",
+
+  "settings": [
+
+    {
+      "type": "header",
+      "content": "Breadcrumbs"
+    },
+
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show breadcrumbs",
+      "default": true
+    },
+
+    {
+      "type": "color",
+      "id": "breadcrumb_color",
+      "label": "Breadcrumb color",
+      "default": "#6D5555"
+    },
+
+    {
+      "type": "color",
+      "id": "breadcrumb_separator_color",
+      "label": "Separator color",
+      "default": "#B8A9A1"
+    },
+
+
+    {
+      "type": "header",
+      "content": "Content"
+    },
+
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Shop the edit"
+    },
+
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Curated lehengas from India's finest designers, available to rent or buy — for the wedding, the sangeet, or the night you want to remember."
+    },
+
+
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#F7F0E6"
+    },
+
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "Eyebrow color",
+      "default": "#B78343"
+    },
+
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#35120F"
+    },
+
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description color",
+      "default": "#8F5F56"
+    },
+
+
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+
+    {
+      "type": "range",
+      "id": "eyebrow_size",
+      "label": "Eyebrow size",
+      "min": 8,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "min": 40,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 64
+    },
+
+    {
+      "type": "range",
+      "id": "description_size",
+      "label": "Description size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+
+    {
+      "type": "range",
+      "id": "mobile_title_size",
+      "label": "Mobile title size",
+      "min": 28,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 42
+    },
+
+    {
+      "type": "range",
+      "id": "mobile_description_size",
+      "label": "Mobile description size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+
+
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+
+    {
+      "type": "range",
+      "id": "content_width",
+      "label": "Content width",
+      "min": 600,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 1500
+    },
+
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 20,
+      "max": 180,
+      "step": 5,
+      "unit": "px",
+      "default": 75
+    },
+
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 20,
+      "max": 180,
+      "step": 5,
+      "unit": "px",
+      "default": 55
+    }
+
+  ],
+
+  "presets": [
+    {
+      "name": "Collection editorial intro"
+    }
+  ]
+
+}
+
+{% endschema %}

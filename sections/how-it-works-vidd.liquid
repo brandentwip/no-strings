@@ -1,0 +1,519 @@
+{%- comment -%}
+  Section: How It Works — Video + Chapters
+  Recreates the "nostringscouture" How It Works page hero + video/chapter
+  section + closing quote band as an installable, editable Shopify section.
+
+  Notes for install:
+  - Save this file as sections/how-it-works-video.liquid in your theme.
+  - Add it to any page template from the theme editor (Online Store >
+    Themes > Customize > Add section), or reference it directly in a
+    JSON template, e.g. templates/page.how-it-works.json:
+      { "sections": { "main": { "type": "how-it-works-video" } },
+        "order": ["main"] }
+  - The header/nav/footer from the reference file are intentionally left
+    out — those belong to your theme's global sections/theme.liquid so
+    installing them here would duplicate your real navigation. This
+    section is just the unique "How It Works" content block.
+{%- endcomment -%}
+
+{%- assign sid = section.id -%}
+{%- assign video = section.settings.video -%}
+{%- if video -%}
+  {%- assign video_source = video.sources | where: 'format', 'mp4' | last -%}
+{%- endif -%}
+{%- assign total_seconds = 0 -%}
+{%- for block in section.blocks -%}
+  {%- if block.settings.start_seconds > total_seconds -%}
+    {%- assign total_seconds = block.settings.start_seconds -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- assign total_display = section.settings.video_duration | default: '0:52' -%}
+
+{% style %}
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Fraunces:ital,opsz,wght@1,9..144,400&family=Jost:wght@300;400;500&display=swap');
+
+  .nsc-hiw-{{ sid }}{
+    --ink:#2A1015; --ink-soft:#3D1E22; --ivory:#F7F1E6; --ivory-deep:#EFE5D4;
+    --gold:#B8935A; --gold-bright:#D4AC72; --rose:#C79088;
+    --text:#2A1015; --text-soft:#6B4C48;
+    background:var(--ivory); color:var(--text);
+    font-family:'Jost', sans-serif; font-weight:300; overflow-x:hidden;
+  }
+  .nsc-hiw-{{ sid }} *{ box-sizing:border-box; }
+  .nsc-hiw-{{ sid }} h1,
+  .nsc-hiw-{{ sid }} h3,
+  .nsc-hiw-{{ sid }} .nsc-hiw__serif{
+    font-family:'Fraunces', serif; font-weight:500; letter-spacing:-0.01em; color:var(--ink); margin:0;
+  }
+  .nsc-hiw-{{ sid }} a{ color:inherit; text-decoration:none; }
+  .nsc-hiw-{{ sid }} .nsc-hiw__wrap{ max-width:1240px; margin:0 auto; padding:0 48px; }
+  @media(max-width:768px){ .nsc-hiw-{{ sid }} .nsc-hiw__wrap{ padding:0 22px; } }
+
+  .nsc-hiw-{{ sid }} .nsc-hiw__eyebrow{
+    font-family:'Jost',sans-serif; text-transform:uppercase; letter-spacing:0.22em;
+    font-size:11px; color:var(--gold); font-weight:500; display:block;
+  }
+
+  /* drape line */
+  .nsc-hiw-{{ sid }} .nsc-hiw__drape-svg{ position:absolute; pointer-events:none; }
+  .nsc-hiw-{{ sid }} .nsc-hiw__drape-path{
+    fill:none; stroke:var(--gold); stroke-width:1.4;
+    stroke-dasharray:1400; stroke-dashoffset:1400;
+    animation:nscDraw-{{ sid }} 2.6s ease forwards 0.3s;
+  }
+  @keyframes nscDraw-{{ sid }}{ to{ stroke-dashoffset:0; } }
+  @media (prefers-reduced-motion: reduce){
+    .nsc-hiw-{{ sid }} .nsc-hiw__drape-path{ animation:none; stroke-dashoffset:0; }
+  }
+
+  .nsc-hiw-{{ sid }} .nsc-hiw__btn-primary{
+    display:inline-block; background:var(--ink); color:var(--ivory); padding:16px 34px;
+    border-radius:2px; font-size:13px; letter-spacing:0.08em; text-transform:uppercase;
+    transition:background .3s ease; border:none; cursor:pointer;
+  }
+  .nsc-hiw-{{ sid }} .nsc-hiw__btn-primary:hover{ background:var(--ink-soft); }
+
+  /* hero */
+  .nsc-hiw-{{ sid }} .nsc-hiw__hero{ padding:80px 0 50px; position:relative; overflow:hidden; }
+  .nsc-hiw-{{ sid }} .nsc-hiw__hero-drape{ position:absolute; top:-20px; right:8%; width:180px; height:400px; opacity:0.6; pointer-events:none; }
+  .nsc-hiw-{{ sid }} .nsc-hiw__hero-grid{
+    display:grid; grid-template-columns:1.3fr 1fr; gap:40px; align-items:end; position:relative; z-index:1;
+  }
+  @media(max-width:768px){ .nsc-hiw-{{ sid }} .nsc-hiw__hero-grid{ grid-template-columns:1fr; gap:18px; } }
+  .nsc-hiw-{{ sid }} .nsc-hiw__hero h1{ font-size:clamp(32px,4.2vw,52px); line-height:1.08; margin-top:14px; }
+  .nsc-hiw-{{ sid }} .nsc-hiw__hero h1 .nsc-hiw__ital{ font-style:italic; font-weight:400; color:var(--gold); }
+  .nsc-hiw-{{ sid }} .nsc-hiw__hero-sub{ font-size:15px; color:var(--text-soft); line-height:1.75; max-width:380px; }
+
+  /* video + chapters */
+  .nsc-hiw-{{ sid }} .nsc-hiw__video-section{ padding:20px 0 100px; }
+  .nsc-hiw-{{ sid }} .nsc-hiw__video-layout{
+    display:grid; grid-template-columns:1.25fr 1fr; gap:56px; align-items:start;
+  }
+  @media(max-width:900px){ .nsc-hiw-{{ sid }} .nsc-hiw__video-layout{ grid-template-columns:1fr; gap:36px; } }
+  .nsc-hiw-{{ sid }} .nsc-hiw__video-player{ position:sticky; top:100px; }
+  @media(max-width:900px){ .nsc-hiw-{{ sid }} .nsc-hiw__video-player{ position:static; } }
+  .nsc-hiw-{{ sid }} .nsc-hiw__video-frame{
+    position:relative; border-radius:2px; overflow:hidden;
+    background:linear-gradient(150deg,#8C5A44 0%, #5E2E2A 55%, #2A1015 100%);
+    aspect-ratio:4/5; display:flex; align-items:center; justify-content:center;
+  }
+  .nsc-hiw-{{ sid }} .nsc-hiw__video-frame video,
+  .nsc-hiw-{{ sid }} .nsc-hiw__video-frame img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .nsc-hiw-{{ sid }} .nsc-hiw__video-placeholder-label{
+    position:absolute; bottom:70px; left:0; right:0; text-align:center;
+    color:rgba(255,255,255,0.7); font-family:'Jost'; font-size:11px; letter-spacing:0.12em; text-transform:uppercase;
+  }
+  .nsc-hiw-{{ sid }} .nsc-hiw__play-btn{
+    width:74px; height:74px; border-radius:50%; background:rgba(247,241,230,0.92); border:none;
+    display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:2;
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    transition:transform .25s ease, background .25s ease;
+  }
+  .nsc-hiw-{{ sid }} .nsc-hiw__play-btn:hover{ transform:translate(-50%,-50%) scale(1.06); }
+  .nsc-hiw-{{ sid }} .nsc-hiw__play-btn:hover{ background:var(--ivory); }
+  .nsc-hiw-{{ sid }} .nsc-hiw__play-btn svg{ width:22px; height:22px; fill:var(--ink); margin-left:3px; }
+  .nsc-hiw-{{ sid }} .nsc-hiw__play-btn.is-playing{ display:none; }
+
+  .nsc-hiw-{{ sid }} .nsc-hiw__mute-btn{
+    position:absolute; right:16px; bottom:16px; z-index:3;
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    min-height:38px; padding:9px 13px;
+    border:1px solid rgba(247,241,230,0.38);
+    border-radius:100px;
+    background:rgba(20,7,9,0.62);
+    color:var(--ivory);
+    font-family:'Jost',sans-serif;
+    font-size:11px; font-weight:400; letter-spacing:0.06em;
+    text-transform:uppercase;
+    cursor:pointer;
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+    transition:background .25s ease, border-color .25s ease, transform .25s ease;
+  }
+  .nsc-hiw-{{ sid }} .nsc-hiw__mute-btn:hover{
+    background:rgba(42,16,21,0.88);
+    border-color:rgba(212,172,114,0.7);
+    transform:translateY(-1px);
+  }
+  .nsc-hiw-{{ sid }} .nsc-hiw__mute-btn svg{
+    width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:1.5;
+    stroke-linecap:round; stroke-linejoin:round; flex-shrink:0;
+  }
+  .nsc-hiw-{{ sid }} .nsc-hiw__mute-btn .nsc-hiw__icon-muted{ display:none; }
+  .nsc-hiw-{{ sid }} .nsc-hiw__mute-btn.is-muted .nsc-hiw__icon-sound{ display:none; }
+  .nsc-hiw-{{ sid }} .nsc-hiw__mute-btn.is-muted .nsc-hiw__icon-muted{ display:block; }
+  @media(max-width:560px){
+    .nsc-hiw-{{ sid }} .nsc-hiw__mute-btn{ right:10px; bottom:10px; min-height:36px; padding:8px 11px; }
+    .nsc-hiw-{{ sid }} .nsc-hiw__mute-btn span{ font-size:10px; }
+  }
+  .nsc-hiw-{{ sid }} .nsc-hiw__duration-tag{
+    position:absolute; top:16px; right:16px; background:rgba(20,7,9,0.6); color:var(--ivory);
+    font-family:'Jost'; font-size:11px; letter-spacing:0.04em; padding:5px 10px; border-radius:3px; z-index:2;
+  }
+  .nsc-hiw-{{ sid }} .nsc-hiw__progress{
+    margin-top:16px; height:3px; background:rgba(42,16,21,0.12); border-radius:2px; position:relative; overflow:hidden; cursor:pointer;
+  }
+  .nsc-hiw-{{ sid }} .nsc-hiw__progress-fill{
+    position:absolute; left:0; top:0; height:100%; background:var(--gold); border-radius:2px; width:0%;
+    transition:width .2s linear;
+  }
+  .nsc-hiw-{{ sid }} .nsc-hiw__markers{ display:flex; justify-content:space-between; margin-top:10px; }
+  .nsc-hiw-{{ sid }} .nsc-hiw__markers span{ font-size:10px; color:var(--text-soft); letter-spacing:0.03em; }
+
+  .nsc-hiw-{{ sid }} .nsc-hiw__chapter-list{ display:flex; flex-direction:column; }
+  .nsc-hiw-{{ sid }} .nsc-hiw__chapter-item{
+    display:flex; gap:18px; padding:22px 0; border-bottom:1px solid rgba(42,16,21,0.1);
+    cursor:pointer; transition:opacity .25s ease; background:none; border-left:none; border-right:none; border-top:none;
+    width:100%; text-align:left; font-family:inherit;
+  }
+  .nsc-hiw-{{ sid }} .nsc-hiw__chapter-item:first-child{ border-top:1px solid rgba(42,16,21,0.1); }
+  .nsc-hiw-{{ sid }} .nsc-hiw__chapter-item:not(.is-active){ opacity:0.55; }
+  .nsc-hiw-{{ sid }} .nsc-hiw__chapter-item:hover{ opacity:1; }
+  .nsc-hiw-{{ sid }} .nsc-hiw__chapter-num{
+    font-family:'Fraunces'; font-style:italic; font-size:15px; color:var(--gold); flex-shrink:0; width:28px; padding-top:2px;
+  }
+  .nsc-hiw-{{ sid }} .nsc-hiw__chapter-icon{
+    width:38px; height:38px; border-radius:50%; border:1px solid rgba(184,147,90,0.4); flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; transition:all .25s ease;
+  }
+  .nsc-hiw-{{ sid }} .nsc-hiw__chapter-item.is-active .nsc-hiw__chapter-icon{ background:var(--gold); border-color:var(--gold); }
+  .nsc-hiw-{{ sid }} .nsc-hiw__chapter-icon svg{ width:16px; height:16px; stroke:var(--gold); fill:none; stroke-width:1.4; transition:stroke .25s ease; }
+  .nsc-hiw-{{ sid }} .nsc-hiw__chapter-item.is-active .nsc-hiw__chapter-icon svg{ stroke:var(--ivory); }
+  .nsc-hiw-{{ sid }} .nsc-hiw__chapter-text h3{ font-size:17px; font-weight:400; font-family:'Fraunces'; color:var(--ink); margin-bottom:6px; }
+  .nsc-hiw-{{ sid }} .nsc-hiw__chapter-text p{ font-size:13.5px; color:var(--text-soft); line-height:1.7; max-width:380px; margin:0; }
+  .nsc-hiw-{{ sid }} .nsc-hiw__chapter-time{ font-size:11px; color:var(--gold); letter-spacing:0.04em; margin-top:8px; display:block; }
+
+  /* quote band */
+  .nsc-hiw-{{ sid }} .nsc-hiw__quote-band{
+    position:relative; padding:110px 0; text-align:center;
+    background:var(--ink); color:var(--ivory); overflow:hidden;
+  }
+  .nsc-hiw-{{ sid }} .nsc-hiw__quote-band blockquote{
+    font-family:'Fraunces'; font-style:italic; font-weight:400; margin:18px auto 0;
+    font-size:clamp(26px,3.6vw,46px); line-height:1.35; max-width:820px;
+  }
+  .nsc-hiw-{{ sid }} .nsc-hiw__quote-band .nsc-hiw__ital{ font-style:italic; color:var(--gold-bright); }
+  .nsc-hiw-{{ sid }} .nsc-hiw__quote-sub{
+    color:rgba(247,241,230,0.65); max-width:440px; margin:22px auto 0; font-size:14px; line-height:1.8;
+  }
+  .nsc-hiw-{{ sid }} .nsc-hiw__quote-band .nsc-hiw__btn-primary{ background:var(--ivory); color:var(--ink); margin-top:34px; }
+  .nsc-hiw-{{ sid }} .nsc-hiw__quote-band .nsc-hiw__btn-primary:hover{ background:var(--gold-bright); }
+{% endstyle %}
+
+<div class="nsc-hiw-{{ sid }}">
+
+  <section class="nsc-hiw__hero">
+    <svg class="nsc-hiw__drape-svg nsc-hiw__hero-drape" viewBox="0 0 180 400" preserveAspectRatio="none">
+      <path class="nsc-hiw__drape-path" style="stroke-width:1;" d="M 20 0 C 140 60, 20 180, 130 260 C 200 320, 90 360, 140 400"/>
+    </svg>
+    <div class="nsc-hiw__wrap nsc-hiw__hero-grid">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="nsc-hiw__eyebrow">{{ section.settings.eyebrow }}</span>
+        {%- endif -%}
+        <h1>{{ section.settings.heading }}{% if section.settings.heading_italic != blank %} <span class="nsc-hiw__ital">{{ section.settings.heading_italic }}</span>{% endif %}</h1>
+      </div>
+      {%- if section.settings.subheading != blank -%}
+        <p class="nsc-hiw__hero-sub">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+    </div>
+  </section>
+
+  <section class="nsc-hiw__video-section">
+    <div class="nsc-hiw__wrap nsc-hiw__video-layout">
+
+      <div class="nsc-hiw__video-player">
+        <div class="nsc-hiw__video-frame" id="nscFrame-{{ sid }}">
+          <span class="nsc-hiw__duration-tag" id="nscDuration-{{ sid }}">0:00 / {{ total_display }}</span>
+
+          {%- if video_source -%}
+            <video id="nscVideo-{{ sid }}" playsinline preload="metadata"
+              {% if section.settings.autoplay %}autoplay muted loop{% elsif section.settings.muted %}muted{% endif %}
+              {% if section.settings.video_poster %}poster="{{ section.settings.video_poster | image_url: width: 900 }}"{% endif %}>
+              <source src="{{ video_source.url }}" type="video/mp4">
+            </video>
+          {%- elsif section.settings.video_poster -%}
+            <img id="nscVideo-{{ sid }}" src="{{ section.settings.video_poster | image_url: width: 900 }}" alt="{{ section.settings.heading | escape }}">
+          {%- else -%}
+            <span class="nsc-hiw__video-placeholder-label">Process walkthrough film</span>
+          {%- endif -%}
+
+          {%- if video_source -%}
+            <button type="button" class="nsc-hiw__play-btn" id="nscPlay-{{ sid }}" aria-label="Play video">
+              <svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg>
+            </button>
+          {%- endif -%}
+
+          {%- if video_source -%}
+            <button
+              type="button"
+              class="nsc-hiw__mute-btn{% if section.settings.autoplay or section.settings.muted %} is-muted{% endif %}"
+              id="nscMute-{{ sid }}"
+              aria-label="{% if section.settings.autoplay or section.settings.muted %}Unmute video{% else %}Mute video{% endif %}"
+              aria-pressed="{% if section.settings.autoplay or section.settings.muted %}true{% else %}false{% endif %}">
+              <svg class="nsc-hiw__icon-sound" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 10v4h4l5 4V6l-5 4H4z"/>
+                <path d="M16 9.5a4 4 0 0 1 0 5"/>
+                <path d="M18.5 7a7.5 7.5 0 0 1 0 10"/>
+              </svg>
+              <svg class="nsc-hiw__icon-muted" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 10v4h4l5 4V6l-5 4H4z"/>
+                <path d="m17 9 4 6"/>
+                <path d="m21 9-4 6"/>
+              </svg>
+              <span>{% if section.settings.autoplay or section.settings.muted %}Unmute{% else %}Mute{% endif %}</span>
+            </button>
+          {%- endif -%}
+        </div>
+        <div class="nsc-hiw__progress" id="nscProgress-{{ sid }}"><div class="nsc-hiw__progress-fill" id="nscProgressFill-{{ sid }}"></div></div>
+        <div class="nsc-hiw__markers">
+          {%- for block in section.blocks -%}
+            <span>{{ block.settings.time_range | split: ' - ' | first }}</span>
+          {%- endfor -%}
+          {%- if section.settings.video_duration != blank -%}<span>{{ section.settings.video_duration }}</span>{%- endif -%}
+        </div>
+      </div>
+
+      <div class="nsc-hiw__chapter-list">
+        {%- for block in section.blocks -%}
+          <button type="button"
+            class="nsc-hiw__chapter-item{% if forloop.first %} is-active{% endif %}"
+            data-time="{{ block.settings.start_seconds }}"
+            {{ block.shopify_attributes }}>
+            <span class="nsc-hiw__chapter-num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+            <span class="nsc-hiw__chapter-icon">
+              <svg viewBox="0 0 24 24">
+                {%- case block.settings.icon -%}
+                  {%- when 'measure' -%}
+                    <path d="M4.5 15.5 15.5 4.5l4 4-11 11z"/><path d="M9 11l1.5 1.5M11.5 8.5 13 10M14 5.5 15.5 7"/>
+                  {%- when 'customise' -%}
+                    <circle cx="6" cy="6" r="2.2"/><circle cx="6" cy="18" r="2.2"/><path d="M20.5 4 7.5 12M20.5 20 7.5 12M8.5 12h3.5"/>
+                  {%- when 'flaunt' -%}
+                    <path d="M12 3l1.7 5.3L19 10l-5.3 1.7L12 17l-1.7-5.3L5 10l5.3-1.7Z"/><path d="M18.5 14.5l.6 1.8 1.9.6-1.9.6-.6 1.9-.6-1.9-1.9-.6 1.9-.6Z"/>
+                  {%- when 'return' -%}
+                    <path d="M4 8.5 12 4l8 4.5-8 4.5-8-4.5Z"/><path d="M4 8.5v7L12 20l8-4.5v-7"/><path d="M12 13v7"/>
+                  {%- else -%}
+                    <path d="M12 3.2a1.6 1.6 0 1 0-1.6 1.6c0 .45.2.8.4 1.05L4.3 10.5A1.1 1.1 0 0 0 4.8 12.5H19.2a1.1 1.1 0 0 0 .5-2L13.2 5.85c.2-.25.4-.6.4-1.05A1.6 1.6 0 0 0 12 3.2Z"/><path d="M4 16h16"/>
+                {%- endcase -%}
+              </svg>
+            </span>
+            <span class="nsc-hiw__chapter-text">
+              <h3>{{ block.settings.title }}</h3>
+              <p>{{ block.settings.description }}</p>
+              {%- if block.settings.time_range != blank -%}<span class="nsc-hiw__chapter-time">{{ block.settings.time_range }}</span>{%- endif -%}
+            </span>
+          </button>
+        {%- endfor -%}
+      </div>
+
+    </div>
+  </section>
+
+  {%- if section.settings.quote_text != blank -%}
+    <section class="nsc-hiw__quote-band">
+      <svg class="nsc-hiw__drape-svg" viewBox="0 0 1200 400" style="top:0; left:0; width:100%; height:100%; opacity:0.5;" preserveAspectRatio="none">
+        <path class="nsc-hiw__drape-path" style="stroke-width:1;" d="M -50 350 C 250 250, 350 450, 650 300 C 900 180, 1050 380, 1250 220"/>
+      </svg>
+      <div class="nsc-hiw__wrap">
+        {%- if section.settings.quote_eyebrow != blank -%}
+          <span class="nsc-hiw__eyebrow" style="color:var(--gold-bright);">{{ section.settings.quote_eyebrow }}</span>
+        {%- endif -%}
+        <blockquote>{{ section.settings.quote_text }}{% if section.settings.quote_text_italic != blank %} <span class="nsc-hiw__ital">{{ section.settings.quote_text_italic }}</span>{% endif %}</blockquote>
+        {%- if section.settings.quote_sub != blank -%}
+          <p class="nsc-hiw__quote-sub">{{ section.settings.quote_sub }}</p>
+        {%- endif -%}
+        {%- if section.settings.quote_cta_text != blank -%}
+          <div>
+            <a href="{{ section.settings.quote_cta_link | default: '#' }}" class="nsc-hiw__btn-primary">{{ section.settings.quote_cta_text }}</a>
+          </div>
+        {%- endif -%}
+      </div>
+    </section>
+  {%- endif -%}
+
+</div>
+
+<script>
+(function(){
+  var root = document.currentScript.previousElementSibling;
+  if (!root || !root.classList.contains('nsc-hiw-{{ sid }}')) {
+    root = document.querySelector('.nsc-hiw-{{ sid }}');
+  }
+  if (!root) return;
+
+  var video = root.querySelector('#nscVideo-{{ sid }}');
+  var playBtn = root.querySelector('#nscPlay-{{ sid }}');
+  var muteBtn = root.querySelector('#nscMute-{{ sid }}');
+  var fill = root.querySelector('#nscProgressFill-{{ sid }}');
+  var progressBar = root.querySelector('#nscProgress-{{ sid }}');
+  var durationTag = root.querySelector('#nscDuration-{{ sid }}');
+  var chapters = root.querySelectorAll('.nsc-hiw__chapter-item');
+  var totalDuration = {{ total_seconds | default: 52 }};
+  var totalDisplay = {{ total_display | json }};
+
+  function updateMuteButton(){
+    if (!muteBtn || !video || video.tagName !== 'VIDEO') return;
+    var muted = video.muted;
+    muteBtn.classList.toggle('is-muted', muted);
+    muteBtn.setAttribute('aria-pressed', muted ? 'true' : 'false');
+    muteBtn.setAttribute('aria-label', muted ? 'Unmute video' : 'Mute video');
+    var label = muteBtn.querySelector('span');
+    if (label) label.textContent = muted ? 'Unmute' : 'Mute';
+  }
+
+  function fmt(t){
+    var mm = Math.floor(t / 60), ss = ('0' + Math.floor(t % 60)).slice(-2);
+    return mm + ':' + ss;
+  }
+
+  function setActiveByTime(t){
+    var current = chapters[0];
+    chapters.forEach(function(ch){
+      var ct = parseInt(ch.dataset.time, 10);
+      if (ct <= t) current = ch;
+    });
+    chapters.forEach(function(c){ c.classList.remove('is-active'); });
+    if (current) current.classList.add('is-active');
+  }
+
+  if (video && video.tagName === 'VIDEO') {
+    video.addEventListener('loadedmetadata', function(){
+      if (video.duration && isFinite(video.duration)) {
+        totalDuration = video.duration;
+      }
+    });
+    video.addEventListener('timeupdate', function(){
+      var pct = totalDuration ? (video.currentTime / totalDuration) * 100 : 0;
+      if (fill) fill.style.width = pct + '%';
+      if (durationTag) durationTag.textContent = fmt(video.currentTime) + ' / ' + totalDisplay;
+      setActiveByTime(video.currentTime);
+    });
+    video.addEventListener('play', function(){ if (playBtn) playBtn.classList.add('is-playing'); });
+    video.addEventListener('pause', function(){ if (playBtn) playBtn.classList.remove('is-playing'); });
+
+    if (muteBtn) {
+      updateMuteButton();
+
+      muteBtn.addEventListener('click', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        video.muted = !video.muted;
+        updateMuteButton();
+      });
+
+      video.addEventListener('volumechange', updateMuteButton);
+    }
+
+    if (playBtn) {
+      playBtn.addEventListener('click', function(e){
+        e.stopPropagation();
+        if (video.paused) { video.play(); } else { video.pause(); }
+      });
+    }
+
+    var frame = root.querySelector('#nscFrame-{{ sid }}');
+    if (frame) {
+      frame.addEventListener('click', function(){
+        if (video.paused) { video.play(); } else { video.pause(); }
+      });
+    }
+
+    {% if section.settings.autoplay %}
+    // Some browsers block autoplay even when muted; if so, fall back to
+    // showing the play button so visitors can start playback manually.
+    var autoplayPromise = video.play();
+    if (autoplayPromise !== undefined) {
+      autoplayPromise.catch(function(){
+        if (playBtn) playBtn.classList.remove('is-playing');
+      });
+    }
+    {% endif %}
+
+    if (progressBar) {
+      progressBar.addEventListener('click', function(e){
+        var rect = progressBar.getBoundingClientRect();
+        var pct = (e.clientX - rect.left) / rect.width;
+        video.currentTime = pct * totalDuration;
+      });
+    }
+  }
+
+  chapters.forEach(function(ch){
+    ch.addEventListener('click', function(){
+      chapters.forEach(function(c){ c.classList.remove('is-active'); });
+      this.classList.add('is-active');
+      var t = parseInt(this.dataset.time, 10);
+      if (video && video.tagName === 'VIDEO') {
+        video.currentTime = t;
+        video.play();
+      } else {
+        var pct = totalDuration ? (t / totalDuration) * 100 : 0;
+        if (fill) fill.style.width = pct + '%';
+        if (durationTag) durationTag.textContent = fmt(t) + ' / ' + totalDisplay;
+      }
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "How It Works Video",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow text", "default": "The process" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Couture, made" },
+    { "type": "text", "id": "heading_italic", "label": "Heading — italic word", "default": "simple." },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Because finding the perfect outfit for your special occasion should feel exciting, not complicated. Watch how it works, start to finish, in under a minute." },
+    { "type": "header", "content": "Video" },
+    { "type": "video", "id": "video", "label": "Video" },
+    { "type": "image_picker", "id": "video_poster", "label": "Poster / fallback image" },
+    { "type": "text", "id": "video_duration", "label": "Total duration label", "default": "0:52", "info": "Shown as e.g. 0:00 / 0:52" },
+    { "type": "checkbox", "id": "autoplay", "label": "Autoplay video", "default": true, "info": "Autoplay requires the video to be muted and will loop. Turn off to let visitors press play instead." },
+    { "type": "checkbox", "id": "muted", "label": "Start muted (when autoplay is off)", "default": true },
+    { "type": "header", "content": "Closing quote band" },
+    { "type": "text", "id": "quote_eyebrow", "label": "Eyebrow", "default": "Your next occasion" },
+    { "type": "text", "id": "quote_text", "label": "Quote text", "default": "The perfect look is" },
+    { "type": "text", "id": "quote_text_italic", "label": "Quote text — italic word", "default": "waiting." },
+    { "type": "textarea", "id": "quote_sub", "label": "Quote subtext", "default": "Choose the piece that makes the occasion unforgettable. We'll take care of the rest." },
+    { "type": "text", "id": "quote_cta_text", "label": "Button label", "default": "Explore the collection" },
+    { "type": "url", "id": "quote_cta_link", "label": "Button link" }
+  ],
+  "blocks": [
+    {
+      "type": "chapter",
+      "name": "Chapter",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Chapter title" },
+        { "type": "textarea", "id": "description", "label": "Description", "default": "Describe this step of the process." },
+        { "type": "text", "id": "time_range", "label": "Time range label", "default": "0:00 - 0:10", "info": "Format: 0:00 - 0:10 (used for markers)" },
+        { "type": "number", "id": "start_seconds", "label": "Start time (seconds)", "default": 0 },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "choose", "label": "Choose (hanger)" },
+            { "value": "measure", "label": "Measure (tape)" },
+            { "value": "customise", "label": "Customise (pins)" },
+            { "value": "flaunt", "label": "Flaunt (sparkle)" },
+            { "value": "return", "label": "Return (box)" }
+          ],
+          "default": "choose"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "How It Works Video",
+      "blocks": [
+        { "type": "chapter", "settings": { "title": "Choose", "description": "Browse our curated collection and find the piece that feels made for your occasion.", "time_range": "0:00 - 0:10", "start_seconds": 0, "icon": "choose" } },
+        { "type": "chapter", "settings": { "title": "Measure", "description": "Share your measurements through our simple size guide before your piece leaves the atelier.", "time_range": "0:10 - 0:21", "start_seconds": 10, "icon": "measure" } },
+        { "type": "chapter", "settings": { "title": "Customise", "description": "Need a length adjusted or a fall stitched in? We handle light customisation for you.", "time_range": "0:21 - 0:33", "start_seconds": 21, "icon": "customise" } },
+        { "type": "chapter", "settings": { "title": "Flaunt", "description": "Your piece arrives cleaned, pressed and boxed, in time for the big day. Wear it, own it.", "time_range": "0:33 - 0:44", "start_seconds": 33, "icon": "flaunt" } },
+        { "type": "chapter", "settings": { "title": "Return", "description": "Pack it back into the box it arrived in and schedule a pickup. No strings attached.", "time_range": "0:44 - 0:52", "start_seconds": 44, "icon": "return" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

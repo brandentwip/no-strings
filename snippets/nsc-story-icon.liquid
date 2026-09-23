@@ -1,0 +1,19 @@
+{%- comment -%}
+  Renders one of the six "why us" icons.
+  Usage: {% render 'nsc-story-icon', icon: block.settings.icon %}
+{%- endcomment -%}
+
+{%- case icon -%}
+  {%- when 'cost' -%}
+    <svg viewBox="0 0 24 24"><path d="M6 5h12M6 9h12M6 5c4 0 7 1.5 7 4.5S10 14 6 14h9M6 14l8 6"/></svg>
+  {%- when 'limited' -%}
+    <svg viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="M11 12l8-8M16 5l2.5 2.5M19 2l2.5 2.5"/></svg>
+  {%- when 'catalog' -%}
+    <svg viewBox="0 0 24 24"><path d="M12 3.2a1.6 1.6 0 1 0-1.6 1.6c0 .45.2.8.4 1.05L4.3 10.5A1.1 1.1 0 0 0 4.8 12.5H19.2a1.1 1.1 0 0 0 .5-2L13.2 5.85c.2-.25.4-.6.4-1.05A1.6 1.6 0 0 0 12 3.2Z"/><path d="M4 16h16"/></svg>
+  {%- when 'delivery' -%}
+    <svg viewBox="0 0 24 24"><path d="M3 7h10v9H3z"/><path d="M13 11h3.5L19.5 14v2H13v-5Z"/><circle cx="7" cy="18.5" r="1.6"/><circle cx="17" cy="18.5" r="1.6"/></svg>
+  {%- when 'custom_fit' -%}
+    <svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.2"/><circle cx="6" cy="18" r="2.2"/><path d="M20.5 4 7.5 12M20.5 20 7.5 12M8.5 12h3.5"/></svg>
+  {%- when 'flexible' -%}
+    <svg viewBox="0 0 24 24"><path d="M4 7h3.5l8 10H19"/><path d="M4 17h3.5l2-2.6"/><path d="M15.5 7H19M15.5 7l2-2M15.5 7l2 2"/><path d="M17 17l2 2M17 17l2-2"/></svg>
+{%- endcase -%}
