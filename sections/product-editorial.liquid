@@ -1,0 +1,231 @@
+{% liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign designer_name = product.metafields[section.settings.designer_metafield_namespace][section.settings.designer_metafield_key]
+  if designer_name == blank
+    assign designer_name = product.vendor
+  endif
+%}
+
+<script type="application/ld+json">
+  {{ product | structured_data }}
+</script>
+
+<div class="nsc-editorial-product" style="--nsc-ink: {{ section.settings.ink_color }}; --nsc-ivory: {{ section.settings.background_color }}; --nsc-ivory-deep: {{ section.settings.surface_color }}; --nsc-gold: {{ section.settings.accent_color }};">
+  {% if section.settings.show_breadcrumbs %}
+    <nav class="nsc-product-breadcrumb" aria-label="Breadcrumb">
+      <a href="{{ routes.root_url }}">Home</a>
+      <span aria-hidden="true">/</span>
+      <a href="{{ routes.all_products_collection_url }}">{{ section.settings.collection_label }}</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{{ product.title | escape }}</span>
+    </nav>
+  {% endif %}
+
+  {% capture media_gallery %}
+    {% content_for 'block', type: '_product-media-gallery', id: 'media-gallery', closest.product: product %}
+  {% endcapture %}
+
+  {% capture product_details %}
+    {% content_for 'block', type: '_product-details', id: 'product-details', closest.product: product %}
+  {% endcapture %}
+
+  {% capture additional_blocks %}
+    {% content_for 'blocks' %}
+  {% endcapture %}
+
+  <div class="nsc-product-shell section spacing-style" style="{% render 'spacing-style', settings: section.settings %}">
+    <div class="nsc-product-heading">
+      <span class="nsc-eyebrow">{{ section.settings.eyebrow }}</span>
+      <span class="nsc-product-heading__availability">
+        {% if current_variant.available %}{{ section.settings.available_label }}{% else %}{{ section.settings.sold_out_label }}{% endif %}
+      </span>
+    </div>
+
+    <product-component class="nsc-product-grid" data-product-grid-content>
+      <div class="nsc-product-media" data-testid="product-information-media">
+        {{ media_gallery }}
+      </div>
+      <div class="nsc-product-details">
+        <div class="nsc-designer-name">{{ designer_name | escape }}</div>
+        {{ product_details }}
+
+        {% if section.settings.show_deposit_note and section.settings.deposit_note != blank %}
+          <div class="nsc-deposit-note">
+            <span class="nsc-deposit-note__mark" aria-hidden="true">✦</span>
+            <div>{{ section.settings.deposit_note }}</div>
+          </div>
+        {% endif %}
+
+        {% if section.settings.show_trust_row %}
+          <div class="nsc-trust-row" aria-label="{{ section.settings.trust_label }}">
+            <span>{{ section.settings.trust_one }}</span>
+            <span>{{ section.settings.trust_two }}</span>
+            <span>{{ section.settings.trust_three }}</span>
+          </div>
+        {% endif %}
+      </div>
+    </product-component>
+    {{ additional_blocks }}
+  </div>
+</div>
+
+{% stylesheet %}
+  .nsc-editorial-product {
+    --nsc-text-soft: color-mix(in srgb, var(--nsc-ink) 62%, transparent);
+    background: var(--nsc-ivory);
+    color: var(--nsc-ink);
+    font-family: var(--font-body--family);
+  }
+
+  .nsc-product-breadcrumb {
+    max-width: var(--page-width, 120rem);
+    margin-inline: auto;
+    padding-inline: var(--page-margin, 1.5rem);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    padding-block: 1rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--nsc-ink) 12%, transparent);
+    color: var(--nsc-text-soft);
+    font-size: 0.75rem;
+  }
+
+  .nsc-product-breadcrumb a:hover { color: var(--nsc-gold); }
+
+  .nsc-product-shell { padding-block: 2rem 6rem; }
+
+  .nsc-product-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .nsc-eyebrow,
+  .nsc-designer-name {
+    color: var(--nsc-gold);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .nsc-product-heading__availability {
+    color: var(--nsc-text-soft);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .nsc-product-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(22rem, 0.85fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: start;
+  }
+
+  .nsc-product-media { min-width: 0; }
+  .nsc-product-media .product-media-gallery { --media-gallery-gap: 0.75rem; }
+  .nsc-product-media .product-media-gallery__image { border-radius: 2px; }
+
+  .nsc-product-details {
+    position: sticky;
+    top: calc(var(--header-group-height, 0px) + 1.5rem);
+    min-width: 0;
+  }
+
+  .nsc-product-details > .product-details { display: block; }
+  .nsc-product-details .product-details > .group-block { padding: 0; }
+  .nsc-product-details .view-product-title { display: block; margin: 0 0 1rem; }
+  .nsc-product-details .view-product-title a { color: var(--nsc-ink); font-family: Georgia, serif; font-size: clamp(1.65rem, 3vw, 2.5rem); line-height: 1.12; }
+  .nsc-product-details .product-details > .group-block > .block { margin-block-end: 1rem; }
+  .nsc-product-details .price { color: var(--nsc-ink); font-family: Georgia, serif; }
+  .nsc-product-details .button { border-radius: 2px; }
+  .nsc-product-details .quantity-selector { border-radius: 2px; }
+
+  .nsc-designer-name { margin-bottom: 0.55rem; }
+
+  .nsc-deposit-note {
+    display: flex;
+    gap: 0.7rem;
+    margin-top: 1.5rem;
+    padding: 0.9rem 1rem;
+    background: var(--nsc-ivory-deep);
+    color: var(--nsc-text-soft);
+    font-size: 0.78rem;
+    line-height: 1.6;
+  }
+
+  .nsc-deposit-note__mark { color: var(--nsc-gold); flex: 0 0 auto; }
+
+  .nsc-trust-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.2rem;
+    margin-top: 1.5rem;
+    color: var(--nsc-text-soft);
+    font-size: 0.72rem;
+  }
+
+  .nsc-trust-row span::before { content: '✓'; color: var(--nsc-gold); margin-right: 0.35rem; }
+
+  @media screen and (max-width: 749px) {
+    .nsc-product-shell { padding-block: 1.25rem 4rem; }
+    .nsc-product-heading { margin-bottom: 1.25rem; }
+    .nsc-product-grid { display: block; }
+    .nsc-product-details { position: static; margin-top: 2rem; }
+    .nsc-product-heading__availability { font-size: 0.65rem; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Editorial product",
+  "tag": "section",
+  "class": "section-wrapper",
+  "blocks": [
+    { "type": "_product-media-gallery" },
+    { "type": "_product-details" },
+    { "type": "@theme" },
+    { "type": "@app" }
+  ],
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "header", "content": "Editorial layout" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The edit" },
+    { "type": "text", "id": "collection_label", "label": "Breadcrumb collection label", "default": "The edit" },
+    { "type": "checkbox", "id": "show_breadcrumbs", "label": "Show breadcrumbs", "default": true },
+    { "type": "text", "id": "available_label", "label": "Available label", "default": "Available to rent" },
+    { "type": "text", "id": "sold_out_label", "label": "Sold out label", "default": "Currently unavailable" },
+    { "type": "header", "content": "Product content" },
+    { "type": "text", "id": "designer_metafield_namespace", "label": "Designer metafield namespace", "default": "custom" },
+    { "type": "text", "id": "designer_metafield_key", "label": "Designer metafield key", "default": "designer_name" },
+    { "type": "checkbox", "id": "show_deposit_note", "label": "Show deposit note", "default": true },
+    { "type": "richtext", "id": "deposit_note", "label": "Deposit note", "default": "<p>Refundable security deposit collected separately before delivery.</p>" },
+    { "type": "checkbox", "id": "show_trust_row", "label": "Show trust row", "default": true },
+    { "type": "text", "id": "trust_label", "label": "Trust row label", "default": "Rental benefits" },
+    { "type": "text", "id": "trust_one", "label": "Trust item one", "default": "Pan-India delivery" },
+    { "type": "text", "id": "trust_two", "label": "Trust item two", "default": "Quality checked" },
+    { "type": "text", "id": "trust_three", "label": "Trust item three", "default": "Easy returns" },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#F7F1E6" },
+    { "type": "color", "id": "surface_color", "label": "Surface", "default": "#EFE5D4" },
+    { "type": "color", "id": "ink_color", "label": "Ink", "default": "#2A1015" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#B8935A" },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding-block-start", "label": "Top spacing", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-block-end", "label": "Bottom spacing", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 }
+  ],
+  "presets": [
+    {
+      "name": "Editorial product",
+      "blocks": {
+        "media-gallery": { "type": "_product-media-gallery" },
+        "product-details": { "type": "_product-details" }
+      },
+      "block_order": ["media-gallery", "product-details"]
+    }
+  ]
+}
+{% endschema %}

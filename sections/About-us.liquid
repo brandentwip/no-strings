@@ -1,0 +1,1299 @@
+{% comment %}
+  nostringscouture — About Us
+  Shopify OS 2.0 section.
+
+  Add this section to your About page template.
+  Site-wide announcement bar, header/navigation and footer should be handled
+  by the theme's native sections so they do not get duplicated on the page.
+{% endcomment %}
+
+<section
+  id="NSC-about-{{ section.id }}"
+  class="nsc-about"
+  style="
+    --nsc-ink: {{ section.settings.color_ink }};
+    --nsc-ink-soft: {{ section.settings.color_ink_soft }};
+    --nsc-ivory: {{ section.settings.color_ivory }};
+    --nsc-ivory-deep: {{ section.settings.color_ivory_deep }};
+    --nsc-gold: {{ section.settings.color_gold }};
+    --nsc-gold-bright: {{ section.settings.color_gold_bright }};
+    --nsc-rose: {{ section.settings.color_rose }};
+    --nsc-text-soft: {{ section.settings.color_text_soft }};
+    --nsc-content-width: {{ section.settings.content_width }}px;
+    --nsc-section-space: {{ section.settings.section_spacing }}px;
+  "
+>
+  <style>
+    #NSC-about-{{ section.id }} {
+      background: var(--nsc-ivory);
+      color: var(--nsc-ink);
+      overflow: hidden;
+      font-family: {{ section.settings.body_font_family }};
+    }
+
+    #NSC-about-{{ section.id }},
+    #NSC-about-{{ section.id }} * {
+      box-sizing: border-box;
+    }
+
+    #NSC-about-{{ section.id }} h1,
+    #NSC-about-{{ section.id }} h2,
+    #NSC-about-{{ section.id }} h3,
+    #NSC-about-{{ section.id }} .nsc-serif {
+      font-family: {{ section.settings.heading_font_family }};
+      color: var(--nsc-ink);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+
+    #NSC-about-{{ section.id }} a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-wrap {
+      width: min(100%, var(--nsc-content-width));
+      margin: 0 auto;
+      padding-inline: 48px;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-eyebrow {
+      display: block;
+      font-family: {{ section.settings.body_font_family }};
+      text-transform: uppercase;
+      letter-spacing: .22em;
+      font-size: 11px;
+      line-height: 1.4;
+      color: var(--nsc-gold);
+      font-weight: 500;
+    }
+
+    /* Story hero */
+    #NSC-about-{{ section.id }} .nsc-story-hero {
+      padding: 70px 0 50px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-story-hero h1 {
+      font-size: clamp(32px, 4.4vw, 54px);
+      line-height: 1.08;
+      margin: 14px 0 0;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-drape {
+      position: absolute;
+      pointer-events: none;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+      width: 240px;
+      height: 80px;
+      opacity: .6;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-drape-path {
+      fill: none;
+      stroke: var(--nsc-gold);
+      stroke-width: 1.4;
+      stroke-dasharray: 1400;
+      stroke-dashoffset: 1400;
+      animation: nsc-draw-{{ section.id }} 2.6s ease forwards .3s;
+    }
+
+    @keyframes nsc-draw-{{ section.id }} {
+      to { stroke-dashoffset: 0; }
+    }
+
+    /* Founder */
+    #NSC-about-{{ section.id }} .nsc-founder {
+      padding-bottom: 110px;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-founder-layout {
+      display: grid;
+      grid-template-columns: .85fr 1.15fr;
+      gap: 56px;
+      align-items: start;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-founder-photo {
+      position: relative;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-founder-photo-frame {
+      aspect-ratio: 4 / 5;
+      border-radius: 2px;
+      overflow: hidden;
+      background: linear-gradient(150deg, #D9C4A8 0%, #C79A66 45%, #8C5A44 100%);
+      box-shadow: 0 40px 80px -30px rgba(42,16,21,.35);
+    }
+
+    #NSC-about-{{ section.id }} .nsc-founder-photo-frame img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-image-placeholder {
+      width: 100%;
+      height: 100%;
+      min-height: 300px;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      text-align: center;
+      color: rgba(255,255,255,.75);
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      background:
+        repeating-linear-gradient(
+          115deg,
+          rgba(255,255,255,.05) 0 2px,
+          transparent 2px 26px
+        ),
+        linear-gradient(150deg,#D9C4A8 0%,#C79A66 45%,#8C5A44 100%);
+    }
+
+    #NSC-about-{{ section.id }} .nsc-founder-copy .nsc-eyebrow {
+      margin-bottom: 14px;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-founder-copy h2 {
+      font-size: clamp(24px, 2.8vw, 32px);
+      line-height: 1.2;
+      margin: 0 0 18px;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-founder-copy p {
+      font-size: 14.5px;
+      color: var(--nsc-text-soft);
+      line-height: 1.85;
+      margin: 0 0 18px;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-founder-copy p:last-child {
+      margin-bottom: 0;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-founder-quote {
+      border-left: 2px solid var(--nsc-gold);
+      padding-left: 20px;
+      margin: 26px 0;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-founder-quote p {
+      font-family: {{ section.settings.heading_font_family }};
+      font-style: italic;
+      font-size: 17px;
+      color: var(--nsc-ink);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-founder-stats {
+      display: flex;
+      gap: 36px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-stat-num {
+      display: block;
+      font-family: {{ section.settings.heading_font_family }};
+      font-style: italic;
+      color: var(--nsc-gold);
+      font-size: 26px;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-stat-label {
+      font-size: 11px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--nsc-text-soft);
+    }
+
+    #NSC-about-{{ section.id }} .nsc-social {
+      display: flex;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-icon-button {
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(42,16,21,.25);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: var(--nsc-ink);
+      transition: all .25s ease;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-icon-button:hover {
+      border-color: var(--nsc-gold);
+      color: var(--nsc-gold);
+    }
+
+    /* Vision heading */
+    #NSC-about-{{ section.id }} .nsc-vision-head {
+      text-align: center;
+      padding: 20px 0 70px;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-vision-head .nsc-eyebrow {
+      margin-bottom: 14px;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-vision-head h2 {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--nsc-gold);
+      font-size: clamp(30px, 3.6vw, 46px);
+      line-height: 1.15;
+      margin: 0;
+    }
+
+    /* Story blocks */
+    #NSC-about-{{ section.id }} .nsc-story-block {
+      padding-bottom: 100px;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-story-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: start;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-story-layout.is-reverse .nsc-video {
+      order: 2;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-story-layout.is-reverse .nsc-story-text {
+      order: 1;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-story-text .nsc-q-num {
+      display: block;
+      font-family: {{ section.settings.heading_font_family }};
+      font-style: italic;
+      color: var(--nsc-gold);
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-story-text h3 {
+      font-size: clamp(22px, 2.6vw, 30px);
+      line-height: 1.2;
+      margin: 0 0 18px;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-story-text p {
+      font-size: 14.5px;
+      color: var(--nsc-text-soft);
+      line-height: 1.85;
+      margin: 0 0 16px;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-story-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-story-pull {
+      font-family: {{ section.settings.heading_font_family }};
+      font-style: italic;
+      font-size: 20px !important;
+      color: var(--nsc-gold) !important;
+      line-height: 1.4 !important;
+      margin-bottom: 18px !important;
+    }
+
+    /* Video */
+    #NSC-about-{{ section.id }} .nsc-video {
+      position: sticky;
+      top: 100px;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-video-frame {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      border-radius: 2px;
+      overflow: hidden;
+      background: linear-gradient(150deg,#2A1015 0%,#180A0D 100%);
+    }
+
+    #NSC-about-{{ section.id }} .nsc-video-frame > img,
+    #NSC-about-{{ section.id }} .nsc-video-frame > video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-video-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(20,7,9,.12);
+    }
+
+    #NSC-about-{{ section.id }} .nsc-play {
+      width: 64px;
+      height: 64px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(247,241,230,.92);
+      color: var(--nsc-ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform .25s ease;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-play:hover {
+      transform: scale(1.06);
+    }
+
+    #NSC-about-{{ section.id }} .nsc-play svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+      margin-left: 2px;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-video-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-video-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--nsc-ink);
+      color: var(--nsc-gold-bright);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: {{ section.settings.heading_font_family }};
+      font-style: italic;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-video-titles h4 {
+      font-size: 13.5px;
+      color: var(--nsc-ink);
+      font-weight: 500;
+      line-height: 1.4;
+      margin: 0 0 2px;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-video-titles span {
+      font-size: 11.5px;
+      color: var(--nsc-text-soft);
+    }
+
+    /* Designer strip */
+    #NSC-about-{{ section.id }} .nsc-designer-strip {
+      background: var(--nsc-ivory-deep);
+      padding: 56px 0;
+      text-align: center;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-designer-strip p {
+      font-size: 13.5px;
+      color: var(--nsc-text-soft);
+      line-height: 1.9;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-designer-strip strong {
+      color: var(--nsc-ink);
+      font-weight: 500;
+    }
+
+    /* CTA */
+    #NSC-about-{{ section.id }} .nsc-cta {
+      padding: 110px 0;
+      text-align: center;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-cta h2 {
+      font-size: clamp(30px, 4vw, 50px);
+      line-height: 1.12;
+      max-width: 640px;
+      margin: 0 auto 30px;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-cta-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-btn-primary {
+      display: inline-block;
+      background: var(--nsc-ink);
+      color: var(--nsc-ivory);
+      padding: 16px 34px;
+      border-radius: 2px;
+      font-size: 13px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      transition: background .3s ease, color .3s ease;
+    }
+
+    #NSC-about-{{ section.id }} .nsc-btn-primary:hover {
+      background: var(--nsc-ink-soft);
+    }
+
+    #NSC-about-{{ section.id }} .nsc-btn-ghost {
+      display: inline-block;
+      font-size: 13px;
+      letter-spacing: .05em;
+      border-bottom: 1px solid var(--nsc-gold);
+      padding-bottom: 3px;
+    }
+
+    /* Optional block spacing */
+    #NSC-about-{{ section.id }} .nsc-hidden-video {
+      display: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #NSC-about-{{ section.id }} .nsc-drape-path {
+        animation: none;
+        stroke-dashoffset: 0;
+      }
+
+      #NSC-about-{{ section.id }} .nsc-play {
+        transition: none;
+      }
+    }
+
+    @media (max-width: 900px) {
+      #NSC-about-{{ section.id }} .nsc-founder-layout,
+      #NSC-about-{{ section.id }} .nsc-story-layout {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      #NSC-about-{{ section.id }} .nsc-story-layout.is-reverse .nsc-video,
+      #NSC-about-{{ section.id }} .nsc-story-layout.is-reverse .nsc-story-text {
+        order: initial;
+      }
+
+      #NSC-about-{{ section.id }} .nsc-video {
+        position: static;
+      }
+    }
+
+    @media (max-width: 768px) {
+      #NSC-about-{{ section.id }} .nsc-wrap {
+        padding-inline: 22px;
+      }
+
+      #NSC-about-{{ section.id }} .nsc-story-hero {
+        padding: 56px 0 40px;
+      }
+
+      #NSC-about-{{ section.id }} .nsc-founder {
+        padding-bottom: 70px;
+      }
+
+      #NSC-about-{{ section.id }} .nsc-vision-head {
+        padding: 10px 0 50px;
+      }
+
+      #NSC-about-{{ section.id }} .nsc-story-block {
+        padding-bottom: 70px;
+      }
+
+      #NSC-about-{{ section.id }} .nsc-cta {
+        padding: 75px 0;
+      }
+    }
+
+    @media (max-width: 560px) {
+      #NSC-about-{{ section.id }} .nsc-founder-stats {
+        gap: 24px;
+      }
+
+      #NSC-about-{{ section.id }} .nsc-cta-actions {
+        flex-direction: column;
+      }
+    }
+  </style>
+
+  {% if section.settings.load_google_fonts %}
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Fraunces:ital,opsz,wght@1,9..144,400&family=Jost:wght@300;400;500&display=swap');
+    </style>
+  {% endif %}
+
+  {% if section.settings.show_story_hero %}
+    <div class="nsc-story-hero">
+      <svg class="nsc-drape" viewBox="0 0 240 80" preserveAspectRatio="none" aria-hidden="true">
+        <path class="nsc-drape-path" d="M -20 30 C 45 0, 70 65, 125 26 C 165 -2, 195 50, 260 12"></path>
+      </svg>
+      <div class="nsc-wrap">
+        {% if section.settings.hero_eyebrow != blank %}
+          <span class="nsc-eyebrow">{{ section.settings.hero_eyebrow }}</span>
+        {% endif %}
+        {% if section.settings.hero_title != blank %}
+          <h1>{{ section.settings.hero_title }}</h1>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+
+  {% if section.settings.show_founder %}
+    <section class="nsc-wrap nsc-founder">
+      <div class="nsc-founder-layout">
+        <div class="nsc-founder-photo">
+          <div class="nsc-founder-photo-frame">
+            {% if section.settings.founder_image != blank %}
+              {{
+                section.settings.founder_image
+                | image_url: width: 1200
+                | image_tag:
+                  loading: 'lazy',
+                  widths: '480, 720, 960, 1200',
+                  sizes: '(max-width: 900px) 100vw, 40vw',
+                  alt: section.settings.founder_image.alt | default: section.settings.founder_image_alt
+              }}
+            {% else %}
+              <div class="nsc-image-placeholder">
+                {{ section.settings.founder_image_alt | default: 'Founder portrait' }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="nsc-founder-copy">
+          {% if section.settings.founder_eyebrow != blank %}
+            <span class="nsc-eyebrow">{{ section.settings.founder_eyebrow }}</span>
+          {% endif %}
+
+          {% if section.settings.founder_name != blank %}
+            <h2>{{ section.settings.founder_name }}</h2>
+          {% endif %}
+
+          {% if section.settings.founder_intro != blank %}
+            {{ section.settings.founder_intro }}
+          {% endif %}
+
+          {% if section.settings.founder_quote != blank %}
+            <div class="nsc-founder-quote">
+              <p>"{{ section.settings.founder_quote }}"</p>
+            </div>
+          {% endif %}
+
+          {% if section.settings.founder_story != blank %}
+            {{ section.settings.founder_story }}
+          {% endif %}
+
+          <div class="nsc-founder-stats">
+            {% for block in section.blocks %}
+              {% if block.type == 'stat' %}
+                <div class="nsc-stat" {{ block.shopify_attributes }}>
+                  {% if block.settings.number != blank %}
+                    <span class="nsc-stat-num">{{ block.settings.number }}</span>
+                  {% endif %}
+                  {% if block.settings.label != blank %}
+                    <span class="nsc-stat-label">{{ block.settings.label }}</span>
+                  {% endif %}
+                </div>
+              {% endif %}
+            {% endfor %}
+            {% unless nsc_has_stat_blocks %}
+              <div class="nsc-stat">
+                <span class="nsc-stat-num">4+</span>
+                <span class="nsc-stat-label">Years in fashion rental</span>
+              </div>
+              <div class="nsc-stat">
+                <span class="nsc-stat-num">15+</span>
+                <span class="nsc-stat-label">Designer labels</span>
+              </div>
+              <div class="nsc-stat">
+                <span class="nsc-stat-num">Pan-India</span>
+                <span class="nsc-stat-label">Delivery</span>
+              </div>
+            {% endunless %}
+          </div>
+
+          {% if section.settings.instagram_url != blank or section.settings.linkedin_url != blank %}
+            <div class="nsc-social">
+              {% if section.settings.instagram_url != blank %}
+                <a href="{{ section.settings.instagram_url }}" class="nsc-icon-button" aria-label="Instagram" target="_blank" rel="noopener">
+                  ◎
+                </a>
+              {% endif %}
+              {% if section.settings.linkedin_url != blank %}
+                <a href="{{ section.settings.linkedin_url }}" class="nsc-icon-button" aria-label="LinkedIn" target="_blank" rel="noopener">
+                  in
+                </a>
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+  {% endif %}
+
+  {% if section.settings.show_vision_heading %}
+    <section class="nsc-wrap">
+      <div class="nsc-vision-head">
+        {% if section.settings.vision_eyebrow != blank %}
+          <span class="nsc-eyebrow">{{ section.settings.vision_eyebrow }}</span>
+        {% endif %}
+        {% if section.settings.vision_title != blank %}
+          <h2>{{ section.settings.vision_title }}</h2>
+        {% endif %}
+      </div>
+    </section>
+  {% endif %}
+
+  {% for block in section.blocks %}
+    {% if block.type == 'story' %}
+      <section class="nsc-wrap nsc-story-block" {{ block.shopify_attributes }}>
+        <div class="nsc-story-layout {% if block.settings.reverse_layout %}is-reverse{% endif %}">
+          <div class="nsc-video">
+            <div class="nsc-video-frame">
+              {% if block.settings.video_thumbnail != blank %}
+                {{
+                  block.settings.video_thumbnail
+                  | image_url: width: 1600
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '600, 900, 1200, 1600',
+                    sizes: '(max-width: 900px) 100vw, 50vw',
+                    alt: block.settings.video_title
+                }}
+              {% elsif block.settings.video != blank %}
+                {{
+                  block.settings.video
+                  | video_tag:
+                    image_size: '1600x',
+                    controls: true,
+                    autoplay: false,
+                    loop: false,
+                    muted: false
+                }}
+              {% endif %}
+
+              {% if block.settings.video_url != blank and block.settings.video_thumbnail != blank %}
+                <div class="nsc-video-overlay">
+                  <button
+                    type="button"
+                    class="nsc-play"
+                    aria-label="Play {{ block.settings.video_title | escape }}"
+                    data-video-url="{{ block.settings.video_url | escape }}"
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M6 4l14 8-14 8V4z"></path>
+                    </svg>
+                  </button>
+                </div>
+              {% elsif block.settings.video_url != blank %}
+                <div class="nsc-video-overlay">
+                  <a
+                    class="nsc-play"
+                    href="{{ block.settings.video_url }}"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Open {{ block.settings.video_title | escape }}"
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M6 4l14 8-14 8V4z"></path>
+                    </svg>
+                  </a>
+                </div>
+              {% endif %}
+
+              {% if block.settings.video == blank and block.settings.video_thumbnail == blank and block.settings.video_url == blank %}
+                <div class="nsc-image-placeholder">
+                  Add a video or video thumbnail
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="nsc-video-meta">
+              <span class="nsc-video-avatar">{{ block.settings.video_avatar | default: 'NSC' }}</span>
+              <div class="nsc-video-titles">
+                {% if block.settings.video_title != blank %}
+                  <h4>{{ block.settings.video_title }}</h4>
+                {% endif %}
+                {% if block.settings.video_source != blank %}
+                  <span>{{ block.settings.video_source }}</span>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <div class="nsc-story-text">
+            {% if block.settings.question != blank %}
+              <span class="nsc-q-num">{{ block.settings.question }}</span>
+            {% endif %}
+
+            {% if block.settings.title != blank %}
+              <h3>{{ block.settings.title }}</h3>
+            {% endif %}
+
+            {% if block.settings.pull_quote != blank %}
+              <p class="nsc-story-pull">{{ block.settings.pull_quote }}</p>
+            {% endif %}
+
+            {% if block.settings.body != blank %}
+              {{ block.settings.body }}
+            {% endif %}
+          </div>
+        </div>
+      </section>
+    {% endif %}
+  {% endfor %}
+
+ 
+  {% if section.settings.show_designer_strip %}
+    <section class="nsc-designer-strip">
+      <div class="nsc-wrap">
+        {% if section.settings.designer_strip_text != blank %}
+          {{ section.settings.designer_strip_text }}
+        {% endif %}
+      </div>
+    </section>
+  {% endif %}
+
+  {% if section.settings.show_cta %}
+    <section class="nsc-cta">
+      <div class="nsc-wrap">
+        {% if section.settings.cta_title != blank %}
+          <h2>{{ section.settings.cta_title }}</h2>
+        {% endif %}
+
+        <div class="nsc-cta-actions">
+          {% if section.settings.cta_primary_label != blank %}
+            <a
+              href="{{ section.settings.cta_primary_link | default: routes.all_products_collection_url }}"
+              class="nsc-btn-primary"
+            >
+              {{ section.settings.cta_primary_label }}
+            </a>
+          {% endif %}
+
+          {% if section.settings.cta_secondary_label != blank %}
+            <a
+              href="{{ section.settings.cta_secondary_link | default: routes.root_url }}"
+              class="nsc-btn-ghost"
+            >
+              {{ section.settings.cta_secondary_label }}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+  {% endif %}
+
+  <script>
+    (() => {
+      const root = document.getElementById('NSC-about-{{ section.id }}');
+      if (!root) return;
+
+      root.querySelectorAll('[data-video-url]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const url = button.getAttribute('data-video-url');
+          if (!url) return;
+
+          window.open(url, '_blank', 'noopener');
+        });
+      });
+    })();
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "NSC About Us",
+  "tag": "section",
+  "class": "section-nsc-about",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "checkbox",
+      "id": "load_google_fonts",
+      "label": "Load Fraunces and Jost fonts",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "label": "Content width",
+      "min": 960,
+      "max": 1440,
+      "step": 20,
+      "unit": "px",
+      "default": 1240
+    },
+    {
+      "type": "range",
+      "id": "section_spacing",
+      "label": "Section spacing",
+      "min": 60,
+      "max": 160,
+      "step": 10,
+      "unit": "px",
+      "default": 120
+    },
+    {
+      "type": "select",
+      "id": "heading_font_family",
+      "label": "Heading font",
+      "options": [
+        {
+          "value": "'Fraunces', Georgia, serif",
+          "label": "Fraunces"
+        },
+        {
+          "value": "Georgia, serif",
+          "label": "Georgia"
+        },
+        {
+          "value": "Times New Roman, serif",
+          "label": "Times New Roman"
+        }
+      ],
+      "default": "'Fraunces', Georgia, serif"
+    },
+    {
+      "type": "select",
+      "id": "body_font_family",
+      "label": "Body font",
+      "options": [
+        {
+          "value": "'Jost', Arial, sans-serif",
+          "label": "Jost"
+        },
+        {
+          "value": "Arial, sans-serif",
+          "label": "Arial"
+        },
+        {
+          "value": "Helvetica, Arial, sans-serif",
+          "label": "Helvetica"
+        }
+      ],
+      "default": "'Jost', Arial, sans-serif"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "color_ink",
+      "label": "Ink",
+      "default": "#2A1015"
+    },
+    {
+      "type": "color",
+      "id": "color_ink_soft",
+      "label": "Soft ink",
+      "default": "#3D1E22"
+    },
+    {
+      "type": "color",
+      "id": "color_ivory",
+      "label": "Ivory",
+      "default": "#F7F1E6"
+    },
+    {
+      "type": "color",
+      "id": "color_ivory_deep",
+      "label": "Deep ivory",
+      "default": "#EFE5D4"
+    },
+    {
+      "type": "color",
+      "id": "color_gold",
+      "label": "Gold",
+      "default": "#B8935A"
+    },
+    {
+      "type": "color",
+      "id": "color_gold_bright",
+      "label": "Bright gold",
+      "default": "#D4AC72"
+    },
+    {
+      "type": "color",
+      "id": "color_rose",
+      "label": "Rose",
+      "default": "#C79088"
+    },
+    {
+      "type": "color",
+      "id": "color_text_soft",
+      "label": "Soft text",
+      "default": "#6B4C48"
+    },
+    {
+      "type": "header",
+      "content": "Page hero"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_story_hero",
+      "label": "Show page hero",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "hero_eyebrow",
+      "label": "Hero eyebrow",
+      "default": "About us"
+    },
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Hero title",
+      "default": "Founder's Story"
+    },
+    {
+      "type": "header",
+      "content": "Founder"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_founder",
+      "label": "Show founder section",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "founder_image",
+      "label": "Founder image"
+    },
+    {
+      "type": "text",
+      "id": "founder_image_alt",
+      "label": "Founder image alt text",
+      "default": "Nikita Khurana, Founder portrait"
+    },
+    {
+      "type": "text",
+      "id": "founder_eyebrow",
+      "label": "Founder eyebrow",
+      "default": "Meet the founder"
+    },
+    {
+      "type": "text",
+      "id": "founder_name",
+      "label": "Founder name",
+      "default": "Nikita Khurana"
+    },
+    {
+      "type": "richtext",
+      "id": "founder_intro",
+      "label": "Founder introduction",
+      "default": "<p>A lifelong lover of fashion, Nikita kept running into the same problem: stunning designer pieces she'd spend a fortune on, then wear exactly once.</p>"
+    },
+    {
+      "type": "textarea",
+      "id": "founder_quote",
+      "label": "Founder quote",
+      "default": "Couture should live in your closet without needing a string attached to its label."
+    },
+    {
+      "type": "richtext",
+      "id": "founder_story",
+      "label": "Founder story",
+      "default": "<p>So she built nostringscouture: a way to wear luxury Indian couture without owning it forever.</p>"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Founder Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "linkedin_url",
+      "label": "Founder LinkedIn URL"
+    },
+    {
+      "type": "header",
+      "content": "Story heading"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vision_heading",
+      "label": "Show story and vision heading",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "vision_eyebrow",
+      "label": "Eyebrow",
+      "default": "In her own words"
+    },
+    {
+      "type": "text",
+      "id": "vision_title",
+      "label": "Title",
+      "default": "Our Story & Vision"
+    },
+    {
+      "type": "header",
+      "content": "Designer strip"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_designer_strip",
+      "label": "Show designer strip",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "designer_strip_text",
+      "label": "Designer strip text",
+      "default": "<p>Trusted by <strong>15+ designer labels</strong> including Abhinav Mishra, Anita Dongre, Seema Gujral, and Tarun Tahiliani, with pan-India delivery and authentic tags on every piece.</p>"
+    },
+    {
+      "type": "header",
+      "content": "CTA"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "Show CTA",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cta_title",
+      "label": "CTA title",
+      "default": "Ready to find your piece?"
+    },
+    {
+      "type": "text",
+      "id": "cta_primary_label",
+      "label": "Primary button label",
+      "default": "Browse the edit"
+    },
+    {
+      "type": "url",
+      "id": "cta_primary_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "cta_secondary_label",
+      "label": "Secondary button label",
+      "default": "How renting works"
+    },
+    {
+      "type": "url",
+      "id": "cta_secondary_link",
+      "label": "Secondary button link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Founder stat",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number / value",
+          "default": "4+"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Years in fashion rental"
+        }
+      ]
+    },
+    {
+      "type": "story",
+      "name": "Story block",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "reverse_layout",
+          "label": "Reverse image and text",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question / eyebrow",
+          "default": "Where did it all start?"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Story title",
+          "default": "A closet full, with nothing to wear"
+        },
+        {
+          "type": "textarea",
+          "id": "pull_quote",
+          "label": "Pull quote",
+          "default": "Closets overflowing. Nothing to wear."
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Story copy",
+          "default": "<p>That's the wedding season paradox: we splurge on outfits we'll wear once, then let them sit. Nikita wanted better, not second-hand or \"evergreen,\" but the freshest looks from designers shaping Indian couture right now.</p><p>The idea: let that couture move through anyone's closet, no strings attached to the label.</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "video_thumbnail",
+          "label": "Video thumbnail"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Shopify-hosted video"
+        },
+        {
+          "type": "url",
+          "id": "video_url",
+          "label": "External video URL"
+        },
+        {
+          "type": "text",
+          "id": "video_title",
+          "label": "Video title",
+          "default": "India's first luxury one-time wear wardrobe"
+        },
+        {
+          "type": "text",
+          "id": "video_source",
+          "label": "Video source",
+          "default": "nostringscouture"
+        },
+        {
+          "type": "text",
+          "id": "video_avatar",
+          "label": "Video avatar text",
+          "default": "NSC"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "NSC About Us — Default",
+      "settings": {
+        "load_google_fonts": true,
+        "content_width": 1240,
+        "section_spacing": 120,
+        "heading_font_family": "'Fraunces', Georgia, serif",
+        "body_font_family": "'Jost', Arial, sans-serif",
+        "color_ink": "#2A1015",
+        "color_ink_soft": "#3D1E22",
+        "color_ivory": "#F7F1E6",
+        "color_ivory_deep": "#EFE5D4",
+        "color_gold": "#B8935A",
+        "color_gold_bright": "#D4AC72",
+        "color_rose": "#C79088",
+        "color_text_soft": "#6B4C48",
+        "show_story_hero": true,
+        "hero_eyebrow": "About us",
+        "hero_title": "Founder's Story",
+        "show_founder": true,
+        "founder_image_alt": "Nikita Khurana, Founder portrait",
+        "founder_eyebrow": "Meet the founder",
+        "founder_name": "Nikita Khurana",
+        "founder_intro": "<p>A lifelong lover of fashion, Nikita kept running into the same problem: stunning designer pieces she'd spend a fortune on, then wear exactly once.</p>",
+        "founder_quote": "Couture should live in your closet without needing a string attached to its label.",
+        "founder_story": "<p>So she built nostringscouture: a way to wear luxury Indian couture without owning it forever.</p>",
+        "show_vision_heading": true,
+        "vision_eyebrow": "In her own words",
+        "vision_title": "Our Story & Vision",
+        "show_designer_strip": true,
+        "designer_strip_text": "<p>Trusted by <strong>15+ designer labels</strong> including Abhinav Mishra, Anita Dongre, Seema Gujral, and Tarun Tahiliani, with pan-India delivery and authentic tags on every piece.</p>",
+        "show_cta": true,
+        "cta_title": "Ready to find your piece?",
+        "cta_primary_label": "Browse the edit",
+        "cta_secondary_label": "How renting works"
+      },
+      "blocks": [
+        {
+          "type": "stat",
+          "settings": {
+            "number": "4+",
+            "label": "Years in fashion rental"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "number": "15+",
+            "label": "Designer labels"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "number": "Pan-India",
+            "label": "Delivery"
+          }
+        },
+        {
+          "type": "story",
+          "settings": {
+            "reverse_layout": false,
+            "question": "Where did it all start?",
+            "title": "A closet full, with nothing to wear",
+            "pull_quote": "Closets overflowing. Nothing to wear.",
+            "body": "<p>That's the wedding season paradox: we splurge on outfits we'll wear once, then let them sit. Nikita wanted better, not second-hand or \"evergreen,\" but the freshest looks from designers shaping Indian couture right now.</p><p>The idea: let that couture move through anyone's closet, no strings attached to the label.</p>",
+            "video_title": "India's first luxury one-time wear wardrobe",
+            "video_source": "nostringscouture",
+            "video_avatar": "NSC"
+          }
+        },
+        {
+          "type": "story",
+          "settings": {
+            "reverse_layout": true,
+            "question": "What's the goal?",
+            "title": "A closet that's full, without the guilt",
+            "pull_quote": "Real designer wear. No counterfeits, no guilt.",
+            "body": "<p>Sustainable choices, a wardrobe that stays full, and pockets that stay happy. We want you building a closet of pieces you'd genuinely repeat, with the freedom to experiment on everything else.</p><p>And we want designers credited for the work they put in. Wearing their finest and handing it back isn't a compromise, it's a privilege we think everyone deserves.</p>",
+            "video_title": "The vision and mission of nostringscouture",
+            "video_source": "nostringscouture",
+            "video_avatar": "NSC"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

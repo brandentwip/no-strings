@@ -1,0 +1,2959 @@
+{%- doc -%}
+  Custom editorial header menu.
+
+  Built from scratch for the luxury / editorial design system.
+
+  Supported variants:
+  - desktop / default
+  - mobile
+  - navigation_bar
+{%- enddoc -%}
+
+{% assign block_settings = block.settings %}
+{% assign menu = block_settings.menu %}
+{% assign submenu_style = block_settings.submenu_style | default: 'dropdown' %}
+
+{% case variant %}
+
+  {% when 'mobile' %}
+
+    {%- comment -%}
+      ==========================================================
+      MOBILE HEADER MENU
+      ==========================================================
+    {%- endcomment -%}
+
+    <div
+      class="editorial-mobile-menu"
+      data-editorial-mobile-menu
+      {{ block.shopify_attributes }}
+    >
+
+      <button
+        type="button"
+        class="editorial-mobile-menu__trigger"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="EditorialMobileDrawer"
+        data-mobile-menu-open
+      >
+        <span class="editorial-mobile-menu__hamburger">
+          <span></span>
+          <span></span>
+        </span>
+
+        <span class="editorial-mobile-menu__trigger-label">
+          Menu
+        </span>
+      </button>
+
+
+      <div
+        id="EditorialMobileDrawer"
+        class="editorial-mobile-drawer"
+        aria-hidden="true"
+        data-mobile-menu-drawer
+      >
+
+        <div class="editorial-mobile-drawer__header">
+
+          <span class="editorial-mobile-drawer__label">
+            Menu
+          </span>
+
+          <button
+            type="button"
+            class="editorial-mobile-drawer__close"
+            aria-label="Close menu"
+            data-mobile-menu-close
+          >
+            <span></span>
+            <span></span>
+          </button>
+
+        </div>
+
+
+        <div class="editorial-mobile-drawer__content">
+
+          {% if block_settings.mobile_eyebrow != blank %}
+            <div class="editorial-mobile-drawer__eyebrow">
+              {{ block_settings.mobile_eyebrow }}
+            </div>
+          {% endif %}
+
+
+          <nav
+            class="editorial-mobile-nav"
+            aria-label="Mobile navigation"
+          >
+
+            <ul class="editorial-mobile-nav__list">
+
+              {% for link in menu.links %}
+
+                <li
+                  class="editorial-mobile-nav__item{% if link.links != blank %} has-children{% endif %}"
+                  data-mobile-item
+                >
+
+                  <div class="editorial-mobile-nav__row">
+
+                    <a
+                      href="{{ link.url }}"
+                      class="editorial-mobile-nav__link{% if link.current %} is-current{% endif %}"
+                      {% if link.current %}
+                        aria-current="page"
+                      {% endif %}
+                    >
+                      {{ link.title }}
+                    </a>
+
+
+                    {% if link.links != blank %}
+
+                      <button
+                        type="button"
+                        class="editorial-mobile-nav__toggle"
+                        aria-expanded="false"
+                        aria-label="Open {{ link.title }}"
+                        data-mobile-toggle
+                      >
+                        <span></span>
+                        <span></span>
+                      </button>
+
+                    {% endif %}
+
+                  </div>
+
+
+                  {% if link.links != blank %}
+
+                    <div
+                      class="editorial-mobile-submenu"
+                      aria-hidden="true"
+                      data-mobile-submenu
+                    >
+
+                      <ul>
+
+                        {% for child_link in link.links %}
+
+                          <li>
+
+                            <div class="editorial-mobile-nav__row editorial-mobile-nav__row--child">
+
+                              <a
+                                href="{{ child_link.url }}"
+                                class="editorial-mobile-nav__link editorial-mobile-nav__link--child{% if child_link.current %} is-current{% endif %}"
+                                {% if child_link.current %}
+                                  aria-current="page"
+                                {% endif %}
+                              >
+                                {{ child_link.title }}
+                              </a>
+
+
+                              {% if child_link.links != blank %}
+
+                                <button
+                                  type="button"
+                                  class="editorial-mobile-nav__toggle editorial-mobile-nav__toggle--child"
+                                  aria-expanded="false"
+                                  aria-label="Open {{ child_link.title }}"
+                                  data-mobile-toggle
+                                >
+                                  <span></span>
+                                  <span></span>
+                                </button>
+
+                              {% endif %}
+
+                            </div>
+
+
+                            {% if child_link.links != blank %}
+
+                              <div
+                                class="editorial-mobile-submenu editorial-mobile-submenu--third"
+                                aria-hidden="true"
+                                data-mobile-submenu
+                              >
+
+                                <ul>
+
+                                  {% for grandchild_link in child_link.links %}
+
+                                    <li>
+
+                                      <a
+                                        href="{{ grandchild_link.url }}"
+                                        class="editorial-mobile-nav__link editorial-mobile-nav__link--grandchild{% if grandchild_link.current %} is-current{% endif %}"
+                                        {% if grandchild_link.current %}
+                                          aria-current="page"
+                                        {% endif %}
+                                      >
+                                        {{ grandchild_link.title }}
+                                      </a>
+
+                                    </li>
+
+                                  {% endfor %}
+
+                                </ul>
+
+                              </div>
+
+                            {% endif %}
+
+                          </li>
+
+                        {% endfor %}
+
+                      </ul>
+
+                    </div>
+
+                  {% endif %}
+
+                </li>
+
+              {% endfor %}
+
+            </ul>
+
+          </nav>
+
+
+          {% if block_settings.mobile_show_view_all %}
+
+            <a
+              href="{{ routes.root_url }}"
+              class="editorial-mobile-drawer__view-all"
+            >
+              <span>
+                {{ block_settings.mobile_view_all_text }}
+              </span>
+
+              <span aria-hidden="true">
+                →
+              </span>
+            </a>
+
+          {% endif %}
+
+        </div>
+
+
+        {% if block_settings.mobile_footer_text != blank %}
+
+          <div class="editorial-mobile-drawer__footer">
+            {{ block_settings.mobile_footer_text }}
+          </div>
+
+        {% endif %}
+
+      </div>
+
+      <div
+        class="editorial-mobile-overlay"
+        data-mobile-menu-overlay
+      ></div>
+
+    </div>
+
+
+   <script>
+  (function () {
+    function initEditorialMobileMenu() {
+      var roots = document.querySelectorAll(
+        '[data-editorial-mobile-menu]'
+      );
+
+      roots.forEach(function (root) {
+
+        if (root.dataset.initialized === 'true') {
+          return;
+        }
+
+        root.dataset.initialized = 'true';
+
+        var openButton = root.querySelector(
+          '[data-mobile-menu-open]'
+        );
+
+        var closeButton = root.querySelector(
+          '[data-mobile-menu-close]'
+        );
+
+        var drawer = root.querySelector(
+          '[data-mobile-menu-drawer]'
+        );
+
+        var overlay = root.querySelector(
+          '[data-mobile-menu-overlay]'
+        );
+
+        var toggles = root.querySelectorAll(
+          '[data-mobile-toggle]'
+        );
+
+
+        if (!openButton || !closeButton || !drawer) {
+          return;
+        }
+
+
+        /* ==========================================
+           OPEN
+           ========================================== */
+
+        function openMenu() {
+
+          drawer.classList.add('is-open');
+
+          if (overlay) {
+            overlay.classList.add('is-visible');
+          }
+
+          drawer.setAttribute(
+            'aria-hidden',
+            'false'
+          );
+
+          openButton.setAttribute(
+            'aria-expanded',
+            'true'
+          );
+
+          document.documentElement.classList.add(
+            'editorial-mobile-menu-open'
+          );
+
+          document.body.classList.add(
+            'editorial-mobile-menu-open'
+          );
+
+          window.setTimeout(function () {
+
+            closeButton.focus();
+
+          }, 50);
+
+        }
+
+
+        /* ==========================================
+           CLOSE
+           ========================================== */
+
+        function closeMenu() {
+
+          drawer.classList.remove('is-open');
+
+          if (overlay) {
+            overlay.classList.remove('is-visible');
+          }
+
+          drawer.setAttribute(
+            'aria-hidden',
+            'true'
+          );
+
+          openButton.setAttribute(
+            'aria-expanded',
+            'false'
+          );
+
+          document.documentElement.classList.remove(
+            'editorial-mobile-menu-open'
+          );
+
+          document.body.classList.remove(
+            'editorial-mobile-menu-open'
+          );
+
+        }
+
+
+        /* ==========================================
+           OPEN / CLOSE EVENTS
+           ========================================== */
+
+        openButton.addEventListener(
+          'click',
+          openMenu
+        );
+
+        closeButton.addEventListener(
+          'click',
+          closeMenu
+        );
+
+
+        if (overlay) {
+
+          overlay.addEventListener(
+            'click',
+            closeMenu
+          );
+
+        }
+
+
+        /* ==========================================
+           ACCORDION
+           
+           IMPORTANT:
+           The submenu is found relative to the
+           exact row containing the clicked + button.
+           This fixes nested / third-level menus.
+           ========================================== */
+
+        toggles.forEach(function (toggle) {
+
+          toggle.addEventListener(
+            'click',
+            function (event) {
+
+              event.preventDefault();
+
+              event.stopPropagation();
+
+
+              var row = toggle.closest(
+                '.editorial-mobile-nav__row'
+              );
+
+
+              if (!row) {
+                return;
+              }
+
+
+              /*
+                The submenu immediately follows
+                the row in the markup.
+              */
+
+              var submenu =
+                row.nextElementSibling;
+
+
+              if (
+                !submenu ||
+                !submenu.hasAttribute(
+                  'data-mobile-submenu'
+                )
+              ) {
+                return;
+              }
+
+
+              var isOpen =
+                toggle.getAttribute(
+                  'aria-expanded'
+                ) === 'true';
+
+
+              /* ==================================
+                 OPEN
+                 ================================== */
+
+              if (!isOpen) {
+
+                toggle.setAttribute(
+                  'aria-expanded',
+                  'true'
+                );
+
+                toggle.setAttribute(
+                  'aria-label',
+                  'Close submenu'
+                );
+
+                submenu.setAttribute(
+                  'aria-hidden',
+                  'false'
+                );
+
+                submenu.classList.add(
+                  'is-open'
+                );
+
+                row.classList.add(
+                  'is-expanded'
+                );
+
+              }
+
+
+              /* ==================================
+                 CLOSE
+                 ================================== */
+
+              else {
+
+                toggle.setAttribute(
+                  'aria-expanded',
+                  'false'
+                );
+
+                toggle.setAttribute(
+                  'aria-label',
+                  'Open submenu'
+                );
+
+                submenu.setAttribute(
+                  'aria-hidden',
+                  'true'
+                );
+
+                submenu.classList.remove(
+                  'is-open'
+                );
+
+                row.classList.remove(
+                  'is-expanded'
+                );
+
+
+                /*
+                  When closing a parent submenu,
+                  also close any open children inside it.
+                */
+
+                var nestedOpenMenus =
+                  submenu.querySelectorAll(
+                    '.editorial-mobile-submenu.is-open'
+                  );
+
+
+                nestedOpenMenus.forEach(
+                  function (nestedMenu) {
+
+                    nestedMenu.classList.remove(
+                      'is-open'
+                    );
+
+                    nestedMenu.setAttribute(
+                      'aria-hidden',
+                      'true'
+                    );
+
+                  }
+                );
+
+
+                var nestedToggles =
+                  submenu.querySelectorAll(
+                    '[data-mobile-toggle][aria-expanded="true"]'
+                  );
+
+
+                nestedToggles.forEach(
+                  function (nestedToggle) {
+
+                    nestedToggle.setAttribute(
+                      'aria-expanded',
+                      'false'
+                    );
+
+                    nestedToggle.setAttribute(
+                      'aria-label',
+                      'Open submenu'
+                    );
+
+                  }
+                );
+
+              }
+
+            }
+          );
+
+        });
+
+
+        /* ==========================================
+           ESCAPE
+           ========================================== */
+
+        document.addEventListener(
+          'keydown',
+          function (event) {
+
+            if (
+              event.key === 'Escape' &&
+              drawer.classList.contains('is-open')
+            ) {
+
+              closeMenu();
+
+            }
+
+          }
+        );
+
+
+        /* ==========================================
+           RESIZE
+           ========================================== */
+
+        window.addEventListener(
+          'resize',
+          function () {
+
+            if (
+              window.innerWidth >= 990 &&
+              drawer.classList.contains('is-open')
+            ) {
+
+              closeMenu();
+
+            }
+
+          }
+        );
+
+      });
+    }
+
+
+    if (
+      document.readyState === 'loading'
+    ) {
+
+      document.addEventListener(
+        'DOMContentLoaded',
+        initEditorialMobileMenu
+      );
+
+    } else {
+
+      initEditorialMobileMenu();
+
+    }
+
+
+    document.addEventListener(
+      'shopify:section:load',
+      initEditorialMobileMenu
+    );
+
+  })();
+</script>
+
+
+  {% when 'navigation_bar' %}
+
+    {% if block_settings.navigation_bar %}
+
+      <div class="editorial-mobile-navigation-bar">
+
+        <div class="editorial-mobile-navigation-bar__scroll">
+
+          {% for link in menu.links %}
+
+            <a
+              href="{{ link.url }}"
+              class="editorial-mobile-navigation-bar__link{% if link.current %} is-current{% endif %}"
+              {% if link.current %}
+                aria-current="page"
+              {% endif %}
+            >
+              {{ link.title }}
+            </a>
+
+          {% endfor %}
+
+        </div>
+
+      </div>
+
+    {% endif %}
+
+
+  {% else %}
+
+    {%- comment -%}
+      ==========================================================
+      DESKTOP MENU
+      ==========================================================
+    {%- endcomment -%}
+
+    <div
+      class="editorial-desktop-menu"
+      data-editorial-desktop-menu
+      data-submenu-style="{{ submenu_style }}"
+      {{ block.shopify_attributes }}
+    >
+
+      <nav
+        class="editorial-desktop-nav"
+        aria-label="Main navigation"
+      >
+
+        <ul class="editorial-desktop-nav__list">
+
+          {% for link in menu.links %}
+
+            <li
+              class="editorial-desktop-nav__item{% if link.links != blank %} has-children{% endif %}"
+              data-desktop-item
+            >
+
+              <div class="editorial-desktop-nav__link-wrap">
+
+                <a
+                  href="{{ link.url }}"
+                  class="editorial-desktop-nav__link{% if link.current %} is-current{% endif %}"
+                  {% if link.current %}
+                    aria-current="page"
+                  {% endif %}
+                >
+                  <span>
+                    {{ link.title }}
+                  </span>
+
+                  {% if link.links != blank %}
+
+                    <span
+                      class="editorial-desktop-nav__chevron"
+                      aria-hidden="true"
+                    >
+                      <svg
+                        viewBox="0 0 10 6"
+                        width="10"
+                        height="6"
+                        fill="none"
+                      >
+                        <path
+                          d="M1 1L5 5L9 1"
+                          stroke="currentColor"
+                          stroke-width="1"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </span>
+
+                  {% endif %}
+
+                </a>
+
+              </div>
+
+
+              {% if link.links != blank %}
+
+                {% if submenu_style == 'dropdown' %}
+
+                  {%- comment -%}
+                    ============================================
+                    DROPDOWN
+                    ============================================
+                  {%- endcomment -%}
+
+                  <div
+                    class="editorial-dropdown"
+                    data-editorial-dropdown
+                  >
+
+                    <div class="editorial-dropdown__inner">
+
+                      {% if block_settings.dropdown_eyebrow != blank %}
+
+                        <div class="editorial-dropdown__eyebrow">
+                          {{ block_settings.dropdown_eyebrow }}
+                        </div>
+
+                      {% endif %}
+
+
+                      {% if block_settings.dropdown_show_parent %}
+
+                        <a
+                          href="{{ link.url }}"
+                          class="editorial-dropdown__parent"
+                        >
+
+                          <span>
+                            {{ link.title }}
+                          </span>
+
+                          <span
+                            class="editorial-dropdown__parent-arrow"
+                            aria-hidden="true"
+                          >
+                            →
+                          </span>
+
+                        </a>
+
+                      {% endif %}
+
+
+                      <ul
+                        class="editorial-dropdown__list"
+                        role="list"
+                      >
+
+                        {% for child_link in link.links %}
+
+                          <li
+                            class="editorial-dropdown__item{% if child_link.links != blank %} has-nested{% endif %}"
+                          >
+
+                            <a
+                              href="{{ child_link.url }}"
+                              class="editorial-dropdown__link{% if child_link.current %} is-current{% endif %}"
+                              {% if child_link.current %}
+                                aria-current="page"
+                              {% endif %}
+                            >
+
+                              <span>
+                                {{ child_link.title }}
+                              </span>
+
+                              {% if child_link.links != blank %}
+
+                                <span
+                                  class="editorial-dropdown__arrow"
+                                  aria-hidden="true"
+                                >
+                                  →
+                                </span>
+
+                              {% endif %}
+
+                            </a>
+
+
+                            {% if child_link.links != blank %}
+
+                              <div class="editorial-dropdown__nested">
+
+                                <div class="editorial-dropdown__nested-inner">
+
+                                  <ul role="list">
+
+                                    {% for grandchild_link in child_link.links %}
+
+                                      <li>
+
+                                        <a
+                                          href="{{ grandchild_link.url }}"
+                                          class="editorial-dropdown__nested-link{% if grandchild_link.current %} is-current{% endif %}"
+                                          {% if grandchild_link.current %}
+                                            aria-current="page"
+                                          {% endif %}
+                                        >
+                                          {{ grandchild_link.title }}
+                                        </a>
+
+                                      </li>
+
+                                    {% endfor %}
+
+                                  </ul>
+
+                                </div>
+
+                              </div>
+
+                            {% endif %}
+
+                          </li>
+
+                        {% endfor %}
+
+                      </ul>
+
+
+                      {% if block_settings.dropdown_show_view_all %}
+
+                        <a
+                          href="{{ link.url }}"
+                          class="editorial-dropdown__view-all"
+                        >
+
+                          <span>
+                            {{ block_settings.dropdown_view_all_text }}
+                          </span>
+
+                          <span aria-hidden="true">
+                            →
+                          </span>
+
+                        </a>
+
+                      {% endif %}
+
+                    </div>
+
+                  </div>
+
+
+                {% else %}
+
+                  {%- comment -%}
+                    ============================================
+                    MEGA MENU
+                    ============================================
+                  {%- endcomment -%}
+
+                  <div class="editorial-mega-menu">
+
+                    <div class="editorial-mega-menu__inner">
+
+                      <div class="editorial-mega-menu__intro">
+
+                        {% if block_settings.mega_eyebrow != blank %}
+
+                          <div class="editorial-mega-menu__eyebrow">
+                            {{ block_settings.mega_eyebrow }}
+                          </div>
+
+                        {% endif %}
+
+                        <a
+                          href="{{ link.url }}"
+                          class="editorial-mega-menu__title"
+                        >
+                          {{ link.title }}
+                        </a>
+
+                        {% if block_settings.mega_description != blank %}
+
+                          <div class="editorial-mega-menu__description">
+                            {{ block_settings.mega_description }}
+                          </div>
+
+                        {% endif %}
+
+                      </div>
+
+
+                      <div class="editorial-mega-menu__columns">
+
+                        {% for child_link in link.links %}
+
+                          <div class="editorial-mega-menu__column">
+
+                            <a
+                              href="{{ child_link.url }}"
+                              class="editorial-mega-menu__column-title"
+                            >
+                              {{ child_link.title }}
+                            </a>
+
+
+                            {% if child_link.links != blank %}
+
+                              <ul
+                                class="editorial-mega-menu__links"
+                                role="list"
+                              >
+
+                                {% for grandchild_link in child_link.links %}
+
+                                  <li>
+
+                                    <a
+                                      href="{{ grandchild_link.url }}"
+                                    >
+                                      {{ grandchild_link.title }}
+                                    </a>
+
+                                  </li>
+
+                                {% endfor %}
+
+                              </ul>
+
+                            {% endif %}
+
+                          </div>
+
+                        {% endfor %}
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                {% endif %}
+
+              {% endif %}
+
+            </li>
+
+          {% endfor %}
+
+        </ul>
+
+      </nav>
+
+    </div>
+
+{% endcase %}
+
+
+{% style %}
+
+  /* ============================================================
+     EDITORIAL MENU
+     Design system:
+     Burgundy / Ivory / Champagne Gold
+     ============================================================ */
+
+  .editorial-desktop-menu,
+  .editorial-mobile-menu,
+  .editorial-mobile-navigation-bar {
+
+    --editorial-ink: #2A1015;
+    --editorial-ink-soft: #3D1E22;
+    --editorial-ivory: #F7F1E6;
+    --editorial-ivory-deep: #EFE5D4;
+    --editorial-gold: #B8935A;
+    --editorial-gold-light: #D4AC72;
+    --editorial-text-soft: #6B4C48;
+    --editorial-border: rgba(42, 16, 21, 0.13);
+    --editorial-border-light: rgba(42, 16, 21, 0.08);
+    --editorial-shadow:
+      0 20px 55px rgba(42, 16, 21, 0.12);
+
+    --editorial-ease:
+      cubic-bezier(.22,.61,.36,1);
+
+  }
+
+
+  /* ============================================================
+     DESKTOP
+     ============================================================ */
+
+  .editorial-desktop-menu {
+
+    position: relative;
+
+    display: flex;
+
+    width: 100%;
+    height: 100%;
+
+    color: var(--editorial-ink);
+
+    z-index: 30;
+
+  }
+
+
+  .editorial-desktop-nav {
+
+    display: flex;
+
+    width: 100%;
+    height: 100%;
+
+  }
+
+
+  .editorial-desktop-nav__list {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: clamp(
+      18px,
+      2.3vw,
+      38px
+    );
+
+    width: 100%;
+
+    padding: 0;
+    margin: 0;
+
+    list-style: none;
+
+  }
+
+
+  .editorial-desktop-nav__item {
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    height: 100%;
+
+    padding: 0;
+
+    margin: 0;
+
+    list-style: none;
+
+  }
+
+
+  .editorial-desktop-nav__link-wrap {
+
+    display: flex;
+    align-items: center;
+
+    height: 100%;
+
+  }
+
+
+  .editorial-desktop-nav__link {
+
+    position: relative;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    height: 100%;
+
+    padding: 0;
+
+    color: var(--editorial-text-soft);
+
+    font-family:
+      var(--font-body-family),
+      sans-serif;
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    line-height: 1;
+
+    letter-spacing: 0.015em;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+
+    transition:
+      color 180ms ease;
+
+  }
+
+
+  .editorial-desktop-nav__link::after {
+
+    content: '';
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    bottom: 8px;
+
+    height: 1px;
+
+    background: var(--editorial-gold);
+
+    transform:
+      scaleX(0);
+
+    transform-origin:
+      center;
+
+    transition:
+      transform 220ms
+      var(--editorial-ease);
+
+  }
+
+
+  .editorial-desktop-nav__item:hover
+  > .editorial-desktop-nav__link-wrap
+  .editorial-desktop-nav__link,
+
+  .editorial-desktop-nav__item:focus-within
+  > .editorial-desktop-nav__link-wrap
+  .editorial-desktop-nav__link,
+
+  .editorial-desktop-nav__link.is-current {
+
+    color: var(--editorial-ink);
+
+  }
+
+
+  .editorial-desktop-nav__item:hover
+  > .editorial-desktop-nav__link-wrap
+  .editorial-desktop-nav__link::after,
+
+  .editorial-desktop-nav__item:focus-within
+  > .editorial-desktop-nav__link-wrap
+  .editorial-desktop-nav__link::after {
+
+    transform:
+      scaleX(1);
+
+  }
+
+
+  .editorial-desktop-nav__chevron {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    color: var(--editorial-gold);
+
+    transition:
+      transform 180ms ease;
+
+  }
+
+
+  .editorial-desktop-nav__item:hover
+  .editorial-desktop-nav__chevron,
+
+  .editorial-desktop-nav__item:focus-within
+  .editorial-desktop-nav__chevron {
+
+    transform:
+      translateY(2px);
+
+  }
+
+
+  /* ============================================================
+     DESKTOP DROPDOWN
+     ============================================================ */
+
+  .editorial-dropdown {
+
+    position: absolute;
+
+    top: calc(100% + 1px);
+
+    left: 50%;
+
+    width: 320px;
+
+    padding-top: 18px;
+
+    visibility: hidden;
+
+    opacity: 0;
+
+    transform:
+      translate(-50%, 8px);
+
+    pointer-events: none;
+
+    transition:
+      opacity 180ms ease,
+      transform 180ms ease,
+      visibility 180ms ease;
+
+    z-index: 100;
+
+  }
+
+
+  .editorial-dropdown::before {
+
+    content: '';
+
+    position: absolute;
+
+    top: 0;
+
+    left: 50%;
+
+    width: 8px;
+    height: 8px;
+
+    background:
+      var(--editorial-ivory);
+
+    border-left:
+      1px solid var(--editorial-border);
+
+    border-top:
+      1px solid var(--editorial-border);
+
+    transform:
+      translateX(-50%)
+      rotate(45deg);
+
+    z-index: 2;
+
+  }
+
+
+  .editorial-dropdown__inner {
+
+    position: relative;
+
+    padding: 23px 24px 20px;
+
+    background:
+      var(--editorial-ivory);
+
+    border:
+      1px solid var(--editorial-border);
+
+    border-top:
+      2px solid var(--editorial-gold);
+
+    box-shadow:
+      var(--editorial-shadow);
+
+    z-index: 1;
+
+  }
+
+
+  .editorial-desktop-nav__item:hover
+  > .editorial-dropdown,
+
+  .editorial-desktop-nav__item:focus-within
+  > .editorial-dropdown,
+
+  .editorial-dropdown:hover {
+
+    visibility: visible;
+
+    opacity: 1;
+
+    transform:
+      translate(-50%, 0);
+
+    pointer-events: auto;
+
+  }
+
+
+  .editorial-dropdown__eyebrow {
+
+    margin-bottom: 8px;
+
+    color: var(--editorial-gold);
+
+    font-family:
+      var(--font-body-family),
+      sans-serif;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    letter-spacing:
+      0.18em;
+
+    line-height: 1.4;
+
+    text-transform:
+      uppercase;
+
+  }
+
+
+  .editorial-dropdown__parent {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding-bottom: 15px;
+
+    margin-bottom: 5px;
+
+    color:
+      var(--editorial-ink);
+
+    border-bottom:
+      1px solid var(--editorial-border);
+
+    font-family:
+      var(--font-heading-family),
+      Georgia,
+      serif;
+
+    font-size: 18px;
+
+    font-weight: 400;
+
+    line-height: 1.25;
+
+    text-decoration: none;
+
+  }
+
+
+  .editorial-dropdown__parent:hover {
+
+    color:
+      var(--editorial-gold);
+
+  }
+
+
+  .editorial-dropdown__parent-arrow {
+
+    font-family:
+      Arial,
+      sans-serif;
+
+    font-size: 18px;
+
+    font-weight: 400;
+
+    transition:
+      transform 180ms ease;
+
+  }
+
+
+  .editorial-dropdown__parent:hover
+  .editorial-dropdown__parent-arrow {
+
+    transform:
+      translateX(4px);
+
+  }
+
+
+  .editorial-dropdown__list {
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 0;
+    margin: 0;
+
+    list-style: none;
+
+  }
+
+
+  .editorial-dropdown__item {
+
+    position: relative;
+
+    padding: 0;
+
+    margin: 0;
+
+    list-style: none;
+
+  }
+
+
+  .editorial-dropdown__link {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    min-height: 45px;
+
+    padding: 10px 0;
+
+    color:
+      var(--editorial-text-soft);
+
+    border-bottom:
+      1px solid var(--editorial-border-light);
+
+    font-family:
+      var(--font-body-family),
+      sans-serif;
+
+    font-size: 13px;
+
+    font-weight: 400;
+
+    line-height: 1.35;
+
+    text-decoration: none;
+
+    transition:
+      color 160ms ease,
+      padding-left 160ms ease;
+
+  }
+
+
+  .editorial-dropdown__link::before {
+
+    content: '';
+
+    position: absolute;
+
+    left: 0;
+
+    top: 50%;
+
+    width: 2px;
+    height: 15px;
+
+    background:
+      var(--editorial-gold);
+
+    transform:
+      translateY(-50%)
+      scaleY(0);
+
+    transform-origin:
+      center;
+
+    transition:
+      transform 160ms ease;
+
+  }
+
+
+  .editorial-dropdown__link:hover,
+  .editorial-dropdown__link:focus-visible,
+  .editorial-dropdown__link.is-current {
+
+    padding-left: 10px;
+
+    color:
+      var(--editorial-ink);
+
+  }
+
+
+  .editorial-dropdown__link:hover::before,
+  .editorial-dropdown__link:focus-visible::before,
+  .editorial-dropdown__link.is-current::before {
+
+    transform:
+      translateY(-50%)
+      scaleY(1);
+
+  }
+
+
+  .editorial-dropdown__arrow {
+
+    color:
+      var(--editorial-gold);
+
+    font-size: 14px;
+
+    opacity: 0;
+
+    transform:
+      translateX(-4px);
+
+    transition:
+      opacity 160ms ease,
+      transform 160ms ease;
+
+  }
+
+
+  .editorial-dropdown__link:hover
+  .editorial-dropdown__arrow {
+
+    opacity: 1;
+
+    transform:
+      translateX(0);
+
+  }
+
+
+  /* ============================================================
+     THIRD LEVEL DESKTOP
+     ============================================================ */
+
+  .editorial-dropdown__nested {
+
+    position: absolute;
+
+    top: -7px;
+
+    left: calc(100% + 12px);
+
+    width: 245px;
+
+    padding-left: 10px;
+
+    visibility: hidden;
+
+    opacity: 0;
+
+    transform:
+      translateX(-6px);
+
+    pointer-events: none;
+
+    transition:
+      opacity 160ms ease,
+      transform 160ms ease,
+      visibility 160ms ease;
+
+    z-index: 10;
+
+  }
+
+
+  .editorial-dropdown__nested-inner {
+
+    padding: 14px 18px;
+
+    background:
+      var(--editorial-ivory);
+
+    border:
+      1px solid var(--editorial-border);
+
+    border-top:
+      2px solid var(--editorial-gold);
+
+    box-shadow:
+      var(--editorial-shadow);
+
+  }
+
+
+  .editorial-dropdown__item.has-nested:hover
+  > .editorial-dropdown__nested,
+
+  .editorial-dropdown__item.has-nested:focus-within
+  > .editorial-dropdown__nested {
+
+    visibility: visible;
+
+    opacity: 1;
+
+    transform:
+      translateX(0);
+
+    pointer-events: auto;
+
+  }
+
+
+  .editorial-dropdown__nested ul {
+
+    padding: 0;
+    margin: 0;
+
+    list-style: none;
+
+  }
+
+
+  .editorial-dropdown__nested li {
+
+    margin: 0;
+
+  }
+
+
+  .editorial-dropdown__nested-link {
+
+    display: block;
+
+    padding: 8px 0;
+
+    color:
+      var(--editorial-text-soft);
+
+    font-family:
+      var(--font-body-family),
+      sans-serif;
+
+    font-size: 12px;
+
+    line-height: 1.35;
+
+    text-decoration: none;
+
+    transition:
+      color 160ms ease,
+      padding-left 160ms ease;
+
+  }
+
+
+  .editorial-dropdown__nested-link:hover,
+  .editorial-dropdown__nested-link:focus-visible,
+  .editorial-dropdown__nested-link.is-current {
+
+    padding-left: 7px;
+
+    color:
+      var(--editorial-gold);
+
+  }
+
+
+  /* ============================================================
+     VIEW ALL
+     ============================================================ */
+
+  .editorial-dropdown__view-all {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding-top: 15px;
+
+    margin-top: 3px;
+
+    color:
+      var(--editorial-ink);
+
+    font-family:
+      var(--font-body-family),
+      sans-serif;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    letter-spacing:
+      0.13em;
+
+    line-height: 1.3;
+
+    text-transform:
+      uppercase;
+
+    text-decoration: none;
+
+  }
+
+
+  .editorial-dropdown__view-all:hover {
+
+    color:
+      var(--editorial-gold);
+
+  }
+
+
+  /* ============================================================
+     MEGA MENU
+     ============================================================ */
+
+  .editorial-mega-menu {
+
+    position: absolute;
+
+    top: calc(100% + 1px);
+
+    left: 50%;
+
+    width:
+      min(1120px, calc(100vw - 40px));
+
+    padding-top: 18px;
+
+    visibility: hidden;
+
+    opacity: 0;
+
+    transform:
+      translate(-50%, 8px);
+
+    pointer-events: none;
+
+    transition:
+      opacity 180ms ease,
+      transform 180ms ease,
+      visibility 180ms ease;
+
+    z-index: 100;
+
+  }
+
+
+  .editorial-mega-menu__inner {
+
+    display: grid;
+
+    grid-template-columns:
+      220px 1fr;
+
+    gap: 45px;
+
+    padding: 34px 38px;
+
+    background:
+      var(--editorial-ivory);
+
+    border:
+      1px solid var(--editorial-border);
+
+    border-top:
+      2px solid var(--editorial-gold);
+
+    box-shadow:
+      var(--editorial-shadow);
+
+  }
+
+
+  .editorial-desktop-nav__item:hover
+  > .editorial-mega-menu,
+
+  .editorial-desktop-nav__item:focus-within
+  > .editorial-mega-menu,
+
+  .editorial-mega-menu:hover {
+
+    visibility: visible;
+
+    opacity: 1;
+
+    transform:
+      translate(-50%, 0);
+
+    pointer-events: auto;
+
+  }
+
+
+  .editorial-mega-menu__intro {
+
+    padding-right: 30px;
+
+    border-right:
+      1px solid var(--editorial-border);
+
+  }
+
+
+  .editorial-mega-menu__eyebrow {
+
+    margin-bottom: 10px;
+
+    color:
+      var(--editorial-gold);
+
+    font-family:
+      var(--font-body-family),
+      sans-serif;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    letter-spacing:
+      0.17em;
+
+    text-transform:
+      uppercase;
+
+  }
+
+
+  .editorial-mega-menu__title {
+
+    display: block;
+
+    margin-bottom: 14px;
+
+    color:
+      var(--editorial-ink);
+
+    font-family:
+      var(--font-heading-family),
+      Georgia,
+      serif;
+
+    font-size: 25px;
+
+    font-weight: 400;
+
+    line-height: 1.15;
+
+    text-decoration: none;
+
+  }
+
+
+  .editorial-mega-menu__title:hover {
+
+    color:
+      var(--editorial-gold);
+
+  }
+
+
+  .editorial-mega-menu__description {
+
+    color:
+      var(--editorial-text-soft);
+
+    font-family:
+      var(--font-body-family),
+      sans-serif;
+
+    font-size: 12px;
+
+    line-height: 1.65;
+
+  }
+
+
+  .editorial-mega-menu__columns {
+
+    display: grid;
+
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+
+    gap:
+      30px;
+
+  }
+
+
+  .editorial-mega-menu__column-title {
+
+    display: block;
+
+    padding-bottom: 10px;
+
+    margin-bottom: 5px;
+
+    color:
+      var(--editorial-ink);
+
+    border-bottom:
+      1px solid var(--editorial-border);
+
+    font-family:
+      var(--font-heading-family),
+      Georgia,
+      serif;
+
+    font-size: 15px;
+
+    font-weight: 400;
+
+    text-decoration: none;
+
+  }
+
+
+  .editorial-mega-menu__column-title:hover {
+
+    color:
+      var(--editorial-gold);
+
+  }
+
+
+  .editorial-mega-menu__links {
+
+    padding: 0;
+    margin: 0;
+
+    list-style: none;
+
+  }
+
+
+  .editorial-mega-menu__links a {
+
+    display: block;
+
+    padding: 6px 0;
+
+    color:
+      var(--editorial-text-soft);
+
+    font-family:
+      var(--font-body-family),
+      sans-serif;
+
+    font-size: 12px;
+
+    text-decoration: none;
+
+    transition:
+      color 160ms ease,
+      padding-left 160ms ease;
+
+  }
+
+
+  .editorial-mega-menu__links a:hover {
+
+    padding-left: 5px;
+
+    color:
+      var(--editorial-gold);
+
+  }
+
+
+  /* ============================================================
+     MOBILE MENU
+     ============================================================ */
+
+  .editorial-mobile-menu {
+
+    display: none;
+
+    position: relative;
+
+    height: 100%;
+
+    color:
+      var(--editorial-ink);
+
+  }
+
+
+  .editorial-mobile-menu__trigger {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    min-width: 44px;
+    min-height: 44px;
+
+    padding: 8px 0;
+
+    color:
+      var(--editorial-ink);
+
+    background: transparent;
+
+    border: 0;
+
+    cursor: pointer;
+
+    font-family:
+      var(--font-body-family),
+      sans-serif;
+
+    font-size: 11px;
+
+    letter-spacing:
+      0.08em;
+
+    text-transform:
+      uppercase;
+
+  }
+
+
+  .editorial-mobile-menu__hamburger {
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    gap: 5px;
+
+    width: 22px;
+
+  }
+
+
+  .editorial-mobile-menu__hamburger span {
+
+    display: block;
+
+    width: 22px;
+    height: 1px;
+
+    background:
+      var(--editorial-ink);
+
+    transition:
+      transform 180ms ease;
+
+  }
+
+
+  .editorial-mobile-menu__trigger-label {
+
+    display: inline-block;
+
+  }
+
+
+  /* ============================================================
+     MOBILE DRAWER
+     ============================================================ */
+
+  .editorial-mobile-drawer {
+
+    position: fixed;
+
+    inset:
+      0 auto 0 0;
+
+    width:
+      min(420px, 91vw);
+
+    height: 100dvh;
+
+    background:
+      var(--editorial-ivory);
+
+    border-right:
+      1px solid var(--editorial-border);
+
+    box-shadow:
+      20px 0 50px rgba(42,16,21,.14);
+
+    visibility: hidden;
+
+    opacity: 0;
+
+    transform:
+      translateX(-100%);
+
+    transition:
+      transform 320ms
+      var(--editorial-ease),
+      opacity 220ms ease,
+      visibility 320ms ease;
+
+    z-index: 10001;
+
+    overflow-y: auto;
+
+  }
+
+
+  .editorial-mobile-drawer.is-open {
+
+    visibility: visible;
+
+    opacity: 1;
+
+    transform:
+      translateX(0);
+
+  }
+
+
+  .editorial-mobile-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    background:
+      rgba(42,16,21,.32);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transition:
+      opacity 220ms ease,
+      visibility 220ms ease;
+
+    z-index: 10000;
+
+  }
+
+
+  .editorial-mobile-overlay.is-visible {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+
+  }
+
+
+  .editorial-mobile-drawer__header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    min-height: 76px;
+
+    padding:
+      0 24px;
+
+    border-bottom:
+      1px solid var(--editorial-border);
+
+  }
+
+
+  .editorial-mobile-drawer__label {
+
+    color:
+      var(--editorial-ink);
+
+    font-family:
+      var(--font-heading-family),
+      Georgia,
+      serif;
+
+    font-size: 20px;
+
+    font-weight: 400;
+
+  }
+
+
+  .editorial-mobile-drawer__close {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    padding: 0;
+
+    color:
+      var(--editorial-ink);
+
+    background: transparent;
+
+    border: 0;
+
+    cursor: pointer;
+
+  }
+
+
+  .editorial-mobile-drawer__close span {
+
+    position: absolute;
+
+    width: 21px;
+    height: 1px;
+
+    background:
+      var(--editorial-ink);
+
+  }
+
+
+  .editorial-mobile-drawer__close span:first-child {
+
+    transform:
+      rotate(45deg);
+
+  }
+
+
+  .editorial-mobile-drawer__close span:last-child {
+
+    transform:
+      rotate(-45deg);
+
+  }
+
+
+  .editorial-mobile-drawer__content {
+
+    padding:
+      28px 24px 40px;
+
+  }
+
+
+  .editorial-mobile-drawer__eyebrow {
+
+    margin-bottom: 15px;
+
+    color:
+      var(--editorial-gold);
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    letter-spacing:
+      .18em;
+
+    text-transform:
+      uppercase;
+
+  }
+
+
+  .editorial-mobile-nav__list {
+
+    padding: 0;
+    margin: 0;
+
+    list-style: none;
+
+  }
+
+
+  .editorial-mobile-nav__item {
+
+    border-bottom:
+      1px solid var(--editorial-border);
+
+  }
+
+
+  .editorial-mobile-nav__row {
+
+    display: flex;
+
+    align-items: center;
+
+    min-height: 58px;
+
+  }
+
+
+  .editorial-mobile-nav__link {
+
+    flex: 1;
+
+    padding:
+      15px 0;
+
+    color:
+      var(--editorial-ink);
+
+    font-family:
+      var(--font-heading-family),
+      Georgia,
+      serif;
+
+    font-size: 19px;
+
+    font-weight: 400;
+
+    line-height: 1.25;
+
+    text-decoration: none;
+
+  }
+
+
+  .editorial-mobile-nav__link.is-current {
+
+    color:
+      var(--editorial-gold);
+
+  }
+
+
+  .editorial-mobile-nav__toggle {
+
+    position: relative;
+
+    flex:
+      0 0 40px;
+
+    width: 40px;
+    height: 40px;
+
+    padding: 0;
+
+    background: transparent;
+
+    border: 0;
+
+    cursor: pointer;
+
+  }
+
+
+  .editorial-mobile-nav__toggle span {
+
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    width: 13px;
+    height: 1px;
+
+    background:
+      var(--editorial-gold);
+
+    transform:
+      translate(-50%, -50%);
+
+    transition:
+      transform 180ms ease;
+
+  }
+
+
+  .editorial-mobile-nav__toggle span:last-child {
+
+    transform:
+      translate(-50%, -50%)
+      rotate(90deg);
+
+  }
+
+
+  .editorial-mobile-nav__toggle[aria-expanded='true']
+  span:last-child {
+
+    transform:
+      translate(-50%, -50%)
+      rotate(0deg);
+
+  }
+
+
+  .editorial-mobile-submenu {
+
+    display: grid;
+
+    grid-template-rows: 0fr;
+
+    visibility: hidden;
+
+    opacity: 0;
+
+    transition:
+      grid-template-rows 260ms
+      var(--editorial-ease),
+      opacity 180ms ease,
+      visibility 260ms ease;
+
+  }
+
+
+  .editorial-mobile-submenu > ul {
+
+    min-height: 0;
+
+    overflow: hidden;
+
+    padding: 0 0 0 16px;
+
+    margin: 0;
+
+    list-style: none;
+
+    border-left:
+      1px solid var(--editorial-gold);
+
+  }
+
+
+  .editorial-mobile-submenu.is-open {
+
+    grid-template-rows: 1fr;
+
+    visibility: visible;
+
+    opacity: 1;
+
+  }
+
+
+  .editorial-mobile-nav__row--child {
+
+    min-height: 48px;
+
+  }
+
+
+  .editorial-mobile-nav__link--child {
+
+    padding:
+      12px 0;
+
+    color:
+      var(--editorial-text-soft);
+
+    font-family:
+      var(--font-body-family),
+      sans-serif;
+
+    font-size: 14px;
+
+  }
+
+
+  .editorial-mobile-nav__link--grandchild {
+
+    display: block;
+
+    padding:
+      10px 0;
+
+    color:
+      var(--editorial-text-soft);
+
+    font-family:
+      var(--font-body-family),
+      sans-serif;
+
+    font-size: 13px;
+
+    text-decoration: none;
+
+  }
+
+
+  .editorial-mobile-submenu--third > ul {
+
+    padding-left: 14px;
+
+  }
+
+
+  .editorial-mobile-drawer__view-all {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding:
+      17px 0;
+
+    margin-top: 24px;
+
+    color:
+      var(--editorial-ink);
+
+    border-top:
+      1px solid var(--editorial-border);
+
+    border-bottom:
+      1px solid var(--editorial-border);
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    letter-spacing:
+      .14em;
+
+    text-transform:
+      uppercase;
+
+    text-decoration: none;
+
+  }
+
+
+  .editorial-mobile-drawer__footer {
+
+    padding:
+      20px 24px 25px;
+
+    color:
+      var(--editorial-text-soft);
+
+    font-family:
+      var(--font-body-family),
+      sans-serif;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+
+  }
+
+
+  /* ============================================================
+     MOBILE NAVIGATION BAR
+     ============================================================ */
+
+  .editorial-mobile-navigation-bar {
+
+    display: block;
+
+    width: 100%;
+
+    overflow: hidden;
+
+    background:
+      var(--editorial-ivory);
+
+    border-top:
+      1px solid var(--editorial-border);
+
+    border-bottom:
+      1px solid var(--editorial-border);
+
+  }
+
+
+  .editorial-mobile-navigation-bar__scroll {
+
+    display: flex;
+
+    gap: 24px;
+
+    overflow-x: auto;
+
+    padding:
+      11px 20px;
+
+    scrollbar-width: none;
+
+  }
+
+
+  .editorial-mobile-navigation-bar__scroll::-webkit-scrollbar {
+
+    display: none;
+
+  }
+
+
+  .editorial-mobile-navigation-bar__link {
+
+    flex:
+      0 0 auto;
+
+    color:
+      var(--editorial-text-soft);
+
+    font-family:
+      var(--font-body-family),
+      sans-serif;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    letter-spacing:
+      .11em;
+
+    text-transform:
+      uppercase;
+
+    text-decoration: none;
+
+  }
+
+
+  .editorial-mobile-navigation-bar__link.is-current {
+
+    color:
+      var(--editorial-gold);
+
+  }
+
+
+  /* ============================================================
+     ACCESSIBILITY
+     ============================================================ */
+
+  .editorial-desktop-menu a:focus-visible,
+  .editorial-desktop-menu button:focus-visible,
+  .editorial-mobile-menu a:focus-visible,
+  .editorial-mobile-menu button:focus-visible {
+
+    outline:
+      1px solid var(--editorial-gold);
+
+    outline-offset:
+      4px;
+
+  }
+
+
+  /* ============================================================
+     BODY LOCK
+     ============================================================ */
+
+  html.editorial-mobile-menu-open,
+  body.editorial-mobile-menu-open {
+
+    overflow: hidden;
+
+  }
+
+
+  /* ============================================================
+     DESKTOP / MOBILE BREAKPOINT
+     ============================================================ */
+
+  @media screen and (min-width: 990px) {
+
+    .editorial-mobile-menu,
+    .editorial-mobile-navigation-bar {
+
+      display: none !important;
+
+    }
+
+    .editorial-desktop-menu {
+
+      display: flex !important;
+
+    }
+
+  }
+
+
+  @media screen and (max-width: 989px) {
+
+    .editorial-desktop-menu {
+
+      display: none !important;
+
+    }
+
+    .editorial-mobile-menu {
+
+      display: flex !important;
+
+      align-items: center;
+
+    }
+
+  }
+
+
+  /* ============================================================
+     TABLET
+     ============================================================ */
+
+  @media screen and (min-width: 750px)
+  and (max-width: 989px) {
+
+    .editorial-mobile-drawer {
+
+      width:
+        min(430px, 75vw);
+
+    }
+
+  }
+
+
+  /* ============================================================
+     SMALL MOBILE
+     ============================================================ */
+
+  @media screen and (max-width: 480px) {
+
+    .editorial-mobile-drawer__header {
+
+      min-height: 68px;
+
+      padding-inline: 20px;
+
+    }
+
+    .editorial-mobile-drawer__content {
+
+      padding-inline: 20px;
+
+    }
+
+    .editorial-mobile-nav__link {
+
+      font-size: 18px;
+
+    }
+
+  }
+
+
+  /* ============================================================
+     REDUCED MOTION
+     ============================================================ */
+
+  @media (prefers-reduced-motion: reduce) {
+
+    .editorial-dropdown,
+    .editorial-mega-menu,
+    .editorial-mobile-drawer,
+    .editorial-mobile-overlay,
+    .editorial-mobile-submenu {
+
+      transition: none !important;
+
+    }
+
+  }
+
+{% endstyle %}
+
+
+{% schema %}
+
+{
+  "name": "Editorial Menu",
+  "tag": null,
+  "settings": [
+
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+
+    {
+      "type": "header",
+      "content": "Desktop menu"
+    },
+
+    {
+      "type": "select",
+      "id": "submenu_style",
+      "label": "Submenu style",
+      "options": [
+        {
+          "value": "dropdown",
+          "label": "Dropdown"
+        },
+        {
+          "value": "mega",
+          "label": "Mega menu"
+        }
+      ],
+      "default": "dropdown"
+    },
+
+    {
+      "type": "text",
+      "id": "dropdown_eyebrow",
+      "label": "Dropdown eyebrow",
+      "default": "Explore"
+    },
+
+    {
+      "type": "checkbox",
+      "id": "dropdown_show_parent",
+      "label": "Show parent link",
+      "default": true
+    },
+
+    {
+      "type": "checkbox",
+      "id": "dropdown_show_view_all",
+      "label": "Show view all",
+      "default": true
+    },
+
+    {
+      "type": "text",
+      "id": "dropdown_view_all_text",
+      "label": "View all text",
+      "default": "View all"
+    },
+
+    {
+      "type": "header",
+      "content": "Mega menu"
+    },
+
+    {
+      "type": "text",
+      "id": "mega_eyebrow",
+      "label": "Mega menu eyebrow",
+      "default": "Explore"
+    },
+
+    {
+      "type": "textarea",
+      "id": "mega_description",
+      "label": "Mega menu description",
+      "default": "Discover our edit, curated for every occasion."
+    },
+
+    {
+      "type": "header",
+      "content": "Mobile menu"
+    },
+
+    {
+      "type": "text",
+      "id": "mobile_eyebrow",
+      "label": "Mobile eyebrow",
+      "default": "Explore"
+    },
+
+    {
+      "type": "checkbox",
+      "id": "mobile_show_view_all",
+      "label": "Show mobile view all",
+      "default": true
+    },
+
+    {
+      "type": "text",
+      "id": "mobile_view_all_text",
+      "label": "Mobile view all text",
+      "default": "Visit homepage"
+    },
+
+    {
+      "type": "textarea",
+      "id": "mobile_footer_text",
+      "label": "Mobile footer text",
+      "default": "Curated with intention."
+    },
+
+    {
+      "type": "checkbox",
+      "id": "navigation_bar",
+      "label": "Show mobile navigation bar",
+      "default": false
+    }
+
+  ]
+}
+
+{% endschema %}

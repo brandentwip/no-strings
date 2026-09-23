@@ -1,0 +1,207 @@
+{% doc %}
+  @prompt
+    need a section to display one time price and designer price. should be minimal
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-price-display-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+  }
+
+  .ai-price-display__container-{{ ai_gen_id }} {
+    display: flex;
+    align-items: baseline;
+    gap: {{ block.settings.spacing }}px;
+    flex-wrap: wrap;
+  }
+
+  .ai-price-display__label-{{ ai_gen_id }} {
+    font-size: {{ block.settings.label_size }}px;
+    color: {{ block.settings.label_color }};
+    text-transform: {{ block.settings.label_case }};
+    letter-spacing: 0.5px;
+  }
+
+  .ai-price-display__price-{{ ai_gen_id }} {
+    font-size: {{ block.settings.price_size }}px;
+    color: {{ block.settings.price_color }};
+    font-weight: 400;
+  }
+
+  .ai-price-display__divider-{{ ai_gen_id }} {
+    width: 1px;
+    height: {{ block.settings.price_size }}px;
+    background-color: {{ block.settings.divider_color }};
+    opacity: 0.3;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-price-display__container-{{ ai_gen_id }} {
+      gap: {{ block.settings.spacing | times: 0.8 }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-price-display-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-price-display__container-{{ ai_gen_id }}">
+    {% if block.settings.show_onetime_price %}
+      <div class="ai-price-display__label-{{ ai_gen_id }}">
+        {{ block.settings.onetime_label }}
+      </div>
+      <div class="ai-price-display__price-{{ ai_gen_id }}">
+        {{ block.settings.onetime_price }}
+      </div>
+    {% endif %}
+
+    {% if block.settings.show_onetime_price and block.settings.show_designer_price %}
+      <div class="ai-price-display__divider-{{ ai_gen_id }}"></div>
+    {% endif %}
+
+    {% if block.settings.show_designer_price %}
+      <div class="ai-price-display__label-{{ ai_gen_id }}">
+        {{ block.settings.designer_label }}
+      </div>
+      <div class="ai-price-display__price-{{ ai_gen_id }}">
+        {{ block.settings.designer_price }}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Price display",
+  "settings": [
+    {
+      "type": "header",
+      "content": "One-time price"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_onetime_price",
+      "label": "Show one-time price",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "onetime_label",
+      "label": "Label",
+      "default": "One-time"
+    },
+    {
+      "type": "text",
+      "id": "onetime_price",
+      "label": "Price",
+      "default": "₹15,000"
+    },
+    {
+      "type": "header",
+      "content": "Designer price"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_designer_price",
+      "label": "Show designer price",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "designer_label",
+      "label": "Label",
+      "default": "Designer"
+    },
+    {
+      "type": "text",
+      "id": "designer_price",
+      "label": "Price",
+      "default": "₹25,000"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "range",
+      "id": "label_size",
+      "label": "Label size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "price_size",
+      "label": "Price size",
+      "min": 12,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "spacing",
+      "label": "Spacing",
+      "min": 8,
+      "max": 32,
+      "step": 4,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "label_case",
+      "label": "Label case",
+      "options": [
+        {
+          "value": "none",
+          "label": "Default"
+        },
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Label color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "price_color",
+      "label": "Price color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    }
+  ],
+  "presets": [
+    {
+      "name": "Price display"
+    }
+  ]
+}
+{% endschema %}

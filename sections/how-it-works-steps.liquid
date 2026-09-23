@@ -1,0 +1,988 @@
+{% style %}
+  /* =====================================================
+     NSC — HOW IT WORKS
+     Fully namespaced to avoid Shopify theme conflicts
+     ===================================================== */
+
+  #shopify-section-{{ section.id }} {
+    --nsc-hiw-v1-ink: #2A1015;
+    --nsc-hiw-v1-ink-soft: #3D1E22;
+    --nsc-hiw-v1-ivory: #F7F1E6;
+    --nsc-hiw-v1-ivory-deep: #EFE5D4;
+    --nsc-hiw-v1-gold: #B8935A;
+    --nsc-hiw-v1-gold-bright: #D4AC72;
+    --nsc-hiw-v1-text-soft: #6B4C48;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-page,
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-page * {
+    box-sizing: border-box;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-page {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    background: var(--nsc-hiw-v1-ivory);
+    color: var(--nsc-hiw-v1-ink);
+    font-family: 'Jost', sans-serif;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-wrap {
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+
+
+  /* =====================================================
+     HERO
+     ===================================================== */
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-hero {
+    width: 100%;
+    min-height: 580px;
+    background: var(--nsc-hiw-v1-ink);
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-hero::before {
+    content: '';
+    position: absolute;
+    width: 620px;
+    height: 620px;
+    border: 1px solid rgba(212, 172, 114, 0.18);
+    border-radius: 50%;
+    right: -180px;
+    top: -250px;
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-hero::after {
+    content: '';
+    position: absolute;
+    width: 450px;
+    height: 450px;
+    border: 1px solid rgba(212, 172, 114, 0.12);
+    border-radius: 50%;
+    left: -250px;
+    bottom: -260px;
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 850px;
+    padding-top: 110px;
+    padding-bottom: 110px;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-eyebrow {
+    display: block;
+    margin-bottom: 22px;
+    color: var(--nsc-hiw-v1-gold-bright);
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-hero h1 {
+    margin: 0;
+    color: var(--nsc-hiw-v1-ivory);
+    font-family: 'Fraunces', serif;
+    font-size: clamp(54px, 8vw, 110px);
+    font-weight: 500;
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-hero h1 p {
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-hero h1 em {
+    color: var(--nsc-hiw-v1-gold-bright);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-hero-text {
+    max-width: 540px;
+    margin-top: 28px;
+    color: rgba(247, 241, 230, 0.68);
+    font-family: 'Jost', sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.8;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-hero-text p {
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-drape {
+    position: absolute;
+    right: 6%;
+    top: 50%;
+    width: 440px;
+    height: 620px;
+    transform: translateY(-50%);
+    opacity: 0.75;
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-drape path {
+    fill: none;
+    stroke: var(--nsc-hiw-v1-gold);
+    stroke-width: 1.3;
+  }
+
+
+  /* =====================================================
+     INTRO
+     ===================================================== */
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-intro {
+    padding-top: 130px;
+    padding-bottom: 130px;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-intro-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 100px;
+    align-items: start;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-intro-title {
+    margin: 0;
+    color: var(--nsc-hiw-v1-ink);
+    font-family: 'Fraunces', serif;
+    font-size: clamp(38px, 4vw, 60px);
+    font-weight: 500;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-intro-title p {
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-intro-title em {
+    color: var(--nsc-hiw-v1-gold);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-intro-copy {
+    padding-top: 8px;
+    color: var(--nsc-hiw-v1-text-soft);
+    font-family: 'Jost', sans-serif;
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 1.9;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-intro-copy p {
+    margin-top: 0;
+    margin-bottom: 18px;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-intro-copy p:last-child {
+    margin-bottom: 0;
+  }
+
+
+  /* =====================================================
+     JOURNEY NAVIGATION
+     ===================================================== */
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-journey-bar {
+    width: 100%;
+    border-top: 1px solid rgba(42, 16, 21, 0.13);
+    border-bottom: 1px solid rgba(42, 16, 21, 0.13);
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-journey-list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-journey-item {
+    min-width: 0;
+    padding: 23px 10px;
+    text-align: center;
+    border-right: 1px solid rgba(42, 16, 21, 0.13);
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-journey-item:last-child {
+    border-right: none;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-journey-number {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--nsc-hiw-v1-gold);
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    font-style: italic;
+    line-height: 1;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-journey-name {
+    display: block;
+    color: var(--nsc-hiw-v1-ink);
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+
+  /* =====================================================
+     STEPS
+     ===================================================== */
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-steps {
+    width: 100%;
+    padding-top: 50px;
+    padding-bottom: 130px;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-step {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    min-height: 610px;
+    border-bottom: 1px solid rgba(42, 16, 21, 0.12);
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-step:first-child {
+    border-top: 1px solid rgba(42, 16, 21, 0.12);
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-step:nth-child(even) .nsc-hiw-v1-step-image {
+    order: 2;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-step:nth-child(even) .nsc-hiw-v1-step-content {
+    order: 1;
+  }
+
+
+  /* Step image */
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-step-image {
+    position: relative;
+    min-height: 610px;
+    overflow: hidden;
+    background: linear-gradient(
+      150deg,
+      #D9C4A8 0%,
+      #C79A66 45%,
+      #8C5A44 100%
+    );
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-step-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      to top,
+      rgba(42, 16, 21, 0.30),
+      transparent 55%
+    );
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-step-image img {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-image-placeholder {
+    position: absolute;
+    left: 32px;
+    bottom: 28px;
+    z-index: 2;
+    color: rgba(247, 241, 230, 0.8);
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+
+  /* Step content */
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-step-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+    padding: 80px 9vw;
+    position: relative;
+    background: var(--nsc-hiw-v1-ivory);
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-step-number {
+    margin-bottom: 35px;
+    color: rgba(184, 147, 90, 0.16);
+    font-family: 'Fraunces', serif;
+    font-size: clamp(70px, 9vw, 130px);
+    font-weight: 400;
+    line-height: 0.7;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-step-label {
+    display: block;
+    margin-bottom: 15px;
+    color: var(--nsc-hiw-v1-gold);
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-step-title {
+    margin: 0 0 24px;
+    color: var(--nsc-hiw-v1-ink);
+    font-family: 'Fraunces', serif;
+    font-size: clamp(38px, 4vw, 62px);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-step-title p {
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-step-title em {
+    color: var(--nsc-hiw-v1-gold);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-step-description {
+    max-width: 440px;
+    color: var(--nsc-hiw-v1-text-soft);
+    font-family: 'Jost', sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.85;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-step-description p {
+    margin-top: 0;
+    margin-bottom: 15px;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-step-description p:last-child {
+    margin-bottom: 0;
+  }
+
+
+  /* =====================================================
+     FINAL CTA
+     ===================================================== */
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-final {
+    position: relative;
+    width: 100%;
+    padding-top: 145px;
+    padding-bottom: 145px;
+    overflow: hidden;
+    background: var(--nsc-hiw-v1-ink);
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-final::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 800px;
+    height: 800px;
+    border: 1px solid rgba(212, 172, 114, 0.12);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-final-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-final h2 {
+    max-width: 760px;
+    margin: 0 auto 28px;
+    color: var(--nsc-hiw-v1-ivory);
+    font-family: 'Fraunces', serif;
+    font-size: clamp(42px, 5vw, 76px);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-final h2 p {
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-final h2 em {
+    color: var(--nsc-hiw-v1-gold-bright);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-final-text {
+    max-width: 480px;
+    margin: 0 auto 38px;
+    color: rgba(247, 241, 230, 0.65);
+    font-family: 'Jost', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.8;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-final-text p {
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 32px;
+    background: var(--nsc-hiw-v1-ivory);
+    color: var(--nsc-hiw-v1-ink);
+    border: 0;
+    border-radius: 0;
+    font-family: 'Jost', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  #shopify-section-{{ section.id }} .nsc-hiw-v1-button:hover {
+    background: var(--nsc-hiw-v1-gold-bright);
+    color: var(--nsc-hiw-v1-ink);
+  }
+
+
+  /* =====================================================
+     TABLET
+     ===================================================== */
+
+  @media screen and (max-width: 990px) {
+
+    #shopify-section-{{ section.id }} .nsc-hiw-v1-wrap {
+      padding-left: 30px;
+      padding-right: 30px;
+    }
+
+    #shopify-section-{{ section.id }} .nsc-hiw-v1-intro-grid {
+      grid-template-columns: 1fr;
+      gap: 35px;
+    }
+
+    #shopify-section-{{ section.id }} .nsc-hiw-v1-step-content {
+      padding: 70px 55px;
+    }
+
+    #shopify-section-{{ section.id }} .nsc-hiw-v1-drape {
+      right: -120px;
+      opacity: 0.4;
+    }
+
+  }
+
+
+  /* =====================================================
+     MOBILE
+     ===================================================== */
+
+  @media screen and (max-width: 749px) {
+
+    #shopify-section-{{ section.id }} .nsc-hiw-v1-wrap {
+      padding-left: 22px;
+      padding-right: 22px;
+    }
+
+    #shopify-section-{{ section.id }} .nsc-hiw-v1-hero {
+      min-height: 520px;
+    }
+
+    #shopify-section-{{ section.id }} .nsc-hiw-v1-hero-inner {
+      padding-top: 90px;
+      padding-bottom: 90px;
+    }
+
+    #shopify-section-{{ section.id }} .nsc-hiw-v1-hero h1 {
+      font-size: 58px;
+    }
+
+    #shopify-section-{{ section.id }} .nsc-hiw-v1-hero-text {
+      font-size: 14px;
+    }
+
+    #shopify-section-{{ section.id }} .nsc-hiw-v1-drape {
+      width: 300px;
+      right: -150px;
+    }
+
+    #shopify-section-{{ section.id }} .nsc-hiw-v1-intro {
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+
+    #shopify-section-{{ section.id }} .nsc-hiw-v1-intro-title {
+      font-size: 42px;
+    }
+
+    #shopify-section-{{ section.id }} .nsc-hiw-v1-intro-copy {
+      font-size: 15px;
+    }
+
+    #shopify-section-{{ section.id }} .nsc-hiw-v1-journey-list {
+      display: flex;
+      width: max-content;
+      min-width: 100%;
+    }
+
+    #shopify-section-{{ section.id }} .nsc-hiw-v1-journey-bar {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    #shopify-section-{{ section.id }} .nsc-hiw-v1-journey-item {
+      width: 105px;
+      min-width: 105px;
+      padding: 18px 5px;
+    }
+
+    #shopify-section-{{ section.id }} .nsc-hiw-v1-journey-name {
+      font-size: 8px;
+    }
+
+    #shopify-section-{{ section.id }} .nsc-hiw-v1-steps {
+      padding-top: 35px;
+      padding-bottom: 80px;
+    }
+
+    #shopify-section-{{ section.id }} .nsc-hiw-v1-step {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+
+    #shopify-section-{{ section.id }} .nsc-hiw-v1-step:nth-child(even) .nsc-hiw-v1-step-image,
+    #shopify-section-{{ section.id }} .nsc-hiw-v1-step:nth-child(even) .nsc-hiw-v1-step-content {
+      order: initial;
+    }
+
+    #shopify-section-{{ section.id }} .nsc-hiw-v1-step-image {
+      min-height: 420px;
+    }
+
+    #shopify-section-{{ section.id }} .nsc-hiw-v1-step-content {
+      padding: 65px 22px 75px;
+    }
+
+    #shopify-section-{{ section.id }} .nsc-hiw-v1-step-number {
+      margin-bottom: 25px;
+      font-size: 80px;
+    }
+
+    #shopify-section-{{ section.id }} .nsc-hiw-v1-step-title {
+      font-size: 46px;
+    }
+
+    #shopify-section-{{ section.id }} .nsc-hiw-v1-step-description {
+      font-size: 15px;
+    }
+
+    #shopify-section-{{ section.id }} .nsc-hiw-v1-final {
+      padding-top: 100px;
+      padding-bottom: 100px;
+    }
+
+  }
+{% endstyle %}
+
+
+<section class="nsc-hiw-v1-page">
+
+  <!-- =========================
+       HERO
+  ========================== -->
+  <section class="nsc-hiw-v1-hero">
+
+    <div class="nsc-hiw-v1-wrap">
+      <div class="nsc-hiw-v1-hero-inner">
+
+        {% if section.settings.eyebrow != blank %}
+          <span class="nsc-hiw-v1-eyebrow">
+            {{ section.settings.eyebrow }}
+          </span>
+        {% endif %}
+
+        {% if section.settings.heading != blank %}
+          <div class="nsc-hiw-v1-hero-heading">
+            {{ section.settings.heading }}
+          </div>
+        {% endif %}
+
+        {% if section.settings.hero_text != blank %}
+          <div class="nsc-hiw-v1-hero-text">
+            {{ section.settings.hero_text }}
+          </div>
+        {% endif %}
+
+      </div>
+    </div>
+
+    <svg
+      class="nsc-hiw-v1-drape"
+      viewBox="0 0 400 700"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <path d="M 40 -20 C 160 120, -20 300, 140 420 C 280 520, 120 620, 220 720"/>
+    </svg>
+
+  </section>
+
+
+  <!-- =========================
+       INTRO
+  ========================== -->
+  <section class="nsc-hiw-v1-intro">
+
+    <div class="nsc-hiw-v1-wrap">
+
+      <div class="nsc-hiw-v1-intro-grid">
+
+        {% if section.settings.intro_heading != blank %}
+          <div class="nsc-hiw-v1-intro-title">
+            {{ section.settings.intro_heading }}
+          </div>
+        {% endif %}
+
+        {% if section.settings.intro_text != blank %}
+          <div class="nsc-hiw-v1-intro-copy">
+            {{ section.settings.intro_text }}
+          </div>
+        {% endif %}
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       JOURNEY BAR
+  ========================== -->
+  <div class="nsc-hiw-v1-journey-bar">
+
+    <div class="nsc-hiw-v1-wrap">
+
+      <div class="nsc-hiw-v1-journey-list">
+
+        {% for block in section.blocks %}
+
+          <div class="nsc-hiw-v1-journey-item">
+
+            <span class="nsc-hiw-v1-journey-number">
+              {% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}
+            </span>
+
+            <span class="nsc-hiw-v1-journey-name">
+              {{ block.settings.title }}
+            </span>
+
+          </div>
+
+        {% endfor %}
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       STEPS
+  ========================== -->
+  <section class="nsc-hiw-v1-steps">
+
+    {% for block in section.blocks %}
+
+      <div
+        class="nsc-hiw-v1-step"
+        {{ block.shopify_attributes }}
+      >
+
+        <!-- STEP IMAGE -->
+        <div class="nsc-hiw-v1-step-image">
+
+          {% if block.settings.image != blank %}
+
+            {{
+              block.settings.image
+              | image_url: width: 1600
+              | image_tag:
+                loading: 'lazy',
+                widths: '600, 800, 1000, 1200, 1600',
+                alt: block.settings.title
+            }}
+
+          {% else %}
+
+            <span class="nsc-hiw-v1-image-placeholder">
+              Add image for {{ block.settings.title }}
+            </span>
+
+          {% endif %}
+
+        </div>
+
+
+        <!-- STEP CONTENT -->
+        <div class="nsc-hiw-v1-step-content">
+
+          <div class="nsc-hiw-v1-step-number">
+            {% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}
+          </div>
+
+          <span class="nsc-hiw-v1-step-label">
+            Step {{ forloop.index }}
+          </span>
+
+          <div class="nsc-hiw-v1-step-title">
+            {{ block.settings.title }}
+          </div>
+
+          <div class="nsc-hiw-v1-step-description">
+            {{ block.settings.description }}
+          </div>
+
+        </div>
+
+      </div>
+
+    {% endfor %}
+
+  </section>
+
+
+  <!-- =========================
+       FINAL CTA
+  ========================== -->
+  <section class="nsc-hiw-v1-final">
+
+    <div class="nsc-hiw-v1-wrap">
+
+      <div class="nsc-hiw-v1-final-content">
+
+        {% if section.settings.cta_eyebrow != blank %}
+          <span class="nsc-hiw-v1-eyebrow">
+            {{ section.settings.cta_eyebrow }}
+          </span>
+        {% endif %}
+
+        {% if section.settings.cta_heading != blank %}
+          <div class="nsc-hiw-v1-final-heading">
+            {{ section.settings.cta_heading }}
+          </div>
+        {% endif %}
+
+        {% if section.settings.cta_text != blank %}
+          <div class="nsc-hiw-v1-final-text">
+            {{ section.settings.cta_text }}
+          </div>
+        {% endif %}
+
+        {% if section.settings.cta_button_text != blank %}
+          <a
+            class="nsc-hiw-v1-button"
+            href="{{ section.settings.cta_button_link | default: '#' }}"
+          >
+            {{ section.settings.cta_button_text }}
+          </a>
+        {% endif %}
+
+      </div>
+
+    </div>
+
+  </section>
+
+</section>
+
+
+{% schema %}
+{
+  "name": "NSC How It Works",
+  "tag": "section",
+  "class": "nsc-how-it-works-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Hero eyebrow",
+      "default": "The couture experience"
+    },
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Hero heading",
+      "default": "<p>Five simple steps.<br>One unforgettable <em>look.</em></p>"
+    },
+    {
+      "type": "richtext",
+      "id": "hero_text",
+      "label": "Hero text",
+      "default": "<p>From discovering the perfect piece to sending it back after your event, we've made couture effortless.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "intro_heading",
+      "label": "Introduction heading",
+      "default": "<p>Couture, made <em>simple.</em></p>"
+    },
+    {
+      "type": "richtext",
+      "id": "intro_text",
+      "label": "Introduction text",
+      "default": "<p>Because finding the perfect outfit for your special occasion should feel exciting — not complicated. Our process takes you from choosing your dream look to returning it after your event, effortlessly.</p>"
+    },
+    {
+      "type": "text",
+      "id": "cta_eyebrow",
+      "label": "CTA eyebrow",
+      "default": "Your next occasion"
+    },
+    {
+      "type": "richtext",
+      "id": "cta_heading",
+      "label": "CTA heading",
+      "default": "<p>The perfect look is <em>waiting.</em></p>"
+    },
+    {
+      "type": "richtext",
+      "id": "cta_text",
+      "label": "CTA text",
+      "default": "<p>Choose the piece that makes the occasion unforgettable. We'll take care of the rest.</p>"
+    },
+    {
+      "type": "text",
+      "id": "cta_button_text",
+      "label": "Button text",
+      "default": "Explore the collection"
+    },
+    {
+      "type": "url",
+      "id": "cta_button_link",
+      "label": "Button link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "How it works step",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Step image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Step title",
+          "default": "CHOOSE"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Step description",
+          "default": "<p>Browse our curated collection and find the piece that feels made for your occasion.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "NSC How It Works",
+      "blocks": [
+        {
+          "type": "step",
+          "settings": {
+            "title": "CHOOSE",
+            "description": "<p>Browse our curated collection and discover the piece that feels made for your occasion.</p>"
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "MEASURE",
+            "description": "<p>Share your measurements so we can help you find the fit that feels just right.</p>"
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "CUSTOMISE",
+            "description": "<p>Add the finishing touches and personalise your look for the occasion.</p>"
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "FLAUNT",
+            "description": "<p>Wear your chosen look, own the moment and make every entrance unforgettable.</p>"
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "RETURN",
+            "description": "<p>Once the celebrations are over, simply send your piece back and we'll take care of the rest.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,66 @@
+{%- comment -%}
+  Snippet: hiw-icon.liquid
+  Paste into Online Store → Themes → Edit code → Snippets → Add a new snippet.
+  Name the file exactly: hiw-icon.liquid
+  Usage: {% render 'hiw-icon', icon: 'choose' %}
+{%- endcomment -%}
+
+{%- case icon -%}
+
+  {%- when 'choose' -%}
+    <svg viewBox="0 0 80 80" width="70" height="70">
+      <circle cx="22" cy="8" r="3"/>
+      <path d="M22 11 L8 30 L36 30 Z"/>
+      <path d="M14 30 L11 42 L33 42 L30 30"/>
+      <circle cx="38" cy="8" r="3"/>
+      <path d="M38 11 L24 30 L52 30 Z"/>
+      <path d="M30 30 L27 42 L49 42 L46 30"/>
+      <circle cx="54" cy="8" r="3"/>
+      <path d="M54 11 L40 30 L68 30 Z"/>
+      <path d="M46 30 L43 42 L65 42 L62 30"/>
+    </svg>
+
+  {%- when 'measure' -%}
+    <svg viewBox="0 0 80 80" width="70" height="70">
+      <circle cx="32" cy="8" r="3"/>
+      <path d="M32 11 L14 34 L50 34 Z"/>
+      <path d="M20 34 L16 48 L48 48 L44 34"/>
+      <line x1="60" y1="6" x2="60" y2="50"/>
+      <line x1="60" y1="6" x2="66" y2="6"/>
+      <line x1="60" y1="16" x2="65" y2="16"/>
+      <line x1="60" y1="26" x2="66" y2="26"/>
+      <line x1="60" y1="36" x2="65" y2="36"/>
+      <line x1="60" y1="46" x2="66" y2="46"/>
+    </svg>
+
+  {%- when 'customise' -%}
+    <svg viewBox="0 0 80 80" width="70" height="70">
+      <ellipse cx="40" cy="6" rx="4" ry="3"/>
+      <path d="M40 9 L40 16"/>
+      <path d="M28 22 C28 15 52 15 52 22 L54 34 C54 40 26 40 26 34 Z"/>
+      <path d="M30 40 C24 46 24 60 30 66 L50 66 C56 60 56 46 50 40"/>
+      <line x1="40" y1="66" x2="40" y2="72"/>
+      <line x1="30" y1="72" x2="50" y2="72"/>
+    </svg>
+
+  {%- when 'flaunt' -%}
+    <svg viewBox="0 0 80 80" width="70" height="70">
+      <circle cx="40" cy="8" r="4"/>
+      <path d="M32 16 C32 12 48 12 48 16 L52 30 C52 34 28 34 28 30 Z"/>
+      <path d="M30 34 C24 40 22 58 26 68 L54 68 C58 58 56 40 50 34"/>
+      <line x1="34" y1="40" x2="30" y2="66"/>
+      <line x1="46" y1="40" x2="50" y2="66"/>
+    </svg>
+
+  {%- when 'return' -%}
+    <svg viewBox="0 0 80 80" width="70" height="70">
+      <path d="M22 24 H58 L62 34 H18 Z"/>
+      <path d="M18 34 L22 66 H58 L62 34"/>
+      <path d="M32 34 L28 66"/>
+      <path d="M48 34 L52 66"/>
+      <path d="M9 45 C9 34 20 30 20 30" />
+      <path d="M9 45 L4 41 M9 45 L5 50" />
+      <rect x="14" y="46" width="10" height="8" rx="1"/>
+    </svg>
+
+{%- endcase -%}

@@ -1,0 +1,110 @@
+{% doc %}
+  @prompt
+    Create a polished, responsive storefront theme block called “Outfit Upload Form” for NOSTRINGS COUTURE. The form should include the heading “Outfit Upload Form” and subtitle “Fill in your outfit details below to get started.” Use clearly separated numbered sections: 01 Personal Information, 02 Outfit Details, 03 Upload Outfit Images, 04 Proof , 01
+    Personal Information
+    Full Name *
+    Full Name
+    City *
+    City
+    Email ID *
+    Email ID
+    Contact Number *
+    
+    +91
+    Phone number
+    02
+    Outfit Details
+    Name of Designer *
+    Name of Designer
+    Price of Outfit *
+    
+    ₹ INR
+    Price
+    Year of Purchase *
+    
+    Select year
+    Outfit Size *
+    
+    Select size
+    Exact Measurements (if applicable)
+    Chest
+    Chest
+    Waist
+    Waist
+    Bicep
+    Bicep
+    Height
+    Height
+    03
+    Upload Outfit Images
+    Please upload clear images of the outfit. Front, back and label images are required.
+    
+    No file chosen
+    +
+    Front of Outfit
+    Required · JPG, PNG, WEBP
+    No file selected
+    No file chosen
+    +
+    Back of Outfit
+    Required · JPG, PNG, WEBP
+    No file selected
+    No file chosen
+    +
+    Outfit Label
+    Required · JPG, PNG, WEBP
+    No file selected
+    No file chosen
+    +
+    Outfit Damage
+    Optional · If applicable
+    No file selected
+    No file chosen
+    +
+    Additional Detail Shots
+    Optional · Multiple images allowed
+    No files selected
+    04
+    Proof & Packaging
+    No file chosen
+    +
+    Proof of Purchase
+    Required · Invoice / transaction / email
+    No file selected
+    Packaging Available? *
+    
+    Select option
+    No file chosen
+    +
+    Packaging Image
+    Optional · If available
+    No file selected
+    05
+    Outfit Condition
+    Outfit Condition *
+    
+    Select condition
+    Number of Times Worn *
+    
+    Select
+    Sell or Rent? *
+    
+    Select option
+    
+    Submission & Consignment Disclaimer
+    +
+    
+    I have read and agree to the Submission & Consignment Disclaimer and confirm that the information provided is accurate.
+    Continue button "these form fields must be there"
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+{% style %}
+.ai-outfit-upload-{{ ai_gen_id }}{display:block;width:{{ block.settings.desktop_width_percent }}%;max-width:100%;margin:auto;background:{{ block.settings.background_color }};color:{{ block.settings.text_color }};font-family:{{ block.settings.body_font.family }},sans-serif}.ai-outfit-upload-{{ ai_gen_id }}__inner{max-width:900px;margin:auto;padding:52px 32px}.ai-outfit-upload-{{ ai_gen_id }}__title{margin:0 0 10px;color:{{ block.settings.heading_color }};font-family:{{ block.settings.heading_font.family }},serif;font-size:{{ block.settings.heading_size }}px;font-weight:400}.ai-outfit-upload-{{ ai_gen_id }}__subtitle{margin:0 0 38px;font-size:16px;line-height:1.6}.ai-outfit-upload-{{ ai_gen_id }}__section{padding:28px 0 34px;border-top:1px solid {{ block.settings.border_color }}}.ai-outfit-upload-{{ ai_gen_id }}__section-heading{display:flex;gap:14px;align-items:baseline;margin:0 0 24px;color:{{ block.settings.heading_color }};font-family:{{ block.settings.heading_font.family }},serif;font-size:26px;font-weight:400}.ai-outfit-upload-{{ ai_gen_id }}__number{color:{{ block.settings.accent_color }};font-family:{{ block.settings.body_font.family }},sans-serif;font-size:13px;font-weight:600;letter-spacing:.12em}.ai-outfit-upload-{{ ai_gen_id }}__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.ai-outfit-upload-{{ ai_gen_id }}__field{display:flex;flex-direction:column;gap:8px}.ai-outfit-upload-{{ ai_gen_id }}__full{grid-column:1/-1}.ai-outfit-upload-{{ ai_gen_id }}__label{font-size:13px;font-weight:600;letter-spacing:.03em}.ai-outfit-upload-{{ ai_gen_id }}__input,.ai-outfit-upload-{{ ai_gen_id }}__select,.ai-outfit-upload-{{ ai_gen_id }}__textarea{box-sizing:border-box;width:100%;padding:14px 15px;border:1px solid {{ block.settings.border_color }};border-radius:{{ block.settings.input_radius }}px;background:{{ block.settings.input_background }};color:{{ block.settings.text_color }};font:inherit;font-size:15px}.ai-outfit-upload-{{ ai_gen_id }}__textarea{min-height:110px;resize:vertical}.ai-outfit-upload-{{ ai_gen_id }}__input:focus,.ai-outfit-upload-{{ ai_gen_id }}__select:focus,.ai-outfit-upload-{{ ai_gen_id }}__textarea:focus{outline:2px solid {{ block.settings.accent_color }};outline-offset:2px}.ai-outfit-upload-{{ ai_gen_id }}__upload{padding:20px;border:1px dashed {{ block.settings.border_color }};border-radius:{{ block.settings.input_radius }}px;background:{{ block.settings.input_background }};display:flex;flex-direction:column;gap:22px}.ai-outfit-upload-{{ ai_gen_id }}__help{margin:3px 0 0;color:{{ block.settings.muted_color }};font-size:13px;line-height:1.5}.ai-outfit-upload-{{ ai_gen_id }}__check{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.5}.ai-outfit-upload-{{ ai_gen_id }}__check input{width:18px;height:18px;margin-top:2px;accent-color:{{ block.settings.accent_color }}}.ai-outfit-upload-{{ ai_gen_id }}__button{width:100%;padding:16px 24px;border:0;border-radius:{{ block.settings.button_radius }}px;background:{{ block.settings.button_background }};color:{{ block.settings.button_text }};font:inherit;font-size:14px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}.ai-outfit-upload-{{ ai_gen_id }}__message{padding:14px 16px;border:1px solid {{ block.settings.border_color }}}@media(max-width:749px){.ai-outfit-upload-{{ ai_gen_id }}__inner{padding:40px 20px}.ai-outfit-upload-{{ ai_gen_id }}__title{font-size:{{ block.settings.heading_size | times: 0.75 | round }}px}.ai-outfit-upload-{{ ai_gen_id }}__grid{grid-template-columns:1fr}.ai-outfit-upload-{{ ai_gen_id }}__full{grid-column:auto}}
+{% endstyle %}
+<div class="ai-outfit-upload-{{ ai_gen_id }}" {{ block.shopify_attributes }}><div class="ai-outfit-upload-{{ ai_gen_id }}__inner"><h2 class="ai-outfit-upload-{{ ai_gen_id }}__title">{{ block.settings.heading }}</h2><p class="ai-outfit-upload-{{ ai_gen_id }}__subtitle">{{ block.settings.subtitle }}</p>{% form 'contact', enctype: 'multipart/form-data' %}<input type="hidden" name="contact[form_type]" value="Outfit Upload Form">
+<section class="ai-outfit-upload-{{ ai_gen_id }}__section"><h3 class="ai-outfit-upload-{{ ai_gen_id }}__section-heading"><span class="ai-outfit-upload-{{ ai_gen_id }}__number">01</span>Personal Information</h3><div class="ai-outfit-upload-{{ ai_gen_id }}__grid"><div class="ai-outfit-upload-{{ ai_gen_id }}__field"><label class="ai-outfit-upload-{{ ai_gen_id }}__label" for="full-name-{{ ai_gen_id }}">Full Name *</label><input class="ai-outfit-upload-{{ ai_gen_id }}__input" id="full-name-{{ ai_gen_id }}" name="contact[full_name]" type="text" placeholder="Full Name" autocomplete="name" required></div><div class="ai-outfit-upload-{{ ai_gen_id }}__field"><label class="ai-outfit-upload-{{ ai_gen_id }}__label" for="city-{{ ai_gen_id }}">City *</label><input class="ai-outfit-upload-{{ ai_gen_id }}__input" id="city-{{ ai_gen_id }}" name="contact[city]" type="text" placeholder="City" required></div><div class="ai-outfit-upload-{{ ai_gen_id }}__field"><label class="ai-outfit-upload-{{ ai_gen_id }}__label" for="email-{{ ai_gen_id }}">Email ID *</label><input class="ai-outfit-upload-{{ ai_gen_id }}__input" id="email-{{ ai_gen_id }}" name="contact[email]" type="email" placeholder="Email ID" autocomplete="email" required></div><div class="ai-outfit-upload-{{ ai_gen_id }}__field"><label class="ai-outfit-upload-{{ ai_gen_id }}__label" for="contact-{{ ai_gen_id }}">Contact Number *</label><input class="ai-outfit-upload-{{ ai_gen_id }}__input" id="contact-{{ ai_gen_id }}" name="contact[contact_number]" type="tel" placeholder="+91 Phone number" autocomplete="tel" required></div></div></section>
+<section class="ai-outfit-upload-{{ ai_gen_id }}__section"><h3 class="ai-outfit-upload-{{ ai_gen_id }}__section-heading"><span class="ai-outfit-upload-{{ ai_gen_id }}__number">02</span>Outfit Details</h3><div class="ai-outfit-upload-{{ ai_gen_id }}__grid"><div class="ai-outfit-upload-{{ ai_gen_id }}__field"><label class="ai-outfit-upload-{{ ai_gen_id }}__label" for="designer-{{ ai_gen_id }}">Name of Designer *</label><input class="ai-outfit-upload-{{ ai_gen_id }}__input" id="designer-{{ ai_gen_id }}" name="contact[designer]" type="text" placeholder="Name of Designer" required></div><div class="ai-outfit-upload-{{ ai_gen_id }}__field"><label class="ai-outfit-upload-{{ ai_gen_id }}__label" for="price-{{ ai_gen_id }}">Price of Outfit *</label><input class="ai-outfit-upload-{{ ai_gen_id }}__input" id="price-{{ ai_gen_id }}" name="contact[outfit_price]" type="text" inputmode="decimal" placeholder="₹ INR Price" required></div><div class="ai-outfit-upload-{{ ai_gen_id }}__field"><label class="ai-outfit-upload-{{ ai_gen_id }}__label" for="year-{{ ai_gen_id }}">Year of Purchase *</label><select class="ai-outfit-upload-{{ ai_gen_id }}__select" id="year-{{ ai_gen_id }}" name="contact[purchase_year]" required><option value="">Select year</option>{% for year in (1990..2026) reversed %}<option value="{{ year }}">{{ year }}</option>{% endfor %}</select></div><div class="ai-outfit-upload-{{ ai_gen_id }}__field"><label class="ai-outfit-upload-{{ ai_gen_id }}__label" for="size-{{ ai_gen_id }}">Outfit Size *</label><select class="ai-outfit-upload-{{ ai_gen_id }}__select" id="size-{{ ai_gen_id }}" name="contact[outfit_size]" required><option value="">Select size</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>Custom</option></select></div><div class="ai-outfit-upload-{{ ai_gen_id }}__field ai-outfit-upload-{{ ai_gen_id }}__full"><label class="ai-outfit-upload-{{ ai_gen_id }}__label">Exact Measurements (if applicable)</label><div class="ai-outfit-upload-{{ ai_gen_id }}__grid"><input class="ai-outfit-upload-{{ ai_gen_id }}__input" name="contact[chest]" type="text" placeholder="Chest"><input class="ai-outfit-upload-{{ ai_gen_id }}__input" name="contact[waist]" type="text" placeholder="Waist"><input class="ai-outfit-upload-{{ ai_gen_id }}__input" name="contact[bicep]" type="text" placeholder="Bicep"><input class="ai-outfit-upload-{{ ai_gen_id }}__input" name="contact[height]" type="text" placeholder="Height"></div></div></div></section>
+<section class="ai-outfit-upload-{{ ai_gen_id }}__section"><h3 class="ai-outfit-upload-{{ ai_gen_id }}__section-heading"><span class="ai-outfit-upload-{{ ai_gen_id }}__number">03</span>Upload Outfit Images</h3><p class="ai-outfit-upload-{{ ai_gen_id }}__help">Please upload clear images of the outfit. Front, back and label images are required.</p><div class="ai-outfit-upload-{{ ai_gen_id }}__upload"><div class="ai-outfit-upload-{{ ai_gen_id }}__field"><label class="ai-outfit-upload-{{ ai_gen_id }}__label" for="front-{{ ai_gen_id }}">Front of Outfit · Required · JPG, PNG, WEBP</label><input class="ai-outfit-upload-{{ ai_gen_id }}__input" id="front-{{ ai_gen_id }}" name="contact[front_outfit]" type="file" accept="image/jpeg,image/png,image/webp" required></div><div class="ai-outfit-upload-{{ ai_gen_id }}__field"><label class="ai-outfit-upload-{{ ai_gen_id }}__label" for="back-{{ ai_gen_id }}">Back of Outfit · Required · JPG, PNG, WEBP</label><input class="ai-outfit-upload-{{ ai_gen_id }}__input" id="back-{{ ai_gen_id }}" name="contact[back_outfit]" type="file" accept="image/jpeg,image/png,image/webp" required></div><div class="ai-outfit-upload-{{ ai_gen_id }}__field"><label class="ai-outfit-upload-{{ ai_gen_id }}__label" for="label-{{ ai_gen_id }}">Outfit Label · Required · JPG, PNG, WEBP</label><input class="ai-outfit-upload-{{ ai_gen_id }}__input" id="label-{{ ai_gen_id }}" name="contact[outfit_label]" type="file" accept="image/jpeg,image/png,image/webp" required></div><div class="ai-outfit-upload-{{ ai_gen_id }}__field"><label class="ai-outfit-upload-{{ ai_gen_id }}__label" for="damage-{{ ai_gen_id }}">Outfit Damage · Optional</label><input class="ai-outfit-upload-{{ ai_gen_id }}__input" id="damage-{{ ai_gen_id }}" name="contact[outfit_damage]" type="file" accept="image/jpeg,image/png,image/webp"></div><div class="ai-outfit-upload-{{ ai_gen_id }}__field"><label class="ai-outfit-upload-{{ ai_gen_id }}__label" for="details-{{ ai_gen_id }}">Additional Detail Shots · Optional</label><input class="ai-outfit-upload-{{ ai_gen_id }}__input" id="details-{{ ai_gen_id }}" name="contact[detail_shots]" type="file" accept="image/jpeg,image/png,image/webp" multiple></div></div></section>
+<section class="ai-outfit-upload-{{ ai_gen_id }}__section"><h3 class="ai-outfit-upload-{{ ai_gen_id }}__section-heading"><span class="ai-outfit-upload-{{ ai_gen_id }}__number">04</span>Proof &amp; Packaging</h3><div class="ai-outfit-upload-{{ ai_gen_id }}__grid"><div class="ai-outfit-upload-{{ ai_gen_id }}__field ai-outfit-upload-{{ ai_gen_id }}__full"><label class="ai-outfit-upload-{{ ai_gen_id }}__label" for="proof-{{ ai_gen_id }}">Proof of Purchase · Required · Invoice / transaction / email</label><input class="ai-outfit-upload-{{ ai_gen_id }}__input" id="proof-{{ ai_gen_id }}" name="contact[proof_of_purchase]" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" required></div><div class="ai-outfit-upload-{{ ai_gen_id }}__field"><label class="ai-outfit-upload-{{ ai_gen_id }}__label" for="packaging-{{ ai_gen_id }}">Packaging Available? *</label><select class="ai-outfit-upload-{{ ai_gen_id }}__select" id="packaging-{{ ai_gen_id }}" name="contact[packaging_available]" required><option value="">Select option</option><option>Yes</option><option>No</option></select></div><div class="ai-outfit-upload-{{ ai_gen_id }}__field"><label class="ai-outfit-upload-{{ ai_gen_id }}__label" for="packaging-image-{{ ai_gen_id }}">Packaging Image · Optional</label><input class="ai-outfit-upload-{{ ai_gen_id }}__input" id="packaging-image-{{ ai_gen_id }}" name="contact[packaging_image]" type="file" accept="image/jpeg,image/png,image/webp"></div></div></section>
+<section class="ai-outfit-upload-{{ ai_gen_id }}__section"><h3 class="ai-outfit-upload-{{ ai_gen_id }}__section-heading"><span class="ai-outfit-upload-{{ ai_gen_id }}__number">05</span>Outfit Condition</h3><div class="ai-outfit-upload-{{ ai_gen_id }}__grid"><div class="ai-outfit-upload-{{ ai_gen_id }}__field"><label class="ai-outfit-upload-{{ ai_gen_id }}__label" for="condition-{{ ai_gen_id }}">Outfit Condition *</label><select class="ai-outfit-upload-{{ ai_gen_id }}__select" id="condition-{{ ai_gen_id }}" name="contact[outfit_condition]" required><option value="">Select condition</option><option>New</option><option>Like new</option><option>Excellent</option><option>Good</option><option>Fair</option></select></div><div class="ai-outfit-upload-{{ ai_gen_id }}__field"><label class="ai-outfit-upload-{{ ai_gen_id }}__label" for="worn-{{ ai_gen_id }}">Number of Times Worn *</label><select class="ai-outfit-upload-{{ ai_gen_id }}__select" id="worn-{{ ai_gen_id }}" name="contact[times_worn]" required><option value="">Select</option><option>Never worn</option><option>1–2 times</option><option>3–5 times</option><option>6–10 times</option><option>More than 10 times</option></select></div><div class="ai-outfit-upload-{{ ai_gen_id }}__field ai-outfit-upload-{{ ai_gen_id }}__full"><label class="ai-outfit-upload-{{ ai_gen_id }}__label" for="sell-rent-{{ ai_gen_id }}">Sell or Rent? *</label><select class="ai-outfit-upload-{{ ai_gen_id }}__select" id="sell-rent-{{ ai_gen_id }}" name="contact[sell_or_rent]" required><option value="">Select option</option><option>Sell</option><option>Rent</option></select></div><label class="ai-outfit-upload-{{ ai_gen_id }}__check ai-outfit-upload-{{ ai_gen_id }}__full" for="consent-{{ ai_gen_id }}"><input id="consent-{{ ai_gen_id }}" name="contact[consignment_consent]" type="checkbox" value="Agreed" required><span>I have read and agree to the Submission &amp; Consignment Disclaimer and confirm that the information provided is accurate. *</span></label></div></section><button class="ai-outfit-upload-{{ ai_gen_id }}__button" type="submit">{{ block.settings.button_label }}</button>{% if form.posted_successfully? %}<p class="ai-outfit-upload-{{ ai_gen_id }}__message" role="status">{{ block.settings.success_message }}</p>{% endif %}{% if form.errors %}<p class="ai-outfit-upload-{{ ai_gen_id }}__message" role="alert">Please check the required fields and try again.</p>{% endif %}{% endform %}</div></div>
+{% schema %}{"name":"Outfit Upload Form","settings":[{"type":"text","id":"heading","label":"Heading","default":"Outfit Upload Form"},{"type":"textarea","id":"subtitle","label":"Subtitle","default":"Fill in your outfit details below to get started."},{"type":"text","id":"button_label","label":"Button label","default":"Continue"},{"type":"textarea","id":"success_message","label":"Success message","default":"Thank you. We have received your outfit details."},{"type":"range","id":"desktop_width_percent","label":"Desktop width","min":50,"max":100,"step":5,"unit":"%","default":100},{"type":"font_picker","id":"heading_font","label":"Heading font","default":"gilda_display_n4"},{"type":"font_picker","id":"body_font","label":"Body font","default":"red_hat_text_n4"},{"type":"range","id":"heading_size","label":"Heading size","min":24,"max":72,"step":2,"unit":"px","default":48},{"type":"range","id":"input_radius","label":"Input radius","min":0,"max":20,"step":1,"unit":"px","default":0},{"type":"range","id":"button_radius","label":"Button radius","min":0,"max":20,"step":1,"unit":"px","default":0},{"type":"color","id":"background_color","label":"Background","default":"#ffffff"},{"type":"color","id":"input_background","label":"Input background","default":"#ffffff"},{"type":"color","id":"text_color","label":"Text","default":"#17181b"},{"type":"color","id":"heading_color","label":"Headings","default":"#17181b"},{"type":"color","id":"accent_color","label":"Accent","default":"#2a1015"},{"type":"color","id":"border_color","label":"Borders","default":"#b8b8b8"},{"type":"color","id":"muted_color","label":"Muted text","default":"#555555"},{"type":"color","id":"button_background","label":"Button background","default":"#17181b"},{"type":"color","id":"button_text","label":"Button text","default":"#ffffff"}],"presets":[{"name":"Outfit Upload Form"}],"tag":null,"class":"outfit-upload-form-block"}{% endschema %}

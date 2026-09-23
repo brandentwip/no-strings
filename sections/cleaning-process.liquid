@@ -1,0 +1,1189 @@
+{% liquid
+  assign sid = 'nsc-cleaning-' | append: section.id
+%}
+
+<style>
+  /* =========================================================
+     FONT IMPORT
+     Must come before all other CSS rules.
+  ========================================================= */
+
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Fraunces:ital,opsz,wght@1,9..144,400&family=Jost:wght@300;400;500&display=swap'); 
+ 
+ 
+  /* ========================================================= 
+     ROOT 
+  ========================================================= */ 
+ 
+  #{{ sid }} { 
+    --nsc-ink: {{ section.settings.ink }}; 
+    --nsc-ink-soft: {{ section.settings.ink_soft }}; 
+    --nsc-ivory: {{ section.settings.ivory }}; 
+    --nsc-ivory-deep: {{ section.settings.ivory_deep }}; 
+    --nsc-gold: {{ section.settings.gold }}; 
+    --nsc-gold-bright: {{ section.settings.gold_bright }}; 
+    --nsc-text-soft: {{ section.settings.text_soft }}; 
+ 
+    position: relative; 
+    width: 100%; 
+    margin: 0 !important; 
+    padding: 0 !important; 
+ 
+    background: var(--nsc-ivory); 
+    color: var(--nsc-ink); 
+ 
+    font-family: 'Jost', sans-serif; 
+    font-weight: 300; 
+    line-height: normal; 
+ 
+    overflow: hidden; 
+    isolation: isolate; 
+  } 
+ 
+  /* ========================================================= 
+     HARD RESET — prevents Shopify theme CSS from interfering 
+  ========================================================= */ 
+ 
+  #{{ sid }}, 
+  #{{ sid }} *, 
+  #{{ sid }} *::before, 
+  #{{ sid }} *::after { 
+    box-sizing: border-box; 
+  } 
+ 
+  #{{ sid }} h1, 
+  #{{ sid }} h2, 
+  #{{ sid }} h3, 
+  #{{ sid }} h4, 
+  #{{ sid }} p, 
+  #{{ sid }} blockquote, 
+  #{{ sid }} figure, 
+  #{{ sid }} ul, 
+  #{{ sid }} ol { 
+    margin: 0; 
+    padding: 0; 
+  } 
+ 
+  #{{ sid }} ul, 
+  #{{ sid }} ol { 
+    list-style: none; 
+  } 
+ 
+  #{{ sid }} img { 
+    max-width: 100%; 
+  } 
+ 
+  #{{ sid }} a { 
+    color: inherit; 
+    text-decoration: none; 
+  } 
+ 
+ 
+  /* ========================================================= 
+     COMMON WRAPPER 
+  ========================================================= */ 
+ 
+  #{{ sid }} .nsc-wrap { 
+    width: 100%; 
+    max-width: 1240px; 
+    margin-left: auto; 
+    margin-right: auto; 
+    padding-left: 48px; 
+    padding-right: 48px; 
+  } 
+ 
+ 
+  /* ========================================================= 
+     EYEBROW 
+  ========================================================= */ 
+ 
+  #{{ sid }} .nsc-eyebrow { 
+    display: block; 
+    font-family: 'Jost', sans-serif; 
+    font-size: 11px; 
+    line-height: 1.2; 
+    font-weight: 500; 
+    text-transform: uppercase; 
+    letter-spacing: 0.22em; 
+    color: var(--nsc-gold); 
+  } 
+ 
+ 
+  /* ========================================================= 
+     DECORATIVE DRAPE 
+  ========================================================= */ 
+ 
+  #{{ sid }} .nsc-drape-svg { 
+    position: absolute; 
+    display: block; 
+    pointer-events: none; 
+  } 
+ 
+  #{{ sid }} .nsc-drape-path { 
+    fill: none; 
+    stroke: var(--nsc-gold); 
+    stroke-width: 1.4; 
+    stroke-dasharray: 1400; 
+    stroke-dashoffset: 1400; 
+    animation: nsc-draw-{{ section.id }} 2.6s ease forwards 0.3s; 
+  } 
+ 
+  @keyframes nsc-draw-{{ section.id }} { 
+    to { 
+      stroke-dashoffset: 0; 
+    } 
+  } 
+ 
+  @media (prefers-reduced-motion: reduce) { 
+    #{{ sid }} .nsc-drape-path { 
+      animation: none; 
+      stroke-dashoffset: 0; 
+    } 
+  } 
+ 
+ 
+  /* ========================================================= 
+     PAGE HERO 
+     Original: 
+     padding: 90px 0 70px 
+  ========================================================= */ 
+ 
+  #{{ sid }} .nsc-page-hero { 
+    position: relative; 
+    padding: 90px 0 70px; 
+    text-align: center; 
+    border-bottom: 1px solid rgba(42, 16, 21, 0.08); 
+    background: var(--nsc-ivory); 
+  } 
+ 
+  #{{ sid }} .nsc-page-hero .nsc-eyebrow { 
+    margin-bottom: 18px; 
+  } 
+ 
+  #{{ sid }} .nsc-page-hero h1 { 
+    max-width: 680px; 
+    margin: 0 auto; 
+ 
+    font-family: 'Fraunces', serif; 
+    font-size: clamp(34px, 5vw, 56px); 
+    line-height: 1.05; 
+    font-weight: 500; 
+    letter-spacing: -0.01em; 
+ 
+    color: var(--nsc-ink); 
+  } 
+ 
+  #{{ sid }} .nsc-drape-mini { 
+    top: 10px; 
+    left: 50%; 
+    width: 220px; 
+    height: 60px; 
+    transform: translateX(-50%); 
+    opacity: 0.7; 
+  } 
+ 
+ 
+  /* ========================================================= 
+     PROCESS 
+     Original: 
+     padding: 100px 0 
+  ========================================================= */ 
+ 
+  #{{ sid }} .nsc-process { 
+    padding: 100px 0; 
+    background: var(--nsc-ivory); 
+  } 
+ 
+  #{{ sid }} .nsc-process-step { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 70px; 
+    align-items: center; 
+ 
+    margin-bottom: 130px; 
+  } 
+ 
+  #{{ sid }} .nsc-process-step:last-child { 
+    margin-bottom: 0; 
+  } 
+ 
+  /* Original reverse behavior */ 
+ 
+  #{{ sid }} .nsc-process-step.is-reverse .nsc-step-media { 
+    order: 2; 
+  } 
+ 
+  #{{ sid }} .nsc-process-step.is-reverse .nsc-step-copy { 
+    order: 1; 
+  } 
+ 
+ 
+  /* ========================================================= 
+     PROCESS MEDIA 
+  ========================================================= */ 
+ 
+  #{{ sid }} .nsc-step-media { 
+    position: relative; 
+    width: 100%; 
+    min-width: 0; 
+  } 
+ 
+  #{{ sid }} .nsc-image-block { 
+    position: relative; 
+ 
+    width: 100%; 
+    height: 520px; 
+ 
+    overflow: hidden; 
+    border-radius: 2px; 
+ 
+    display: flex; 
+    align-items: flex-end; 
+    justify-content: center; 
+ 
+    background: 
+      linear-gradient( 
+        150deg, 
+        #D9C4A8 0%, 
+        #C79A66 45%, 
+        #8C5A44 100% 
+      ); 
+ 
+    box-shadow: 
+      0 40px 80px -30px rgba(42, 16, 21, 0.35); 
+  } 
+ 
+  
+ 
+  #{{ sid }} .nsc-image-block img { 
+    position: absolute; 
+    z-index: 0; 
+ 
+    inset: 0; 
+ 
+    display: block; 
+ 
+    width: 100%; 
+    height: 100%; 
+ 
+    max-width: none; 
+ 
+    object-fit: cover; 
+    object-position: center; 
+  } 
+ 
+  #{{ sid }} .nsc-placeholder { 
+    position: relative; 
+    z-index: 2; 
+ 
+    width: 100%; 
+ 
+    padding: 0 22px 22px; 
+ 
+    color: rgba(255, 255, 255, 0.75); 
+ 
+    font-family: 'Jost', sans-serif; 
+    font-size: 11px; 
+    line-height: 1.4; 
+    font-weight: 300; 
+ 
+    letter-spacing: 0.12em; 
+    text-align: center; 
+    text-transform: uppercase; 
+  } 
+ 
+ 
+  /* ========================================================= 
+     PROCESS COPY 
+  ========================================================= */ 
+ 
+  #{{ sid }} .nsc-step-copy { 
+    min-width: 0; 
+  } 
+ 
+  #{{ sid }} .nsc-step-number { 
+    display: block; 
+ 
+    margin-bottom: 18px; 
+ 
+    font-family: 'Fraunces', serif; 
+    font-size: 15px; 
+    line-height: 1; 
+    font-weight: 400; 
+    font-style: italic; 
+ 
+    letter-spacing: 0.02em; 
+ 
+    color: var(--nsc-gold); 
+  } 
+ 
+  #{{ sid }} .nsc-step-number::before { 
+    content: ''; 
+ 
+    display: inline-block; 
+ 
+    width: 34px; 
+    height: 1px; 
+ 
+    margin-right: 14px; 
+ 
+    vertical-align: middle; 
+ 
+    background: var(--nsc-gold); 
+  } 
+ 
+  #{{ sid }} .nsc-step-copy h2 { 
+    max-width: 420px; 
+ 
+    margin-bottom: 20px; 
+ 
+    font-family: 'Fraunces', serif; 
+    font-size: clamp(26px, 3vw, 38px); 
+    line-height: 1.1; 
+    font-weight: 500; 
+ 
+    letter-spacing: -0.01em; 
+ 
+    color: var(--nsc-ink); 
+  } 
+ 
+  #{{ sid }} .nsc-step-copy p { 
+    max-width: 420px; 
+ 
+    font-family: 'Jost', sans-serif; 
+    font-size: 15px; 
+    line-height: 1.85; 
+    font-weight: 300; 
+ 
+    color: var(--nsc-text-soft); 
+  } 
+ 
+ 
+  /* ========================================================= 
+     TRUST STRIP 
+     Original: 
+     padding: 64px 0 
+     4 columns 
+  ========================================================= */ 
+ 
+  #{{ sid }} .nsc-trust-strip { 
+    width: 100%; 
+ 
+    padding: 64px 0; 
+ 
+    background: var(--nsc-ivory-deep); 
+  } 
+ 
+  #{{ sid }} .nsc-trust-grid { 
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 36px; 
+ 
+    text-align: center; 
+  } 
+ 
+  #{{ sid }} .nsc-trust-item { 
+    min-width: 0; 
+  } 
+ 
+  #{{ sid }} .nsc-trust-mark { 
+    display: block; 
+ 
+    margin-bottom: 10px; 
+ 
+    font-family: 'Fraunces', serif; 
+    font-size: 22px; 
+    line-height: 1; 
+    font-weight: 400; 
+    font-style: italic; 
+ 
+    color: var(--nsc-gold); 
+  } 
+ 
+  #{{ sid }} .nsc-trust-item p { 
+    max-width: 180px; 
+ 
+    margin: 0 auto; 
+ 
+    font-family: 'Jost', sans-serif; 
+    font-size: 13px; 
+    line-height: 1.6; 
+    font-weight: 300; 
+ 
+    color: var(--nsc-text-soft); 
+  } 
+ 
+ 
+  /* ========================================================= 
+     QUOTE BAND 
+     Original: 
+     padding: 150px 0 
+  ========================================================= */ 
+ 
+  #{{ sid }} .nsc-quote-band { 
+    position: relative; 
+ 
+    width: 100%; 
+ 
+    padding: 150px 0; 
+ 
+    overflow: hidden; 
+ 
+    text-align: center; 
+ 
+    background: var(--nsc-ink); 
+    color: var(--nsc-ivory); 
+  } 
+ 
+  #{{ sid }} .nsc-quote-drape { 
+    top: 0; 
+    left: 0; 
+ 
+    width: 100%; 
+    height: 100%; 
+ 
+    opacity: 0.5; 
+  } 
+ 
+  #{{ sid }} .nsc-quote-band blockquote { 
+    position: relative; 
+    z-index: 2; 
+ 
+    max-width: 820px; 
+ 
+    margin: 0 auto; 
+ 
+    font-family: 'Fraunces', serif; 
+    font-size: clamp(26px, 3.6vw, 46px); 
+    line-height: 1.35; 
+    font-weight: 400; 
+    font-style: italic; 
+ 
+    letter-spacing: -0.01em; 
+ 
+    color: var(--nsc-ivory); 
+  } 
+ 
+  #{{ sid }} .nsc-quote-band cite { 
+    position: relative; 
+    z-index: 2; 
+ 
+    display: block; 
+ 
+    margin-top: 28px; 
+ 
+    font-family: 'Jost', sans-serif; 
+    font-size: 12px; 
+    line-height: 1.4; 
+    font-weight: 300; 
+    font-style: normal; 
+ 
+    letter-spacing: 0.15em; 
+    text-transform: uppercase; 
+ 
+    color: var(--nsc-gold-bright); 
+  } 
+ 
+ 
+  /* ========================================================= 
+     CTA BAND 
+     Original: 
+     padding: 110px 0 
+  ========================================================= */ 
+ 
+  #{{ sid }} .nsc-cta-band { 
+    width: 100%; 
+ 
+    padding: 110px 0; 
+ 
+    text-align: center; 
+ 
+    background: var(--nsc-ivory); 
+  } 
+ 
+  #{{ sid }} .nsc-cta-band h2 { 
+    max-width: 640px; 
+ 
+    margin: 0 auto 30px; 
+ 
+    font-family: 'Fraunces', serif; 
+    font-size: clamp(30px, 4vw, 50px); 
+    line-height: 1.1; 
+    font-weight: 500; 
+ 
+    letter-spacing: -0.01em; 
+ 
+    color: var(--nsc-ink); 
+  } 
+ 
+  #{{ sid }} .nsc-cta-buttons { 
+    display: flex; 
+ 
+    justify-content: center; 
+    align-items: center; 
+ 
+    gap: 16px; 
+  } 
+ 
+  #{{ sid }} .nsc-btn-primary { 
+    display: inline-block; 
+ 
+    padding: 16px 34px; 
+ 
+    border: 0; 
+    border-radius: 2px; 
+ 
+    background: var(--nsc-ink); 
+    color: var(--nsc-ivory); 
+ 
+    font-family: 'Jost', sans-serif; 
+    font-size: 13px; 
+    line-height: 1; 
+    font-weight: 300; 
+ 
+    letter-spacing: 0.08em; 
+    text-transform: uppercase; 
+ 
+    transition: 
+      background 0.3s ease, 
+      color 0.3s ease; 
+  } 
+ 
+  #{{ sid }} .nsc-btn-primary:hover { 
+    background: var(--nsc-ink-soft); 
+    color: var(--nsc-ivory); 
+  } 
+ 
+  #{{ sid }} .nsc-btn-ghost { 
+    display: inline-block; 
+ 
+    padding-bottom: 3px; 
+ 
+    border-bottom: 1px solid var(--nsc-gold); 
+ 
+    font-family: 'Jost', sans-serif; 
+    font-size: 13px; 
+    line-height: 1; 
+    font-weight: 300; 
+ 
+    letter-spacing: 0.05em; 
+ 
+    color: var(--nsc-ink); 
+  } 
+ 
+ 
+  /* ========================================================= 
+     TABLET 
+  ========================================================= */ 
+ 
+  @media screen and (max-width: 860px) { 
+ 
+    #{{ sid }} .nsc-process-step, 
+    #{{ sid }} .nsc-process-step.is-reverse { 
+      grid-template-columns: 1fr; 
+      gap: 26px; 
+ 
+      margin-bottom: 80px; 
+    } 
+ 
+    #{{ sid }} .nsc-process-step.is-reverse .nsc-step-media, 
+    #{{ sid }} .nsc-process-step.is-reverse .nsc-step-copy { 
+      order: initial; 
+    } 
+ 
+    #{{ sid }} .nsc-image-block { 
+      height: 360px; 
+    } 
+  } 
+ 
+ 
+  /* ========================================================= 
+     MOBILE 
+  ========================================================= */ 
+ 
+  @media screen and (max-width: 768px) { 
+ 
+    #{{ sid }} .nsc-wrap { 
+      padding-left: 22px; 
+      padding-right: 22px; 
+    } 
+ 
+    #{{ sid }} .nsc-page-hero { 
+      padding: 70px 0 55px; 
+    } 
+ 
+    #{{ sid }} .nsc-process { 
+      padding: 75px 0; 
+    } 
+ 
+    #{{ sid }} .nsc-trust-strip { 
+      padding: 64px 0; 
+    } 
+ 
+    #{{ sid }} .nsc-trust-grid { 
+      grid-template-columns: repeat(2, 1fr); 
+      gap: 40px; 
+    } 
+ 
+    #{{ sid }} .nsc-quote-band { 
+      padding: 100px 0; 
+    } 
+ 
+    #{{ sid }} .nsc-cta-band { 
+      padding: 80px 0; 
+    } 
+  } 
+ 
+ 
+  /* ========================================================= 
+     SMALL MOBILE 
+  ========================================================= */ 
+ 
+  @media screen and (max-width: 560px) { 
+ 
+    #{{ sid }} .nsc-page-hero h1 { 
+      font-size: 36px; 
+    } 
+ 
+    #{{ sid }} .nsc-image-block { 
+      height: 330px; 
+    } 
+ 
+    #{{ sid }} .nsc-step-copy h2 { 
+      font-size: 30px; 
+    } 
+ 
+    #{{ sid }} .nsc-step-copy p { 
+      font-size: 14px; 
+      line-height: 1.8; 
+    } 
+ 
+    #{{ sid }} .nsc-trust-grid { 
+      gap: 36px 18px; 
+    } 
+ 
+    #{{ sid }} .nsc-trust-item p { 
+      font-size: 12px; 
+    } 
+ 
+    #{{ sid }} .nsc-cta-buttons { 
+      flex-direction: column; 
+      gap: 20px; 
+    } 
+ 
+    #{{ sid }} .nsc-btn-primary { 
+      width: auto; 
+    } 
+  } 
+</style> 
+ 
+ 
+<div id="{{ sid }}" class="nsc-cleaning-process"> 
+ 
+  <!-- ======================================================= 
+       PAGE HERO 
+  ======================================================== --> 
+ 
+  <section class="nsc-page-hero"> 
+ 
+    <svg 
+      class="nsc-drape-svg nsc-drape-mini" 
+      viewBox="0 0 220 60" 
+      preserveAspectRatio="none" 
+      aria-hidden="true" 
+    > 
+      <path 
+        class="nsc-drape-path" 
+        d="M 10 5 C 70 40, 110 -10, 210 30" 
+        style="stroke-width:1;" 
+      ></path> 
+    </svg> 
+ 
+    <div class="nsc-wrap"> 
+ 
+      {% if section.settings.eyebrow != blank %} 
+        <span class="nsc-eyebrow"> 
+          {{ section.settings.eyebrow }} 
+        </span> 
+      {% endif %} 
+ 
+      {% if section.settings.heading != blank %} 
+        <h1> 
+          {{ section.settings.heading }} 
+        </h1> 
+      {% endif %} 
+ 
+    </div> 
+  </section> 
+ 
+ 
+  <!-- ======================================================= 
+       TRUST STRIP (below the title) 
+  ======================================================== --> 
+ 
+  <section class="nsc-trust-strip"> 
+ 
+    <div class="nsc-wrap nsc-trust-grid"> 
+ 
+      {% for block in section.blocks %} 
+ 
+        {% if block.type == 'trust_item' %} 
+ 
+          <div 
+            class="nsc-trust-item" 
+            {{ block.shopify_attributes }} 
+          > 
+ 
+            {% if block.settings.mark != blank %} 
+              <span class="nsc-trust-mark"> 
+                {{ block.settings.mark }} 
+              </span> 
+            {% endif %} 
+ 
+            {% if block.settings.text != blank %} 
+              <p> 
+                {{ block.settings.text }} 
+              </p> 
+            {% endif %} 
+ 
+          </div> 
+ 
+        {% endif %} 
+ 
+      {% endfor %} 
+ 
+    </div> 
+ 
+  </section> 
+ 
+ 
+  <!-- ======================================================= 
+       PROCESS STEPS 
+  ======================================================== --> 
+ 
+  <section class="nsc-process"> 
+ 
+    <div class="nsc-wrap"> 
+ 
+      {% for block in section.blocks %} 
+ 
+        {% if block.type == 'process_step' %} 
+ 
+          <div 
+            class="nsc-process-step {% if block.settings.reverse %}is-reverse{% endif %}" 
+            {{ block.shopify_attributes }} 
+          > 
+ 
+            <!-- IMAGE --> 
+ 
+            <div class="nsc-step-media"> 
+ 
+              <div class="nsc-image-block"> 
+ 
+                {% if block.settings.image != blank %} 
+ 
+                  {{ 
+                    block.settings.image 
+                    | image_url: width: 1800 
+                    | image_tag: 
+                      widths: '600, 900, 1200, 1500, 1800', 
+                      sizes: '(min-width: 861px) 50vw, 100vw', 
+                      loading: 'lazy', 
+                      alt: block.settings.image.alt 
+                  }} 
+ 
+                {% else %} 
+ 
+                  <div class="nsc-placeholder"> 
+                    <span> 
+                      {{ block.settings.placeholder }} 
+                    </span> 
+                  </div> 
+ 
+                {% endif %} 
+ 
+              </div> 
+ 
+            </div> 
+ 
+ 
+            <!-- TEXT --> 
+ 
+            <div class="nsc-step-copy"> 
+ 
+              {% if block.settings.number != blank %} 
+                <span class="nsc-step-number"> 
+                  {{ block.settings.number }} 
+                </span> 
+              {% endif %} 
+ 
+              {% if block.settings.title != blank %} 
+                <h2> 
+                  {{ block.settings.title }} 
+                </h2> 
+              {% endif %} 
+ 
+              {% if block.settings.text != blank %} 
+                <p> 
+                  {{ block.settings.text }} 
+                </p> 
+              {% endif %} 
+ 
+            </div> 
+ 
+          </div> 
+ 
+        {% endif %} 
+ 
+      {% endfor %} 
+ 
+    </div> 
+ 
+  </section> 
+ 
+ 
+  <!-- ======================================================= 
+       QUOTE 
+  ======================================================== --> 
+ 
+  <section class="nsc-quote-band"> 
+ 
+    <svg 
+      class="nsc-drape-svg nsc-quote-drape" 
+      viewBox="0 0 1200 400" 
+      preserveAspectRatio="none" 
+      aria-hidden="true" 
+    > 
+      <path 
+        class="nsc-drape-path" 
+        d="M -50 350 C 250 250, 350 450, 650 300 C 900 180, 1050 380, 1250 220" 
+        style="stroke-width:1;" 
+      ></path> 
+    </svg> 
+ 
+    <div class="nsc-wrap"> 
+ 
+      {% if section.settings.quote != blank %} 
+        <blockquote> 
+          {{ section.settings.quote }} 
+        </blockquote> 
+      {% endif %} 
+ 
+      {% if section.settings.quote_author != blank %} 
+        <cite> 
+          {{ section.settings.quote_author }} 
+        </cite> 
+      {% endif %} 
+ 
+    </div> 
+ 
+  </section> 
+ 
+ 
+  <!-- ======================================================= 
+       CTA 
+  ======================================================== --> 
+ 
+  <section class="nsc-cta-band"> 
+ 
+    <div class="nsc-wrap"> 
+ 
+      {% if section.settings.cta_heading != blank %} 
+        <h2> 
+          {{ section.settings.cta_heading }} 
+        </h2> 
+      {% endif %} 
+ 
+      <div class="nsc-cta-buttons"> 
+ 
+        {% if section.settings.primary_text != blank %} 
+          <a 
+            class="nsc-btn-primary" 
+            href="{{ section.settings.primary_link | default: '#' }}" 
+          > 
+            {{ section.settings.primary_text }} 
+          </a> 
+        {% endif %} 
+ 
+        {% if section.settings.secondary_text != blank %} 
+          <a 
+            class="nsc-btn-ghost" 
+            href="{{ section.settings.secondary_link | default: '#' }}" 
+          > 
+            {{ section.settings.secondary_text }} 
+          </a> 
+        {% endif %} 
+ 
+      </div> 
+ 
+    </div> 
+ 
+  </section> 
+ 
+</div> 
+ 
+ 
+{% schema %} 
+{ 
+  "name": "Cleaning Process", 
+  "tag": "section", 
+  "class": "nsc-cleaning-process-section", 
+ 
+  "settings": [ 
+    { 
+      "type": "header", 
+      "content": "Page hero" 
+    }, 
+    { 
+      "type": "text", 
+      "id": "eyebrow", 
+      "label": "Eyebrow", 
+      "default": "Our process" 
+    }, 
+    { 
+      "type": "text", 
+      "id": "heading", 
+      "label": "Heading", 
+      "default": "Care behind every garment" 
+    }, 
+ 
+    { 
+      "type": "header", 
+      "content": "Quote" 
+    }, 
+    { 
+      "type": "textarea", 
+      "id": "quote", 
+      "label": "Quote", 
+      "default": "\"Every piece that reaches you has been inspected, cared for and packaged as if it were our own.\"" 
+    }, 
+    { 
+      "type": "text", 
+      "id": "quote_author", 
+      "label": "Quote author", 
+      "default": "— The nostringscouture atelier team" 
+    }, 
+ 
+    { 
+      "type": "header", 
+      "content": "CTA" 
+    }, 
+    { 
+      "type": "text", 
+      "id": "cta_heading", 
+      "label": "Heading", 
+      "default": "See the care for yourself" 
+    }, 
+    { 
+      "type": "text", 
+      "id": "primary_text", 
+      "label": "Primary button", 
+      "default": "Browse the edit" 
+    }, 
+    { 
+      "type": "url", 
+      "id": "primary_link", 
+      "label": "Primary link" 
+    }, 
+    { 
+      "type": "text", 
+      "id": "secondary_text", 
+      "label": "Secondary button", 
+      "default": "How renting works" 
+    }, 
+    { 
+      "type": "url", 
+      "id": "secondary_link", 
+      "label": "Secondary link" 
+    }, 
+ 
+    { 
+      "type": "header", 
+      "content": "Colors" 
+    }, 
+    { 
+      "type": "color", 
+      "id": "ink", 
+      "label": "Ink", 
+      "default": "#2A1015" 
+    }, 
+    { 
+      "type": "color", 
+      "id": "ink_soft", 
+      "label": "Soft ink", 
+      "default": "#3D1E22" 
+    }, 
+    { 
+      "type": "color", 
+      "id": "ivory", 
+      "label": "Ivory", 
+      "default": "#F7F1E6" 
+    }, 
+    { 
+      "type": "color", 
+      "id": "ivory_deep", 
+      "label": "Deep ivory", 
+      "default": "#EFE5D4" 
+    }, 
+    { 
+      "type": "color", 
+      "id": "gold", 
+      "label": "Gold", 
+      "default": "#B8935A" 
+    }, 
+    { 
+      "type": "color", 
+      "id": "gold_bright", 
+      "label": "Bright gold", 
+      "default": "#D4AC72" 
+    }, 
+    { 
+      "type": "color", 
+      "id": "text_soft", 
+      "label": "Soft text", 
+      "default": "#6B4C48" 
+    } 
+  ], 
+ 
+  "blocks": [ 
+    { 
+      "type": "process_step", 
+      "name": "Process step", 
+      "settings": [ 
+        { 
+          "type": "text", 
+          "id": "number", 
+          "label": "Step number", 
+          "default": "01" 
+        }, 
+        { 
+          "type": "image_picker", 
+          "id": "image", 
+          "label": "Image" 
+        }, 
+        { 
+          "type": "text", 
+          "id": "placeholder", 
+          "label": "Placeholder", 
+          "default": "Inspection & sorting — rack of returned lehengas" 
+        }, 
+        { 
+          "type": "text", 
+          "id": "title", 
+          "label": "Title", 
+          "default": "Inspection and sorting" 
+        }, 
+        { 
+          "type": "textarea", 
+          "id": "text", 
+          "label": "Description", 
+          "default": "The process begins the moment a garment returns to us. Our trained team examines every piece by hand — checking embroidery, seams and fabric for any damage, staining or wear — before it moves any further down the line." 
+        }, 
+        { 
+          "type": "checkbox", 
+          "id": "reverse", 
+          "label": "Reverse layout", 
+          "default": false 
+        } 
+      ] 
+    }, 
+ 
+    { 
+      "type": "trust_item", 
+      "name": "Trust item", 
+      "settings": [ 
+        { 
+          "type": "text", 
+          "id": "mark", 
+          "label": "Mark", 
+          "default": "i." 
+        }, 
+        { 
+          "type": "textarea", 
+          "id": "text", 
+          "label": "Text", 
+          "default": "Hand-inspected on return, every single time" 
+        } 
+      ] 
+    } 
+  ], 
+ 
+  "presets": [ 
+    { 
+      "name": "Cleaning Process", 
+ 
+      "blocks": [ 
+        { 
+          "type": "process_step", 
+          "settings": { 
+            "number": "01", 
+            "title": "Inspection and sorting", 
+            "text": "The process begins the moment a garment returns to us. Our trained team examines every piece by hand — checking embroidery, seams and fabric for any damage, staining or wear — before it moves any further down the line.", 
+            "placeholder": "Inspection & sorting — rack of returned lehengas", 
+            "reverse": false 
+          } 
+        }, 
+        { 
+          "type": "process_step", 
+          "settings": { 
+            "number": "02", 
+            "title": "Specialised cleaning & fabric care", 
+            "text": "Indian couture asks for more than a standard wash. Intricate zardozi, delicate georgettes and hand-set embellishments each call for their own technique — steaming, targeted spot treatment, or gentle dry cleaning, chosen piece by piece.", 
+            "placeholder": "Steaming a delicate hand-embroidered drape", 
+            "reverse": true 
+          } 
+        }, 
+        { 
+          "type": "process_step", 
+          "settings": { 
+            "number": "03", 
+            "title": "Quality control & storing", 
+            "text": "Before anything is shelved, every garment goes through a final, meticulous check against our own standard — for cleanliness, finish and overall condition — so what you receive next looks exactly as it should.", 
+            "placeholder": "Hand quality-check on beaded embroidery detail", 
+            "reverse": false 
+          } 
+        }, 
+        { 
+          "type": "process_step", 
+          "settings": { 
+            "number": "04", 
+            "title": "Luxury packaging", 
+            "text": "Our care extends to how each piece travels. Garments arrive in reusable, sturdy packaging built specifically to protect Indian luxury couture in transit — better for the garment, and better for the planet.", 
+            "placeholder": "Signature nostringscouture garment bag", 
+            "reverse": true 
+          } 
+        }, 
+ 
+        { 
+          "type": "trust_item", 
+          "settings": { 
+            "mark": "i.", 
+            "text": "Hand-inspected on return, every single time" 
+          } 
+        }, 
+        { 
+          "type": "trust_item", 
+          "settings": { 
+            "mark": "ii.", 
+            "text": "Fabric-specific care for zardozi, silk & velvet" 
+          } 
+        }, 
+        { 
+          "type": "trust_item", 
+          "settings": { 
+            "mark": "iii.", 
+            "text": "Meticulous quality check before it reaches you" 
+          } 
+        }, 
+        { 
+          "type": "trust_item", 
+          "settings": { 
+            "mark": "iv.", 
+            "text": "Reusable packaging, kinder to the garment" 
+          } 
+        } 
+      ] 
+    } 
+  ] 
+} 
+{% endschema %}

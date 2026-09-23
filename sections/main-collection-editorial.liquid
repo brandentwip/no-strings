@@ -1,0 +1,1765 @@
+{% comment %}
+  Editorial Collection Page
+  - Header/footer intentionally excluded
+  - Shopify collection filters
+  - Dynamic collection products
+  - Breadcrumbs
+  - Sorting
+  - Responsive filter drawer
+  - Wishlist buttons
+  - Second image on hover
+  - Adapt / Crop image setting
+  - Pagination
+{% endcomment %}
+
+{%- liquid
+  assign products_per_page = section.settings.products_per_page
+-%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --ec-ink: {{ section.settings.ink_color }};
+    --ec-ink-soft: {{ section.settings.ink_soft_color }};
+    --ec-ivory: {{ section.settings.background_color }};
+    --ec-ivory-deep: {{ section.settings.secondary_background_color }};
+    --ec-gold: {{ section.settings.accent_color }};
+    --ec-gold-bright: {{ section.settings.accent_light_color }};
+    --ec-text: {{ section.settings.text_color }};
+    --ec-text-soft: {{ section.settings.text_soft_color }};
+  }
+
+  #shopify-section-{{ section.id }} *,
+  #shopify-section-{{ section.id }} *::before,
+  #shopify-section-{{ section.id }} *::after {
+    box-sizing: border-box;
+  }
+
+  #shopify-section-{{ section.id }} {
+    background: var(--ec-ivory);
+    color: var(--ec-text);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+  }
+
+  #shopify-section-{{ section.id }} a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  #shopify-section-{{ section.id }} button,
+  #shopify-section-{{ section.id }} select,
+  #shopify-section-{{ section.id }} input {
+    font-family: inherit;
+  }
+
+  #shopify-section-{{ section.id }} .ec-wrap {
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+
+  #shopify-section-{{ section.id }} .ec-serif,
+  #shopify-section-{{ section.id }} h1,
+  #shopify-section-{{ section.id }} h2,
+  #shopify-section-{{ section.id }} h3 {
+    font-family: 'Fraunces', serif;
+    color: var(--ec-ink);
+  }
+
+  /* ==============================
+     BREADCRUMBS
+  ============================== */
+
+  #shopify-section-{{ section.id }} .ec-breadcrumb {
+    padding: 22px 0;
+    border-bottom: 1px solid rgba(42,16,21,.08);
+  }
+
+  #shopify-section-{{ section.id }} .ec-breadcrumb-inner {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--ec-text-soft);
+    letter-spacing: .02em;
+  }
+
+  #shopify-section-{{ section.id }} .ec-breadcrumb a {
+    transition: color .2s ease;
+  }
+
+  #shopify-section-{{ section.id }} .ec-breadcrumb a:hover {
+    color: var(--ec-gold);
+  }
+
+  #shopify-section-{{ section.id }} .ec-breadcrumb-separator {
+    opacity: .45;
+  }
+
+  #shopify-section-{{ section.id }} .ec-breadcrumb-current {
+    color: var(--ec-ink);
+  }
+
+  /* ==============================
+     COLLECTION INTRO
+  ============================== */
+
+  #shopify-section-{{ section.id }} .ec-head {
+    padding: 48px 0 34px;
+  }
+
+  #shopify-section-{{ section.id }} .ec-eyebrow {
+    display: block;
+    margin-bottom: 14px;
+    color: var(--ec-gold);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .22em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .ec-head h1 {
+    margin: 0 0 12px;
+    font-size: clamp(30px, 3.5vw, 46px);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -.015em;
+  }
+
+  #shopify-section-{{ section.id }} .ec-description {
+    max-width: 600px;
+    color: var(--ec-text-soft);
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  /* ==============================
+     MAIN LAYOUT
+  ============================== */
+
+  #shopify-section-{{ section.id }} .ec-layout {
+    display: grid;
+    grid-template-columns: 250px minmax(0, 1fr);
+    gap: 56px;
+    align-items: start;
+    padding-bottom: 120px;
+  }
+
+  /* ==============================
+     FILTER SIDEBAR
+  ============================== */
+
+  #shopify-section-{{ section.id }} .ec-filters {
+    position: sticky;
+    top: 100px;
+  }
+
+  #shopify-section-{{ section.id }} .ec-filter-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(42,16,21,.1);
+  }
+
+  #shopify-section-{{ section.id }} .ec-filter-head h2 {
+    margin: 0;
+    font-family: 'Jost', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .ec-clear {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: var(--ec-gold);
+    cursor: pointer;
+    font-size: 11px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .ec-filter-group {
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(42,16,21,.08);
+  }
+
+  #shopify-section-{{ section.id }} .ec-filter-group summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    cursor: pointer;
+    color: var(--ec-ink);
+    font-size: 13.5px;
+    font-weight: 500;
+  }
+
+  #shopify-section-{{ section.id }} .ec-filter-group summary::-webkit-details-marker {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .ec-filter-group summary::after {
+    content: '+';
+    color: var(--ec-gold);
+    font-size: 16px;
+    font-weight: 300;
+  }
+
+  #shopify-section-{{ section.id }} .ec-filter-group[open] summary::after {
+    content: '–';
+  }
+
+  #shopify-section-{{ section.id }} .ec-filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  #shopify-section-{{ section.id }} .ec-filter-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--ec-text-soft);
+    cursor: pointer;
+    font-size: 13px;
+  }
+
+  #shopify-section-{{ section.id }} .ec-filter-option input {
+    width: 14px;
+    height: 14px;
+    margin: 0;
+    accent-color: var(--ec-gold);
+  }
+
+  #shopify-section-{{ section.id }} .ec-filter-count {
+    margin-left: auto;
+    opacity: .5;
+    font-size: 11px;
+  }
+
+  /* Applied filters */
+
+  #shopify-section-{{ section.id }} .ec-applied {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 18px 0 4px;
+  }
+
+  #shopify-section-{{ section.id }} .ec-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 11px;
+    border: 1px solid rgba(42,16,21,.12);
+    border-radius: 100px;
+    background: var(--ec-ivory-deep);
+    color: var(--ec-ink);
+    font-size: 11px;
+  }
+
+  #shopify-section-{{ section.id }} .ec-chip a {
+    color: var(--ec-gold);
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  /* ==============================
+     TOOLBAR
+  ============================== */
+
+  #shopify-section-{{ section.id }} .ec-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+  }
+
+  #shopify-section-{{ section.id }} .ec-result-count {
+    color: var(--ec-text-soft);
+    font-size: 13px;
+  }
+
+  #shopify-section-{{ section.id }} .ec-toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  #shopify-section-{{ section.id }} .ec-sort {
+    min-width: 190px;
+    padding: 10px 14px;
+    border: 1px solid rgba(42,16,21,.2);
+    border-radius: 2px;
+    outline: none;
+    background: var(--ec-ivory);
+    color: var(--ec-ink);
+    cursor: pointer;
+    font-size: 12.5px;
+  }
+
+  #shopify-section-{{ section.id }} .ec-mobile-filter {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 15px;
+    border: 1px solid var(--ec-ink);
+    background: transparent;
+    color: var(--ec-ink);
+    cursor: pointer;
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  /* ==============================
+     PRODUCT GRID
+  ============================== */
+
+  #shopify-section-{{ section.id }} .ec-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 32px 24px;
+  }
+
+  #shopify-section-{{ section.id }} .ec-product {
+    position: relative;
+    min-width: 0;
+  }
+
+  /* ==============================
+     PRODUCT IMAGE
+  ============================== */
+
+  #shopify-section-{{ section.id }} .ec-product-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+    background: var(--ec-ivory-deep);
+  }
+
+  #shopify-section-{{ section.id }} .ec-product-image a {
+    display: block;
+    position: relative;
+  }
+
+  /*
+    Default = Fill / Crop
+    Keeps the original 4:5 editorial grid.
+  */
+  #shopify-section-{{ section.id }} .ec-image-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .ec-image-wrap img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition:
+      opacity .45s ease,
+      transform .65s cubic-bezier(.2,.65,.25,1);
+  }
+
+  /*
+    Adapt to image
+    Removes forced 4:5 ratio and lets the first image
+    determine the product card height.
+  */
+  #shopify-section-{{ section.id }} .ec-product-image.ec-image-adapt .ec-image-wrap {
+    aspect-ratio: auto;
+    height: auto;
+  }
+
+  #shopify-section-{{ section.id }} .ec-product-image.ec-image-adapt .ec-image-wrap img {
+    height: auto;
+    object-fit: contain;
+  }
+
+  /*
+    Second image
+  */
+  #shopify-section-{{ section.id }} .ec-image-secondary {
+    position: absolute !important;
+    inset: 0;
+    width: 100%;
+    height: 100% !important;
+    opacity: 0;
+    object-fit: cover;
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .ec-product:hover .ec-image-primary {
+    transform: scale(1.035);
+  }
+
+  #shopify-section-{{ section.id }} .ec-product:hover .ec-image-secondary {
+    opacity: 1;
+    transform: scale(1.035);
+  }
+
+  /*
+    In adapt mode, secondary image follows the
+    same natural-image approach.
+  */
+  #shopify-section-{{ section.id }} .ec-product-image.ec-image-adapt .ec-image-secondary {
+    height: 100% !important;
+    object-fit: contain;
+  }
+
+  #shopify-section-{{ section.id }} .ec-image-wrap:has(.ec-image-secondary) .ec-image-primary {
+    position: relative;
+    z-index: 1;
+  }
+
+  #shopify-section-{{ section.id }} .ec-image-wrap .ec-image-secondary {
+    z-index: 2;
+  }
+
+  /* Placeholder */
+
+  #shopify-section-{{ section.id }} .ec-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 4 / 5;
+    background:
+      linear-gradient(
+        150deg,
+        #D9C4A8 0%,
+        #C79A66 45%,
+        #8C5A44 100%
+      );
+    color: rgba(255,255,255,.75);
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  /* Badges */
+
+  #shopify-section-{{ section.id }} .ec-badges {
+    position: absolute;
+    z-index: 5;
+    top: 14px;
+    left: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  #shopify-section-{{ section.id }} .ec-badge {
+    padding: 5px 10px;
+    border-radius: 2px;
+    font-size: 9.5px;
+    font-weight: 500;
+    letter-spacing: .08em;
+    line-height: 1.3;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .ec-badge-sale {
+    background: var(--ec-ink);
+    color: var(--ec-ivory);
+  }
+
+  #shopify-section-{{ section.id }} .ec-badge-new {
+    border: 1px solid var(--ec-ink);
+    background: var(--ec-ivory);
+    color: var(--ec-ink);
+  }
+
+  /* Wishlist */
+
+  #shopify-section-{{ section.id }} .ec-wishlist {
+    position: absolute;
+    z-index: 6;
+    top: 14px;
+    right: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(247,241,230,.92);
+    color: var(--ec-ink);
+    cursor: pointer;
+    font-size: 17px;
+    transition: all .25s ease;
+  }
+
+  #shopify-section-{{ section.id }} .ec-wishlist:hover {
+    background: var(--ec-ivory);
+    transform: scale(1.05);
+  }
+
+  #shopify-section-{{ section.id }} .ec-wishlist.is-active {
+    color: var(--ec-gold);
+  }
+
+  /* ==============================
+     PRODUCT INFO
+  ============================== */
+
+  #shopify-section-{{ section.id }} .ec-info {
+    padding-top: 15px;
+  }
+
+  #shopify-section-{{ section.id }} .ec-vendor {
+    margin-bottom: 6px;
+    color: var(--ec-gold);
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .ec-title {
+    margin: 0 0 8px;
+    font-family: 'Jost', sans-serif;
+    color: var(--ec-ink);
+    font-size: 14.5px;
+    font-weight: 400;
+    line-height: 1.45;
+  }
+
+  #shopify-section-{{ section.id }} .ec-title a:hover {
+    color: var(--ec-gold);
+  }
+
+  #shopify-section-{{ section.id }} .ec-price {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 9px;
+    color: var(--ec-ink);
+    font-size: 13px;
+  }
+
+  #shopify-section-{{ section.id }} .ec-price-compare {
+    color: var(--ec-text-soft);
+    font-size: 12px;
+    opacity: .5;
+    text-decoration: line-through;
+  }
+
+  #shopify-section-{{ section.id }} .ec-price-current {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-style: italic;
+  }
+
+  #shopify-section-{{ section.id }} .ec-price-unit {
+    color: var(--ec-text-soft);
+    font-size: 11px;
+  }
+
+  /* ==============================
+     EMPTY COLLECTION
+  ============================== */
+
+  #shopify-section-{{ section.id }} .ec-empty {
+    padding: 90px 20px;
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .ec-empty h2 {
+    margin: 0 0 12px;
+    font-size: 32px;
+    font-weight: 400;
+  }
+
+  #shopify-section-{{ section.id }} .ec-empty p {
+    margin: 0 auto 25px;
+    max-width: 420px;
+    color: var(--ec-text-soft);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  #shopify-section-{{ section.id }} .ec-empty-link {
+    display: inline-block;
+    padding: 13px 25px;
+    background: var(--ec-ink);
+    color: var(--ec-ivory);
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  /* ==============================
+     PAGINATION
+  ============================== */
+
+  #shopify-section-{{ section.id }} .ec-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 72px;
+  }
+
+  #shopify-section-{{ section.id }} .ec-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid transparent;
+    color: var(--ec-text-soft);
+    font-size: 13px;
+  }
+
+  #shopify-section-{{ section.id }} .ec-page:hover,
+  #shopify-section-{{ section.id }} .ec-page.active {
+    border-color: var(--ec-ink);
+    color: var(--ec-ink);
+  }
+
+  #shopify-section-{{ section.id }} .ec-next {
+    width: auto;
+    padding: 0 15px;
+  }
+
+  /* ==============================
+     MOBILE FILTER DRAWER
+  ============================== */
+
+  #shopify-section-{{ section.id }} .ec-filter-overlay {
+    display: none;
+  }
+
+  /* ==============================
+     RESPONSIVE
+  ============================== */
+
+  @media(max-width: 1100px) {
+    #shopify-section-{{ section.id }} .ec-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media(max-width: 900px) {
+    #shopify-section-{{ section.id }} .ec-wrap {
+      padding-left: 22px;
+      padding-right: 22px;
+    }
+
+    #shopify-section-{{ section.id }} .ec-layout {
+      display: block;
+    }
+
+    #shopify-section-{{ section.id }} .ec-filters {
+      position: fixed;
+      z-index: 1000;
+      top: 0;
+      left: 0;
+      width: min(360px, 88vw);
+      height: 100vh;
+      padding: 25px 22px;
+      overflow-y: auto;
+      background: var(--ec-ivory);
+      box-shadow: 20px 0 60px rgba(42,16,21,.15);
+      transform: translateX(-105%);
+      transition: transform .3s ease;
+    }
+
+    #shopify-section-{{ section.id }} .ec-filters.is-open {
+      transform: translateX(0);
+    }
+
+    #shopify-section-{{ section.id }} .ec-filter-overlay {
+      position: fixed;
+      z-index: 999;
+      inset: 0;
+      background: rgba(42,16,21,.45);
+    }
+
+    #shopify-section-{{ section.id }} .ec-filter-overlay.is-visible {
+      display: block;
+    }
+
+    #shopify-section-{{ section.id }} .ec-mobile-filter {
+      display: inline-flex;
+    }
+
+    #shopify-section-{{ section.id }} .ec-toolbar {
+      margin-bottom: 25px;
+    }
+
+    #shopify-section-{{ section.id }} .ec-toolbar-right {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    #shopify-section-{{ section.id }} .ec-sort {
+      flex: 1;
+    }
+
+    #shopify-section-{{ section.id }} .ec-filter-close {
+      display: flex !important;
+    }
+  }
+
+  @media(max-width: 560px) {
+    #shopify-section-{{ section.id }} .ec-head {
+      padding-top: 35px;
+      padding-bottom: 28px;
+    }
+
+    #shopify-section-{{ section.id }} .ec-layout {
+      padding-bottom: 70px;
+    }
+
+    #shopify-section-{{ section.id }} .ec-grid {
+      grid-template-columns: 1fr;
+      gap: 35px;
+    }
+
+    #shopify-section-{{ section.id }} .ec-product-image:not(.ec-image-adapt) .ec-image-wrap {
+      aspect-ratio: 4 / 5;
+    }
+
+    #shopify-section-{{ section.id }} .ec-toolbar-right {
+      gap: 10px;
+    }
+
+    #shopify-section-{{ section.id }} .ec-mobile-filter {
+      padding: 10px 12px;
+    }
+
+    #shopify-section-{{ section.id }} .ec-sort {
+      min-width: 0;
+    }
+  }
+
+  /* Disable hover image behavior on touch devices */
+  @media(hover: none) {
+    #shopify-section-{{ section.id }} .ec-image-secondary {
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .ec-product:hover .ec-image-primary {
+      transform: none;
+    }
+  }
+
+  /* ==============================
+     REDUCED MOTION
+  ============================== */
+
+  @media(prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} *,
+    #shopify-section-{{ section.id }} *::before,
+    #shopify-section-{{ section.id }} *::after {
+      scroll-behavior: auto !important;
+      transition-duration: .01ms !important;
+    }
+  }
+</style>
+
+<link
+  rel="preconnect"
+  href="https://fonts.googleapis.com"
+>
+<link
+  rel="preconnect"
+  href="https://fonts.gstatic.com"
+  crossorigin
+>
+<link
+  href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Fraunces:ital,opsz,wght@1,9..144,400&family=Jost:wght@300;400;500&display=swap"
+  rel="stylesheet"
+>
+
+<!-- ==============================
+     BREADCRUMBS
+============================== -->
+
+<div class="ec-breadcrumb">
+  <div class="ec-wrap">
+    <div class="ec-breadcrumb-inner">
+
+      <a href="{{ routes.root_url }}">Home</a>
+
+      <span class="ec-breadcrumb-separator">/</span>
+
+      <span class="ec-breadcrumb-current">
+        {{ collection.title }}
+      </span>
+
+    </div>
+  </div>
+</div>
+
+<!-- ==============================
+     COLLECTION HEADER
+============================== -->
+
+<section class="ec-head">
+  <div class="ec-wrap">
+
+    {% if section.settings.eyebrow != blank %}
+      <span class="ec-eyebrow">
+        {{ section.settings.eyebrow }}
+      </span>
+    {% endif %}
+
+    <h1>
+      {{ collection.title }}
+    </h1>
+
+    {% if collection.description != blank %}
+      <div class="ec-description">
+        {{ collection.description }}
+      </div>
+    {% elsif section.settings.fallback_description != blank %}
+      <div class="ec-description">
+        {{ section.settings.fallback_description }}
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+<!-- ==============================
+     COLLECTION
+============================== -->
+
+<section class="ec-collection">
+  <div class="ec-wrap">
+
+    {% paginate collection.products by products_per_page %}
+
+      <div class="ec-layout">
+
+        <!-- FILTER SIDEBAR -->
+
+        <aside
+          class="ec-filters"
+          id="ECFilters-{{ section.id }}"
+        >
+
+          <div class="ec-filter-head">
+
+            <h2>Filter</h2>
+
+            <button
+              type="button"
+              class="ec-clear"
+              data-clear-filters
+            >
+              Clear all
+            </button>
+
+          </div>
+
+          <!-- Mobile close -->
+
+          <button
+            type="button"
+            class="ec-filter-close"
+            data-close-filters
+            style="
+              display:none;
+              margin:0 0 18px auto;
+              border:0;
+              background:none;
+              color:var(--ec-ink);
+              cursor:pointer;
+              font-size:24px;
+              line-height:1;
+            "
+            aria-label="Close filters"
+          >
+            ×
+          </button>
+
+          <!-- Applied filters -->
+
+          {% if collection.filters != blank %}
+
+            <div class="ec-applied">
+
+              {% for filter in collection.filters %}
+
+                {% for value in filter.active_values %}
+
+                  <span class="ec-chip">
+
+                    {{ value.label }}
+
+                    <a
+                      href="{{ value.url_to_remove }}"
+                      aria-label="Remove {{ value.label }}"
+                    >
+                      ×
+                    </a>
+
+                  </span>
+
+                {% endfor %}
+
+              {% endfor %}
+
+            </div>
+
+          {% endif %}
+
+          <!-- Shopify filters -->
+
+          {% for filter in collection.filters %}
+
+            {% case filter.type %}
+
+              {% when 'list' %}
+
+                <details
+                  class="ec-filter-group"
+                  {% if filter.active_values.size > 0 %}
+                    open
+                  {% endif %}
+                >
+
+                  <summary>
+                    {{ filter.label }}
+                  </summary>
+
+                  <div class="ec-filter-options">
+
+                    {% for value in filter.values %}
+
+                      <label class="ec-filter-option">
+
+                        <input
+                          type="checkbox"
+                          value="{{ value.value }}"
+                          {% if value.active %}
+                            checked
+                          {% endif %}
+                          {% if value.count == 0 and value.active == false %}
+                            disabled
+                          {% endif %}
+                          data-filter-checkbox="{{ value.param_name }}"
+                        >
+
+                        <span>
+                          {{ value.label }}
+                        </span>
+
+                        {% if value.count != blank %}
+                          <span class="ec-filter-count">
+                            {{ value.count }}
+                          </span>
+                        {% endif %}
+
+                      </label>
+
+                    {% endfor %}
+
+                  </div>
+
+                </details>
+
+              {% when 'price_range' %}
+
+                <details
+                  class="ec-filter-group"
+                  {% if filter.min_value.value != blank or filter.max_value.value != blank %}
+                    open
+                  {% endif %}
+                >
+
+                  <summary>
+                    {{ filter.label }}
+                  </summary>
+
+                  <div
+                    class="ec-filter-options"
+                    style="gap:14px;"
+                  >
+
+                    <div>
+
+                      <label
+                        for="Filter-{{ filter.min_value.param_name }}-{{ section.id }}"
+                        style="
+                          display:block;
+                          margin-bottom:7px;
+                          color:var(--ec-text-soft);
+                          font-size:11px;
+                        "
+                      >
+                        From
+                      </label>
+
+                      <input
+                        id="Filter-{{ filter.min_value.param_name }}-{{ section.id }}"
+                        type="number"
+                        name="{{ filter.min_value.param_name }}"
+                        value="{{ filter.min_value.value | default: '' }}"
+                        placeholder="₹0"
+                        min="0"
+                        style="
+                          width:100%;
+                          padding:10px;
+                          border:1px solid rgba(42,16,21,.18);
+                          background:var(--ec-ivory);
+                          color:var(--ec-ink);
+                          outline:none;
+                        "
+                      >
+
+                    </div>
+
+                    <div>
+
+                      <label
+                        for="Filter-{{ filter.max_value.param_name }}-{{ section.id }}"
+                        style="
+                          display:block;
+                          margin-bottom:7px;
+                          color:var(--ec-text-soft);
+                          font-size:11px;
+                        "
+                      >
+                        To
+                      </label>
+
+                      <input
+                        id="Filter-{{ filter.max_value.param_name }}-{{ section.id }}"
+                        type="number"
+                        name="{{ filter.max_value.param_name }}"
+                        value="{{ filter.max_value.value | default: '' }}"
+                        placeholder="₹60,000"
+                        min="0"
+                        style="
+                          width:100%;
+                          padding:10px;
+                          border:1px solid rgba(42,16,21,.18);
+                          background:var(--ec-ivory);
+                          color:var(--ec-ink);
+                          outline:none;
+                        "
+                      >
+
+                    </div>
+
+                    <button
+                      type="submit"
+                      style="
+                        width:100%;
+                        padding:11px;
+                        border:0;
+                        background:var(--ec-ink);
+                        color:var(--ec-ivory);
+                        cursor:pointer;
+                        font-size:11px;
+                        letter-spacing:.08em;
+                        text-transform:uppercase;
+                      "
+                    >
+                      Apply
+                    </button>
+
+                  </div>
+
+                </details>
+
+            {% endcase %}
+
+          {% endfor %}
+
+        </aside>
+
+        <div
+          class="ec-filter-overlay"
+          data-filter-overlay
+        ></div>
+
+        <!-- PRODUCTS -->
+
+        <div class="ec-results">
+
+          <!-- TOOLBAR -->
+
+          <div class="ec-toolbar">
+
+            <div style="display:flex;align-items:center;gap:14px;">
+
+              <button
+                type="button"
+                class="ec-mobile-filter"
+                data-open-filters
+              >
+                Filter
+              </button>
+
+              <span class="ec-result-count">
+
+                {% if collection.products_count == 1 %}
+                  1 piece
+                {% else %}
+                  {{ collection.products_count }} pieces
+                {% endif %}
+
+              </span>
+
+            </div>
+
+            <div class="ec-toolbar-right">
+
+              <form method="get">
+
+                {% for param in collection.sort_options %}
+                  {% if param.value == collection.sort_by %}
+                    {% assign current_sort_name = param.name %}
+                  {% endif %}
+                {% endfor %}
+
+                <select
+                  name="sort_by"
+                  class="ec-sort"
+                  onchange="this.form.submit()"
+                  aria-label="Sort products"
+                >
+
+                  {% for option in collection.sort_options %}
+
+                    <option
+                      value="{{ option.value }}"
+                      {% if option.value == collection.sort_by %}
+                        selected
+                      {% endif %}
+                    >
+                      {{ option.name }}
+                    </option>
+
+                  {% endfor %}
+
+                </select>
+
+              </form>
+
+            </div>
+
+          </div>
+
+          <!-- PRODUCT GRID -->
+
+          {% if collection.products.size > 0 %}
+
+            <div class="ec-grid">
+
+              {% for product in collection.products %}
+
+                <article class="ec-product">
+
+                  <div class="ec-product-image {% if section.settings.image_fit == 'adapt' %}ec-image-adapt{% else %}ec-image-crop{% endif %}">
+
+                    <a href="{{ product.url }}">
+
+                      {% if product.featured_image %}
+
+                        <div class="ec-image-wrap">
+
+                          {{
+                            product.featured_image
+                            | image_url: width: 1200
+                            | image_tag:
+                              loading: 'lazy',
+                              widths: '360, 540, 720, 900, 1000, 1200',
+                              sizes: '(min-width: 1100px) 30vw, (min-width: 561px) 45vw, 92vw',
+                              class: 'ec-image-primary',
+                              alt: product.featured_image.alt | default: product.title
+                          }}
+
+                          {% if product.images.size > 1 %}
+
+                            {{
+                              product.images[1]
+                              | image_url: width: 1200
+                              | image_tag:
+                                loading: 'lazy',
+                                widths: '360, 540, 720, 900, 1000, 1200',
+                                sizes: '(min-width: 1100px) 30vw, (min-width: 561px) 45vw, 92vw',
+                                class: 'ec-image-secondary',
+                                alt: product.images[1].alt | default: product.title
+                            }}
+
+                          {% endif %}
+
+                        </div>
+
+                      {% else %}
+
+                        <div class="ec-placeholder">
+                          {{ product.title | truncate: 30 }}
+                        </div>
+
+                      {% endif %}
+
+                    </a>
+
+                    <!-- Badges -->
+
+                    {% if section.settings.show_badges %}
+
+                      <div class="ec-badges">
+
+                        {% if product.available == false %}
+
+                          <span class="ec-badge ec-badge-sale">
+                            Sold out
+                          </span>
+
+                        {% elsif product.compare_at_price > product.price %}
+
+                          <span class="ec-badge ec-badge-sale">
+                            Rent Now
+                          </span>
+
+                        {% endif %}
+
+                        {% if product.tags contains 'new' or product.tags contains 'New' %}
+
+                          <span class="ec-badge ec-badge-new">
+                            New
+                          </span>
+
+                        {% endif %}
+
+                      </div>
+
+                    {% endif %}
+
+                    <!-- Wishlist -->
+
+                    {% if section.settings.show_wishlist %}
+
+                      <button
+                        type="button"
+                        class="ec-wishlist"
+                        aria-label="Add {{ product.title }} to wishlist"
+                        data-wishlist="{{ product.handle }}"
+                      >
+                        ♡
+                      </button>
+
+                    {% endif %}
+
+                  </div>
+
+                  <!-- Product information -->
+
+                  <div class="ec-info">
+
+                    {% if section.settings.show_vendor and product.vendor != blank %}
+
+                      <div class="ec-vendor">
+                        {{ product.vendor }}
+                      </div>
+
+                    {% endif %}
+
+                    <h2 class="ec-title">
+
+                      <a href="{{ product.url }}">
+                        {{ product.title }}
+                      </a>
+
+                    </h2>
+
+                    <div class="ec-price">
+
+                      {% if product.compare_at_price > product.price %}
+
+                        <span class="ec-price-compare">
+                          {{ product.compare_at_price | money }}
+                        </span>
+
+                      {% endif %}
+
+                      <span class="ec-price-current">
+                        {{ product.price | money }}
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                </article>
+
+              {% endfor %}
+
+            </div>
+
+          {% else %}
+
+            <div class="ec-empty">
+
+              <h2>
+                Nothing here yet
+              </h2>
+
+              <p>
+                Try removing some filters or explore another collection.
+              </p>
+
+              <a
+                href="{{ collection.url }}"
+                class="ec-empty-link"
+              >
+                Clear filters
+              </a>
+
+            </div>
+
+          {% endif %}
+
+          <!-- PAGINATION -->
+
+          {% if paginate.pages > 1 %}
+
+            <nav
+              class="ec-pagination"
+              aria-label="Pagination"
+            >
+
+              {% if paginate.previous %}
+
+                <a
+                  class="ec-page ec-next"
+                  href="{{ paginate.previous.url }}"
+                >
+                  ← Previous
+                </a>
+
+              {% endif %}
+
+              {% for part in paginate.parts %}
+
+                {% if part.is_link %}
+
+                  <a
+                    href="{{ part.url }}"
+                    class="ec-page"
+                  >
+                    {{ part.title }}
+                  </a>
+
+                {% else %}
+
+                  <span
+                    class="ec-page {% if part.title == paginate.current_page %}active{% endif %}"
+                  >
+                    {{ part.title }}
+                  </span>
+
+                {% endif %}
+
+              {% endfor %}
+
+              {% if paginate.next %}
+
+                <a
+                  class="ec-page ec-next"
+                  href="{{ paginate.next.url }}"
+                >
+                  Next →
+                </a>
+
+              {% endif %}
+
+            </nav>
+
+          {% endif %}
+
+        </div>
+
+      </div>
+
+    {% endpaginate %}
+
+  </div>
+</section>
+
+<script>
+  (function() {
+
+    const root = document.querySelector(
+      '#shopify-section-{{ section.id }}'
+    );
+
+    if (!root) return;
+
+    const filters = root.querySelector(
+      '#ECFilters-{{ section.id }}'
+    );
+
+    const overlay = root.querySelector(
+      '[data-filter-overlay]'
+    );
+
+    const openButton = root.querySelector(
+      '[data-open-filters]'
+    );
+
+    const closeButton = root.querySelector(
+      '[data-close-filters]'
+    );
+
+    function openFilters() {
+
+      if (!filters) return;
+
+      filters.classList.add('is-open');
+
+      if (overlay) {
+        overlay.classList.add('is-visible');
+      }
+
+      document.documentElement.style.overflow = 'hidden';
+    }
+
+    function closeFilters() {
+
+      if (!filters) return;
+
+      filters.classList.remove('is-open');
+
+      if (overlay) {
+        overlay.classList.remove('is-visible');
+      }
+
+      document.documentElement.style.overflow = '';
+    }
+
+    if (openButton) {
+      openButton.addEventListener(
+        'click',
+        openFilters
+      );
+    }
+
+    if (closeButton) {
+      closeButton.addEventListener(
+        'click',
+        closeFilters
+      );
+    }
+
+    if (overlay) {
+      overlay.addEventListener(
+        'click',
+        closeFilters
+      );
+    }
+
+    /*
+      Filter checkboxes
+    */
+
+    const checkboxes = root.querySelectorAll(
+      '[data-filter-checkbox]'
+    );
+
+    checkboxes.forEach(function(checkbox) {
+
+      checkbox.addEventListener(
+        'change',
+        function() {
+
+          const params = new URLSearchParams(
+            window.location.search
+          );
+
+          const paramName =
+            checkbox.getAttribute(
+              'data-filter-checkbox'
+            );
+
+          const value = checkbox.value;
+
+          let existing =
+            params.getAll(paramName);
+
+          if (checkbox.checked) {
+
+            if (!existing.includes(value)) {
+              existing.push(value);
+            }
+
+          } else {
+
+            existing =
+              existing.filter(
+                function(item) {
+                  return item !== value;
+                }
+              );
+
+          }
+
+          params.delete(paramName);
+
+          existing.forEach(function(item) {
+
+            params.append(
+              paramName,
+              item
+            );
+
+          });
+
+          window.location.search =
+            params.toString();
+
+        }
+      );
+
+    });
+
+    /* Clear filters */
+
+    const clearButton =
+      root.querySelector(
+        '[data-clear-filters]'
+      );
+
+    if (clearButton) {
+
+      clearButton.addEventListener(
+        'click',
+        function() {
+
+          const url =
+            new URL(
+              window.location.href
+            );
+
+          const sort =
+            url.searchParams.get(
+              'sort_by'
+            );
+
+          url.search = '';
+
+          if (sort) {
+            url.searchParams.set(
+              'sort_by',
+              sort
+            );
+          }
+
+          window.location.href =
+            url.toString();
+
+        }
+      );
+
+    }
+
+    /* Wishlist */
+
+    const wishlistButtons =
+      root.querySelectorAll(
+        '[data-wishlist]'
+      );
+
+    wishlistButtons.forEach(function(button) {
+
+      const handle =
+        button.getAttribute(
+          'data-wishlist'
+        );
+
+      const storageKey =
+        'ec-wishlist-' + handle;
+
+      if (
+        localStorage.getItem(storageKey)
+        === 'true'
+      ) {
+
+        button.classList.add(
+          'is-active'
+        );
+
+        button.textContent = '♥';
+
+      }
+
+      button.addEventListener(
+        'click',
+        function() {
+
+          const active =
+            button.classList.toggle(
+              'is-active'
+            );
+
+          button.textContent =
+            active ? '♥' : '♡';
+
+          localStorage.setItem(
+            storageKey,
+            active
+          );
+
+        }
+      );
+
+    });
+
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Editorial collection",
+  "tag": "section",
+  "class": "section-editorial-collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Shop the edit"
+    },
+    {
+      "type": "textarea",
+      "id": "fallback_description",
+      "label": "Fallback description",
+      "default": "Curated pieces from India's finest designers, available for the occasions worth remembering."
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 6,
+      "max": 48,
+      "step": 6,
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Maximum content width",
+      "min": 1000,
+      "max": 1600,
+      "step": 20,
+      "default": 1240
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Product image fit",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "Adapt to image"
+        },
+        {
+          "value": "crop",
+          "label": "Fill / Crop"
+        }
+      ],
+      "default": "adapt"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show product vendor",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badges",
+      "label": "Show product badges",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_wishlist",
+      "label": "Show wishlist button",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "ink_color",
+      "label": "Ink",
+      "default": "#2A1015"
+    },
+    {
+      "type": "color",
+      "id": "ink_soft_color",
+      "label": "Soft ink",
+      "default": "#3D1E22"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#F7F1E6"
+    },
+    {
+      "type": "color",
+      "id": "secondary_background_color",
+      "label": "Secondary background",
+      "default": "#EFE5D4"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent",
+      "default": "#B8935A"
+    },
+    {
+      "type": "color",
+      "id": "accent_light_color",
+      "label": "Light accent",
+      "default": "#D4AC72"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#2A1015"
+    },
+    {
+      "type": "color",
+      "id": "text_soft_color",
+      "label": "Secondary text",
+      "default": "#6B4C48"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Editorial collection"
+    }
+  ]
+}
+{% endschema %}

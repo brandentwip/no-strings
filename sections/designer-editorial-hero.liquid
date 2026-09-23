@@ -1,0 +1,750 @@
+{% comment %}
+  Designer Editorial Hero
+  - Two-column editorial layout
+  - Large background image + overlapping detail image
+  - Separate mobile images supported
+  - Fully customizable from Shopify Theme Editor
+{% endcomment %}
+
+<section
+  id="editorial-hero-{{ section.id }}"
+  class="editorial-hero"
+  style="
+    --eh-bg: {{ section.settings.background_color }};
+    --eh-text: {{ section.settings.text_color }};
+    --eh-accent: {{ section.settings.accent_color }};
+    --eh-button-bg: {{ section.settings.button_background }};
+    --eh-button-text: {{ section.settings.button_text_color }};
+    --eh-max-width: {{ section.settings.content_max_width }}px;
+    --eh-top-padding: {{ section.settings.padding_top }}px;
+    --eh-bottom-padding: {{ section.settings.padding_bottom }}px;
+    --eh-large-width: {{ section.settings.large_image_width }}%;
+    --eh-small-width: {{ section.settings.small_image_width }}%;
+  "
+>
+  <div class="editorial-hero__inner">
+
+    <div class="editorial-hero__content">
+      {% if section.settings.eyebrow != blank %}
+        <div class="editorial-hero__eyebrow">
+          {{ section.settings.eyebrow }}
+        </div>
+      {% endif %}
+
+      {% if section.settings.heading != blank %}
+        <h1 class="editorial-hero__heading">
+          {{ section.settings.heading }}
+        </h1>
+      {% endif %}
+
+      {% if section.settings.description != blank %}
+        <div class="editorial-hero__description">
+          {{ section.settings.description }}
+        </div>
+      {% endif %}
+
+      <div class="editorial-hero__actions">
+        {% if section.settings.button_text != blank %}
+          <a
+            href="{{ section.settings.button_link }}"
+            class="editorial-hero__button"
+          >
+            {{ section.settings.button_text }}
+          </a>
+        {% endif %}
+
+        {% if section.settings.secondary_text != blank %}
+          <a
+            href="{{ section.settings.secondary_link }}"
+            class="editorial-hero__secondary-link"
+          >
+            <span>{{ section.settings.secondary_text }}</span>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="editorial-hero__visual">
+
+      <div class="editorial-hero__large-image">
+        {% if section.settings.large_image != blank %}
+          <picture>
+            {% if section.settings.large_image_mobile != blank %}
+              <source
+                media="(max-width: 749px)"
+                srcset="{{ section.settings.large_image_mobile | image_url: width: 1200 }}"
+              >
+            {% endif %}
+
+            {{
+              section.settings.large_image
+              | image_url: width: 2200
+              | image_tag:
+                loading: 'eager',
+                widths: '600, 900, 1200, 1600, 2000',
+                sizes: '(min-width: 990px) 50vw, 100vw',
+                class: 'editorial-hero__image'
+            }}
+          </picture>
+        {% else %}
+          <div class="editorial-hero__placeholder editorial-hero__placeholder--large"></div>
+        {% endif %}
+
+        {% if section.settings.large_image_label != blank %}
+          <div class="editorial-hero__image-label editorial-hero__image-label--large">
+            {{ section.settings.large_image_label }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="editorial-hero__small-image">
+        {% if section.settings.small_image != blank %}
+          <picture>
+            {% if section.settings.small_image_mobile != blank %}
+              <source
+                media="(max-width: 749px)"
+                srcset="{{ section.settings.small_image_mobile | image_url: width: 1000 }}"
+              >
+            {% endif %}
+
+            {{
+              section.settings.small_image
+              | image_url: width: 1400
+              | image_tag:
+                loading: 'lazy',
+                widths: '500, 700, 1000, 1200',
+                sizes: '(min-width: 990px) 30vw, 75vw',
+                class: 'editorial-hero__image'
+            }}
+          </picture>
+        {% else %}
+          <div class="editorial-hero__placeholder editorial-hero__placeholder--small"></div>
+        {% endif %}
+
+        {% if section.settings.small_image_label != blank %}
+          <div class="editorial-hero__image-label editorial-hero__image-label--small">
+            {{ section.settings.small_image_label }}
+          </div>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  #editorial-hero-{{ section.id }} {
+    width: 100%;
+    background: var(--eh-bg);
+    color: var(--eh-text);
+    overflow: hidden;
+  }
+
+  #editorial-hero-{{ section.id }} *,
+  #editorial-hero-{{ section.id }} *::before,
+  #editorial-hero-{{ section.id }} *::after {
+    box-sizing: border-box;
+  }
+
+  #editorial-hero-{{ section.id }} .editorial-hero__inner {
+    width: 100%;
+    max-width: var(--eh-max-width);
+    min-height: {{ section.settings.section_height }}px;
+    margin: 0 auto;
+    padding: var(--eh-top-padding) 0 var(--eh-bottom-padding);
+    display: grid;
+    grid-template-columns: 51.5% 48.5%;
+    align-items: stretch;
+  }
+
+  #editorial-hero-{{ section.id }} .editorial-hero__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: {{ section.settings.content_left_padding }}px;
+    padding-right: {{ section.settings.content_right_padding }}px;
+    padding-bottom: {{ section.settings.content_bottom_offset }}px;
+    position: relative;
+    z-index: 3;
+  }
+
+  #editorial-hero-{{ section.id }} .editorial-hero__eyebrow {
+    margin-bottom: 28px;
+    color: var(--eh-accent);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    line-height: 1.4;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  #editorial-hero-{{ section.id }} .editorial-hero__heading {
+    max-width: 680px;
+    margin: 0 0 30px;
+    color: var(--eh-text);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(52px, 5vw, 82px);
+    line-height: 0.98;
+    font-weight: 400;
+    letter-spacing: -2.5px;
+  }
+
+  #editorial-hero-{{ section.id }} .editorial-hero__heading em {
+    color: var(--eh-accent);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  #editorial-hero-{{ section.id }} .editorial-hero__description {
+    max-width: 540px;
+    margin-bottom: 44px;
+    color: var(--eh-text);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 17px;
+    line-height: 1.85;
+    font-weight: 400;
+    opacity: 0.78;
+  }
+
+  #editorial-hero-{{ section.id }} .editorial-hero__actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  #editorial-hero-{{ section.id }} .editorial-hero__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 59px;
+    padding: 0 39px;
+    background: var(--eh-button-bg);
+    color: var(--eh-button-text);
+    text-decoration: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  #editorial-hero-{{ section.id }} .editorial-hero__button:hover {
+    opacity: 0.88;
+    transform: translateY(-1px);
+  }
+
+  #editorial-hero-{{ section.id }} .editorial-hero__secondary-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 59px;
+    color: var(--eh-text);
+    text-decoration: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  #editorial-hero-{{ section.id }} .editorial-hero__secondary-link span {
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--eh-accent);
+  }
+
+  #editorial-hero-{{ section.id }} .editorial-hero__visual {
+    position: relative;
+    min-height: 100%;
+    isolation: isolate;
+  }
+
+  #editorial-hero-{{ section.id }} .editorial-hero__large-image {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: var(--eh-large-width);
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+    box-shadow: 0 30px 70px rgba(0,0,0,0.16);
+  }
+
+  #editorial-hero-{{ section.id }} .editorial-hero__small-image {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: var(--eh-small-width);
+    height: {{ section.settings.small_image_height }}%;
+    overflow: hidden;
+    z-index: 2;
+    box-shadow: 0 25px 55px rgba(0,0,0,0.28);
+  }
+
+  #editorial-hero-{{ section.id }} .editorial-hero__image,
+  #editorial-hero-{{ section.id }} picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  #editorial-hero-{{ section.id }} .editorial-hero__image {
+    object-fit: {{ section.settings.image_fit }};
+    object-position: {{ section.settings.image_position }};
+  }
+
+  #editorial-hero-{{ section.id }} .editorial-hero__placeholder {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background:
+      repeating-linear-gradient(
+        135deg,
+        rgba(255,255,255,0.10) 0px,
+        rgba(255,255,255,0.10) 1px,
+        transparent 1px,
+        transparent 26px
+      ),
+      linear-gradient(
+        160deg,
+        color-mix(in srgb, var(--eh-accent) 55%, #ffffff) 0%,
+        var(--eh-accent) 45%,
+        color-mix(in srgb, var(--eh-accent) 70%, #3a2410) 100%
+      );
+  }
+
+  #editorial-hero-{{ section.id }} .editorial-hero__placeholder::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.18), transparent 55%);
+  }
+
+  #editorial-hero-{{ section.id }} .editorial-hero__image-label {
+    position: absolute;
+    z-index: 4;
+    color: {{ section.settings.image_label_color }};
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    line-height: 1.3;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.12);
+  }
+
+  #editorial-hero-{{ section.id }} .editorial-hero__image-label--large {
+    right: 11%;
+    bottom: 9%;
+  }
+
+  #editorial-hero-{{ section.id }} .editorial-hero__image-label--small {
+    left: 12%;
+    bottom: 8%;
+  }
+
+  @media screen and (max-width: 1199px) {
+    #editorial-hero-{{ section.id }} .editorial-hero__content {
+      padding-left: 8%;
+      padding-right: 5%;
+    }
+
+    #editorial-hero-{{ section.id }} .editorial-hero__heading {
+      font-size: clamp(48px, 5vw, 70px);
+    }
+  }
+
+  @media screen and (max-width: 989px) {
+    #editorial-hero-{{ section.id }} .editorial-hero__inner {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    #editorial-hero-{{ section.id }} .editorial-hero__heading {
+      font-size: clamp(42px, 5vw, 60px);
+    }
+
+    #editorial-hero-{{ section.id }} .editorial-hero__description {
+      font-size: 15px;
+    }
+
+    #editorial-hero-{{ section.id }} .editorial-hero__button {
+      padding: 0 27px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #editorial-hero-{{ section.id }} .editorial-hero__inner {
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      padding-top: 55px;
+      padding-bottom: 0;
+    }
+
+    #editorial-hero-{{ section.id }} .editorial-hero__content {
+      display: block;
+      padding: 0 24px 55px;
+    }
+
+    #editorial-hero-{{ section.id }} .editorial-hero__eyebrow {
+      margin-bottom: 18px;
+      font-size: 10px;
+      letter-spacing: 3px;
+    }
+
+    #editorial-hero-{{ section.id }} .editorial-hero__heading {
+      margin-bottom: 23px;
+      font-size: clamp(43px, 12vw, 60px);
+      line-height: 0.98;
+      letter-spacing: -1.8px;
+    }
+
+    #editorial-hero-{{ section.id }} .editorial-hero__description {
+      margin-bottom: 30px;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    #editorial-hero-{{ section.id }} .editorial-hero__actions {
+      gap: 12px;
+    }
+
+    #editorial-hero-{{ section.id }} .editorial-hero__button {
+      min-height: 53px;
+      padding: 0 25px;
+      font-size: 11px;
+    }
+
+    #editorial-hero-{{ section.id }} .editorial-hero__secondary-link {
+      min-height: 53px;
+      font-size: 13px;
+    }
+
+    #editorial-hero-{{ section.id }} .editorial-hero__visual {
+      height: {{ section.settings.mobile_visual_height }}px;
+      min-height: {{ section.settings.mobile_visual_height }}px;
+    }
+
+    #editorial-hero-{{ section.id }} .editorial-hero__large-image {
+      width: 82%;
+      height: 100%;
+    }
+
+    #editorial-hero-{{ section.id }} .editorial-hero__small-image {
+      width: 52%;
+      height: 58%;
+    }
+
+    #editorial-hero-{{ section.id }} .editorial-hero__image-label {
+      font-size: 9px;
+      letter-spacing: 0.8px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Designer Editorial Hero",
+  "tag": "section",
+  "class": "section-designer-editorial-hero",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "DESIGNER COUTURE, RENTED RIGHT"
+    },
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "<p>Wear the piece.<br>Not the <em>price tag.</em></p>"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Curated lehengas, anarkalis and sarees from India's finest designers — for the wedding, the sangeet, the one night you want to remember. No storing, no re-wearing, no strings attached.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Primary button",
+      "default": "BROWSE THE EDIT"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_text",
+      "label": "Secondary link",
+      "default": "How renting works"
+    },
+    {
+      "type": "url",
+      "id": "secondary_link",
+      "label": "Secondary link destination"
+    },
+
+    {
+      "type": "header",
+      "content": "Large image"
+    },
+    {
+      "type": "image_picker",
+      "id": "large_image",
+      "label": "Desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "large_image_mobile",
+      "label": "Mobile image",
+      "info": "Optional. If blank, the desktop image will be used."
+    },
+    {
+      "type": "text",
+      "id": "large_image_label",
+      "label": "Large image label",
+      "default": "BRIDAL EDITORIAL — FULL LENGTH"
+    },
+
+    {
+      "type": "header",
+      "content": "Overlapping image"
+    },
+    {
+      "type": "image_picker",
+      "id": "small_image",
+      "label": "Desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "small_image_mobile",
+      "label": "Mobile image",
+      "info": "Optional. If blank, the desktop image will be used."
+    },
+    {
+      "type": "text",
+      "id": "small_image_label",
+      "label": "Small image label",
+      "default": "DETAIL SHOT"
+    },
+
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#F7F0E5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#2C1016"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent",
+      "default": "#B98D4D"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "#2C1016"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "image_label_color",
+      "label": "Image label",
+      "default": "#FFFFFF"
+    },
+
+    {
+      "type": "header",
+      "content": "Desktop layout"
+    },
+    {
+      "type": "range",
+      "id": "section_height",
+      "label": "Section height",
+      "min": 500,
+      "max": 1000,
+      "step": 10,
+      "unit": "px",
+      "default": 790
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Maximum section width",
+      "min": 1000,
+      "max": 2000,
+      "step": 20,
+      "unit": "px",
+      "default": 1820
+    },
+    {
+      "type": "range",
+      "id": "content_left_padding",
+      "label": "Content left padding",
+      "min": 20,
+      "max": 250,
+      "step": 5,
+      "unit": "px",
+      "default": 185
+    },
+    {
+      "type": "range",
+      "id": "content_right_padding",
+      "label": "Content right padding",
+      "min": 20,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 55
+    },
+    {
+      "type": "range",
+      "id": "content_bottom_offset",
+      "label": "Content vertical offset",
+      "min": -100,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "large_image_width",
+      "label": "Large image width",
+      "min": 60,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 68
+    },
+    {
+      "type": "range",
+      "id": "small_image_width",
+      "label": "Overlapping image width",
+      "min": 25,
+      "max": 70,
+      "step": 1,
+      "unit": "%",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "small_image_height",
+      "label": "Overlapping image height",
+      "min": 35,
+      "max": 70,
+      "step": 1,
+      "unit": "%",
+      "default": 48
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image fit",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover"
+        },
+        {
+          "value": "contain",
+          "label": "Contain"
+        }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "options": [
+        {
+          "value": "center center",
+          "label": "Center"
+        },
+        {
+          "value": "center top",
+          "label": "Top"
+        },
+        {
+          "value": "center bottom",
+          "label": "Bottom"
+        },
+        {
+          "value": "left center",
+          "label": "Left"
+        },
+        {
+          "value": "right center",
+          "label": "Right"
+        }
+      ],
+      "default": "center center"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+
+    {
+      "type": "header",
+      "content": "Mobile layout"
+    },
+    {
+      "type": "range",
+      "id": "mobile_visual_height",
+      "label": "Mobile image area height",
+      "min": 300,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 540
+    }
+  ],
+  "presets": [
+    {
+      "name": "Designer Editorial Hero"
+    }
+  ]
+}
+{% endschema %}

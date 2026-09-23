@@ -1,0 +1,3371 @@
+
+{% comment %}
+  OUTFIT UPLOAD FORM
+  Shopify + FormSubmit (with client-side image compression)
+
+  FormSubmit:
+  Endpoint: https://formsubmit.co/ajax/website@brandent.in
+
+  IMPORTANT:
+  1. FormSubmit may send a one-time confirmation email to the destination
+     address before submissions begin arriving normally.
+  2. Images are resized and compressed in the browser before submission.
+  3. PDF files are passed through without compression.
+{% endcomment %}
+
+<section
+  id="outfit-upload-{{ section.id }}"
+  class="ouc-section"
+>
+
+  <div class="ouc-container">
+
+    <!-- HEADER -->
+    <div class="ouc-header">
+
+      <h1>
+        {{ section.settings.heading }}
+      </h1>
+
+      {% if section.settings.intro != blank %}
+        <p>
+          {{ section.settings.intro }}
+        </p>
+      {% endif %}
+
+    </div>
+
+
+    <!-- FORM -->
+    <form
+      id="ouc-form-{{ section.id }}"
+      class="ouc-form"
+      enctype="multipart/form-data"
+      novalidate
+    >
+
+      <!-- ==============================
+           FORMSUBMIT CONFIGURATION
+      =============================== -->
+
+      <input
+        type="hidden"
+        name="_subject"
+        value="New Outfit Submission"
+      >
+
+      <input
+        type="hidden"
+        name="_captcha"
+        value="false"
+      >
+
+      <input
+        type="hidden"
+        name="_template"
+        value="table"
+      >
+
+
+      <!-- ==============================
+           PERSONAL INFORMATION
+      =============================== -->
+
+      <div class="ouc-section-title">
+
+        <span>01</span>
+
+        <h2>
+          Personal Information
+        </h2>
+
+      </div>
+
+
+      <div class="ouc-grid ouc-grid-2">
+
+        <!-- NAME -->
+        <div class="ouc-field">
+
+          <label>
+            Full Name <span>*</span>
+          </label>
+
+          <input
+            type="text"
+            name="full_name"
+            placeholder="Full Name"
+            autocomplete="name"
+            required
+          >
+
+          <small class="ouc-error"></small>
+
+        </div>
+
+
+        <!-- CITY -->
+        <div class="ouc-field">
+
+          <label>
+            City <span>*</span>
+          </label>
+
+          <input
+            type="text"
+            name="city"
+            placeholder="City"
+            required
+          >
+
+          <small class="ouc-error"></small>
+
+        </div>
+
+
+        <!-- EMAIL -->
+        <div class="ouc-field">
+
+          <label>
+            Email ID <span>*</span>
+          </label>
+
+          <input
+            type="email"
+            name="email"
+            placeholder="Email ID"
+            autocomplete="email"
+            required
+          >
+
+          <small class="ouc-error"></small>
+
+        </div>
+
+
+        <!-- PHONE -->
+        <div class="ouc-field">
+
+          <label>
+            Contact Number <span>*</span>
+          </label>
+
+          <div class="ouc-phone">
+
+            <select
+              name="country_code"
+              aria-label="Country code"
+            >
+              <option value="+91">+91</option>
+              <option value="+1">+1</option>
+              <option value="+44">+44</option>
+              <option value="+61">+61</option>
+              <option value="+971">+971</option>
+              <option value="+65">+65</option>
+              <option value="+92">+92</option>
+              <option value="+880">+880</option>
+              <option value="+94">+94</option>
+              <option value="+977">+977</option>
+              <option value="+49">+49</option>
+              <option value="+33">+33</option>
+              <option value="+39">+39</option>
+              <option value="+81">+81</option>
+              <option value="+82">+82</option>
+              <option value="+86">+86</option>
+            </select>
+
+            <input
+              type="tel"
+              name="phone"
+              placeholder="Phone number"
+              autocomplete="tel"
+              required
+            >
+
+          </div>
+
+          <small class="ouc-error"></small>
+
+        </div>
+
+      </div>
+
+
+      <!-- ==============================
+           OUTFIT DETAILS
+      =============================== -->
+
+      <div class="ouc-section-title">
+
+        <span>02</span>
+
+        <h2>
+          Outfit Details
+        </h2>
+
+      </div>
+
+
+      <div class="ouc-grid ouc-grid-2">
+
+        <!-- DESIGNER -->
+        <div class="ouc-field">
+
+          <label>
+            Name of Designer <span>*</span>
+          </label>
+
+          <input
+            type="text"
+            name="designer"
+            placeholder="Name of Designer"
+            required
+          >
+
+          <small class="ouc-error"></small>
+
+        </div>
+
+
+        <!-- PRICE -->
+        <div class="ouc-field">
+
+          <label>
+            Price of Outfit <span>*</span>
+          </label>
+
+          <div class="ouc-price">
+
+            <select
+              name="currency"
+              required
+            >
+              <option value="INR">₹ INR</option>
+              <option value="USD">$ USD</option>
+              <option value="GBP">£ GBP</option>
+              <option value="AED">د.إ AED</option>
+              <option value="EUR">€ EUR</option>
+            </select>
+
+            <input
+              type="number"
+              name="outfit_price"
+              placeholder="Price"
+              min="0"
+              step="0.01"
+              required
+            >
+
+          </div>
+
+          <small class="ouc-error"></small>
+
+        </div>
+
+
+        <!-- YEAR -->
+        <div class="ouc-field">
+
+          <label>
+            Year of Purchase <span>*</span>
+          </label>
+
+          <select
+            name="year_of_purchase"
+            required
+          >
+
+            <option value="">
+              Select year
+            </option>
+
+            {% assign current_year = 'now' | date: '%Y' | plus: 0 %}
+
+            {% for year in (2000..current_year) reversed %}
+              <option value="{{ year }}">
+                {{ year }}
+              </option>
+            {% endfor %}
+
+          </select>
+
+          <small class="ouc-error"></small>
+
+        </div>
+
+
+        <!-- SIZE -->
+        <div class="ouc-field">
+
+          <label>
+            Outfit Size <span>*</span>
+          </label>
+
+          <select
+            name="outfit_size"
+            required
+          >
+
+            <option value="">
+              Select size
+            </option>
+
+            <option value="XXS">XXS</option>
+            <option value="XS">XS</option>
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+            <option value="XXL">XXL</option>
+            <option value="XXXL">XXXL</option>
+            <option value="Custom">Custom</option>
+            <option value="Free Size">Free Size</option>
+
+          </select>
+
+          <small class="ouc-error"></small>
+
+        </div>
+
+      </div>
+
+
+      <!-- ==============================
+           MEASUREMENTS
+      =============================== -->
+
+      <div class="ouc-subtitle">
+
+        Exact Measurements
+
+        <span>
+          (if applicable)
+        </span>
+
+      </div>
+
+
+      <div class="ouc-grid ouc-grid-4">
+
+        <div class="ouc-field">
+
+          <label>Chest</label>
+
+          <input
+            type="text"
+            name="chest"
+            placeholder="Chest"
+          >
+
+        </div>
+
+
+        <div class="ouc-field">
+
+          <label>Waist</label>
+
+          <input
+            type="text"
+            name="waist"
+            placeholder="Waist"
+          >
+
+        </div>
+
+
+        <div class="ouc-field">
+
+          <label>Bicep</label>
+
+          <input
+            type="text"
+            name="bicep"
+            placeholder="Bicep"
+          >
+
+        </div>
+
+
+        <div class="ouc-field">
+
+          <label>Height</label>
+
+          <input
+            type="text"
+            name="height"
+            placeholder="Height"
+          >
+
+        </div>
+
+      </div>
+
+
+      <!-- ==============================
+           OUTFIT IMAGES
+      =============================== -->
+
+      <div class="ouc-section-title">
+
+        <span>03</span>
+
+        <h2>
+          Upload Outfit Images
+        </h2>
+
+      </div>
+
+
+      <p class="ouc-help">
+        Please upload clear images of the outfit.
+        Front, back and label images are required.
+      </p>
+
+
+      <div class="ouc-upload-grid">
+
+        <!-- FRONT -->
+        <div class="ouc-upload">
+
+          <input
+            id="ouc-front-{{ section.id }}"
+            type="file"
+            name="front_outfit"
+            accept="image/*"
+            required
+          >
+
+          <label
+            for="ouc-front-{{ section.id }}"
+            class="ouc-upload-label"
+          >
+
+            <span class="ouc-upload-icon">+</span>
+
+            <strong>
+              Front of Outfit
+            </strong>
+
+            <small>
+              Required · JPG, PNG, WEBP
+            </small>
+
+            <span class="ouc-file-name">
+              No file selected
+            </span>
+
+          </label>
+
+        </div>
+
+
+        <!-- BACK -->
+        <div class="ouc-upload">
+
+          <input
+            id="ouc-back-{{ section.id }}"
+            type="file"
+            name="back_outfit"
+            accept="image/*"
+            required
+          >
+
+          <label
+            for="ouc-back-{{ section.id }}"
+            class="ouc-upload-label"
+          >
+
+            <span class="ouc-upload-icon">+</span>
+
+            <strong>
+              Back of Outfit
+            </strong>
+
+            <small>
+              Required · JPG, PNG, WEBP
+            </small>
+
+            <span class="ouc-file-name">
+              No file selected
+            </span>
+
+          </label>
+
+        </div>
+
+
+        <!-- LABEL -->
+        <div class="ouc-upload">
+
+          <input
+            id="ouc-label-{{ section.id }}"
+            type="file"
+            name="outfit_label"
+            accept="image/*"
+            required
+          >
+
+          <label
+            for="ouc-label-{{ section.id }}"
+            class="ouc-upload-label"
+          >
+
+            <span class="ouc-upload-icon">+</span>
+
+            <strong>
+              Outfit Label
+            </strong>
+
+            <small>
+              Required · JPG, PNG, WEBP
+            </small>
+
+            <span class="ouc-file-name">
+              No file selected
+            </span>
+
+          </label>
+
+        </div>
+
+
+        <!-- DAMAGE -->
+        <div class="ouc-upload">
+
+          <input
+            id="ouc-damage-{{ section.id }}"
+            type="file"
+            name="outfit_damage"
+            accept="image/*"
+          >
+
+          <label
+            for="ouc-damage-{{ section.id }}"
+            class="ouc-upload-label"
+          >
+
+            <span class="ouc-upload-icon">+</span>
+
+            <strong>
+              Outfit Damage
+            </strong>
+
+            <small>
+              Optional · If applicable
+            </small>
+
+            <span class="ouc-file-name">
+              No file selected
+            </span>
+
+          </label>
+
+        </div>
+
+
+        <!-- ADDITIONAL -->
+        <div class="ouc-upload ouc-upload-wide">
+
+          <input
+            id="ouc-additional-{{ section.id }}"
+            type="file"
+            name="additional_detail_shots"
+            accept="image/*"
+            multiple
+          >
+
+          <label
+            for="ouc-additional-{{ section.id }}"
+            class="ouc-upload-label"
+          >
+
+            <span class="ouc-upload-icon">+</span>
+
+            <strong>
+              Additional Detail Shots
+            </strong>
+
+            <small>
+              Optional · Multiple images allowed
+            </small>
+
+            <span class="ouc-file-name">
+              No files selected
+            </span>
+
+          </label>
+
+        </div>
+
+      </div>
+
+
+      <!-- ==============================
+           PROOF & PACKAGING
+      =============================== -->
+
+      <div class="ouc-section-title">
+
+        <span>04</span>
+
+        <h2>
+          Proof & Packaging
+        </h2>
+
+      </div>
+
+
+      <div class="ouc-grid ouc-grid-2">
+
+        <!-- PROOF -->
+        <div class="ouc-upload">
+
+          <input
+            id="ouc-proof-{{ section.id }}"
+            type="file"
+            name="proof_of_purchase"
+            accept="image/*,.pdf"
+            required
+          >
+
+          <label
+            for="ouc-proof-{{ section.id }}"
+            class="ouc-upload-label"
+          >
+
+            <span class="ouc-upload-icon">+</span>
+
+            <strong>
+              Proof of Purchase
+            </strong>
+
+            <small>
+              Required · Invoice / transaction / email
+            </small>
+
+            <span class="ouc-file-name">
+              No file selected
+            </span>
+
+          </label>
+
+        </div>
+
+
+        <!-- PACKAGING -->
+        <div class="ouc-field">
+
+          <label>
+            Packaging Available? <span>*</span>
+          </label>
+
+          <select
+            name="packaging_available"
+            required
+          >
+
+            <option value="">
+              Select option
+            </option>
+
+            <option value="Yes">
+              Yes
+            </option>
+
+            <option value="No">
+              No
+            </option>
+
+          </select>
+
+          <small class="ouc-error"></small>
+
+        </div>
+
+      </div>
+
+
+      <!-- PACKAGING IMAGE -->
+      <div class="ouc-packaging-upload">
+
+        <div class="ouc-upload">
+
+          <input
+            id="ouc-packaging-image-{{ section.id }}"
+            type="file"
+            name="packaging_image"
+            accept="image/*"
+          >
+
+          <label
+            for="ouc-packaging-image-{{ section.id }}"
+            class="ouc-upload-label"
+          >
+
+            <span class="ouc-upload-icon">+</span>
+
+            <strong>
+              Packaging Image
+            </strong>
+
+            <small>
+              Optional · If available
+            </small>
+
+            <span class="ouc-file-name">
+              No file selected
+            </span>
+
+          </label>
+
+        </div>
+
+      </div>
+
+
+      <!-- ==============================
+           CONDITION
+      =============================== -->
+
+      <div class="ouc-section-title">
+
+        <span>05</span>
+
+        <h2>
+          Outfit Condition
+        </h2>
+
+      </div>
+
+
+      <div class="ouc-grid ouc-grid-3">
+
+        <!-- CONDITION -->
+        <div class="ouc-field">
+
+          <label>
+            Outfit Condition <span>*</span>
+          </label>
+
+          <select
+            name="outfit_condition"
+            required
+          >
+
+            <option value="">
+              Select condition
+            </option>
+
+            <option value="Brand New">
+              Brand New
+            </option>
+
+            <option value="Like New">
+              Like New
+            </option>
+
+            <option value="Excellent">
+              Excellent
+            </option>
+
+            <option value="Very Good">
+              Very Good
+            </option>
+
+            <option value="Good">
+              Good
+            </option>
+
+            <option value="Fair">
+              Fair
+            </option>
+
+          </select>
+
+          <small class="ouc-error"></small>
+
+        </div>
+
+
+        <!-- TIMES WORN -->
+        <div class="ouc-field">
+
+          <label>
+            Number of Times Worn <span>*</span>
+          </label>
+
+          <select
+            name="times_worn"
+            required
+          >
+
+            <option value="">
+              Select
+            </option>
+
+            <option value="Never">
+              Never
+            </option>
+
+            <option value="1 time">
+              1 time
+            </option>
+
+            <option value="2-3 times">
+              2–3 times
+            </option>
+
+            <option value="4-5 times">
+              4–5 times
+            </option>
+
+            <option value="6-10 times">
+              6–10 times
+            </option>
+
+            <option value="10+ times">
+              10+ times
+            </option>
+
+          </select>
+
+          <small class="ouc-error"></small>
+
+        </div>
+
+
+        <!-- SELL / RENT -->
+        <div class="ouc-field">
+
+          <label>
+            Sell or Rent? <span>*</span>
+          </label>
+
+          <select
+            name="sell_or_rent"
+            required
+          >
+
+            <option value="">
+              Select option
+            </option>
+
+            <option value="Sell">
+              Sell
+            </option>
+
+            <option value="Rent">
+              Rent
+            </option>
+
+            <option value="Both">
+              Both
+            </option>
+
+          </select>
+
+          <small class="ouc-error"></small>
+
+        </div>
+
+      </div>
+
+
+      <!-- ==============================
+           DISCLAIMER
+      =============================== -->
+
+      <div class="ouc-disclaimer">
+
+        <button
+          type="button"
+          class="ouc-disclaimer-toggle"
+          aria-expanded="false"
+        >
+
+          <span>
+            Submission & Consignment Disclaimer
+          </span>
+
+          <span class="ouc-disclaimer-plus">
+            +
+          </span>
+
+        </button>
+
+
+        <div class="ouc-disclaimer-content">
+
+          <p>
+            Thank you for submitting your outfit details. Our team will review
+            the information provided and contact you to discuss the valuation,
+            pricing, and next steps. Submission of this form does not guarantee
+            that your outfit will be accepted for sale or rental on our platform.
+          </p>
+
+          <p>
+            If both parties agree to proceed, your outfit may be listed on our
+            website and other sales channels. To promote your listing, the
+            company may use your outfit for marketing and promotional activities,
+            including professional photoshoots, videos, social media content,
+            digital advertisements, website content, email campaigns, and other
+            promotional material.
+          </p>
+
+          <p>
+            If your outfit is accepted, it will be offered for sale and/or rental
+            at a mutually agreed price. The company will retain an agreed
+            commission on every successful sale and on each rental transaction
+            before the remaining proceeds are paid to you, in accordance with
+            the terms communicated at the time of onboarding.
+          </p>
+
+          <p>
+            <strong>
+              By submitting this form, you confirm that:
+            </strong>
+          </p>
+
+          <ul>
+
+            <li>
+              You are the legal owner of the outfit and have the right to consign it.
+            </li>
+
+            <li>
+              All information provided is true and accurate.
+            </li>
+
+            <li>
+              You have disclosed any alterations, defects, repairs, or damage.
+            </li>
+
+            <li>
+              You understand that acceptance of the outfit is at the discretion
+              of the company.
+            </li>
+
+            <li>
+              You agree to the promotional use of your outfit.
+            </li>
+
+            <li>
+              You agree that final commercial terms will be confirmed separately
+              before your outfit is listed.
+            </li>
+
+          </ul>
+
+        </div>
+
+      </div>
+
+
+      <!-- ==============================
+           AGREEMENT
+      =============================== -->
+
+      <div class="ouc-agreement">
+
+        <label class="ouc-checkbox">
+
+          <input
+            type="checkbox"
+            name="disclaimer_agreement"
+            value="Agreed"
+            required
+          >
+
+          <span
+            class="ouc-checkmark"
+            aria-hidden="true"
+          ></span>
+
+          <span class="ouc-agreement-text">
+
+            I have read and agree to the Submission & Consignment Disclaimer
+            and confirm that the information provided is accurate.
+
+          </span>
+
+        </label>
+
+        <small class="ouc-error"></small>
+
+      </div>
+
+
+      <!-- ==============================
+           SUBMIT
+      =============================== -->
+
+      <div class="ouc-submit-wrapper">
+
+        <button
+          type="submit"
+          class="ouc-submit"
+        >
+
+          <span class="ouc-submit-text">
+            Continue
+          </span>
+
+          <span class="ouc-submit-loader">
+
+            <span></span>
+            <span></span>
+            <span></span>
+
+          </span>
+
+        </button>
+
+      </div>
+
+
+      <!-- SUCCESS -->
+      <div
+        class="ouc-success"
+        role="alert"
+        aria-live="polite"
+      >
+
+        <div class="ouc-success-icon">
+          ✓
+        </div>
+
+        <h3>
+          Thank you for your submission.
+        </h3>
+
+        <p>
+          We've received your outfit details and will review your submission.
+          Our team will contact you regarding the next steps.
+        </p>
+
+      </div>
+
+
+      <!-- ERROR -->
+      <div
+        class="ouc-form-error"
+        role="alert"
+        aria-live="polite"
+      >
+        Something went wrong. Please try again.
+      </div>
+
+    </form>
+
+  </div>
+
+</section>
+
+
+<style>
+
+/* ==========================================
+   VARIABLES
+========================================== */
+
+#outfit-upload-{{ section.id }} {
+
+  --ouc-text: #171717;
+  --ouc-muted: #777;
+  --ouc-border: #dedbd6;
+  --ouc-light: #f8f7f5;
+  --ouc-white: #fff;
+  --ouc-accent: #171717;
+
+  width: 100%;
+
+  background: {{ section.settings.background_color }};
+
+  color: var(--ouc-text);
+
+}
+
+
+/* ==========================================
+   RESET
+========================================== */
+
+#outfit-upload-{{ section.id }} *,
+#outfit-upload-{{ section.id }} *::before,
+#outfit-upload-{{ section.id }} *::after {
+
+  box-sizing: border-box;
+
+}
+
+
+/* ==========================================
+   CONTAINER
+========================================== */
+
+#outfit-upload-{{ section.id }} .ouc-container {
+
+  width:
+    min(
+      {{ section.settings.max_width }}px,
+      calc(100% - 40px)
+    );
+
+  margin: 0 auto;
+
+  padding-top:
+    {{ section.settings.padding_top }}px;
+
+  padding-bottom:
+    {{ section.settings.padding_bottom }}px;
+
+}
+
+
+/* ==========================================
+   HEADER
+========================================== */
+
+#outfit-upload-{{ section.id }} .ouc-header {
+
+  max-width: 800px;
+
+  margin:
+    0 auto 65px;
+
+  text-align: center;
+
+}
+
+
+#outfit-upload-{{ section.id }} .ouc-header h1 {
+
+  margin: 0 0 16px;
+
+  font-size:
+    {{ section.settings.heading_size }}px;
+
+  line-height: 1.15;
+
+  font-weight: 400;
+
+  letter-spacing: -.025em;
+
+}
+
+
+#outfit-upload-{{ section.id }} .ouc-header p {
+
+  margin: 0;
+
+  color: var(--ouc-muted);
+
+  font-size: 15px;
+
+  line-height: 1.7;
+
+}
+
+
+/* ==========================================
+   SECTION TITLES
+========================================== */
+
+#outfit-upload-{{ section.id }} .ouc-section-title {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  margin-top: 55px;
+
+  margin-bottom: 30px;
+
+  padding-bottom: 17px;
+
+  border-bottom:
+    1px solid var(--ouc-border);
+
+}
+
+
+#outfit-upload-{{ section.id }} .ouc-section-title > span {
+
+  color: #999;
+
+  font-size: 11px;
+
+  letter-spacing: .12em;
+
+}
+
+
+#outfit-upload-{{ section.id }} .ouc-section-title h2 {
+
+  margin: 0;
+
+  font-size: 19px;
+
+  font-weight: 500;
+
+}
+
+
+/* ==========================================
+   GRID
+========================================== */
+
+#outfit-upload-{{ section.id }} .ouc-grid {
+
+  display: grid;
+
+  gap: 25px;
+
+}
+
+
+#outfit-upload-{{ section.id }} .ouc-grid-2 {
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+}
+
+
+#outfit-upload-{{ section.id }} .ouc-grid-3 {
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+}
+
+
+#outfit-upload-{{ section.id }} .ouc-grid-4 {
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+}
+
+
+/* ==========================================
+   FIELDS
+========================================== */
+
+#outfit-upload-{{ section.id }} .ouc-field {
+
+  min-width: 0;
+
+}
+
+
+#outfit-upload-{{ section.id }} .ouc-field > label {
+
+  display: block;
+
+  margin-bottom: 9px;
+
+  font-size: 12px;
+
+  font-weight: 500;
+
+  letter-spacing: .06em;
+
+  text-transform: uppercase;
+
+}
+
+
+#outfit-upload-{{ section.id }} .ouc-field > label span {
+
+  color: #a40000;
+
+}
+
+
+/* ==========================================
+   INPUTS
+========================================== */
+
+#outfit-upload-{{ section.id }}
+input[type="text"],
+#outfit-upload-{{ section.id }}
+input[type="email"],
+#outfit-upload-{{ section.id }}
+input[type="tel"],
+#outfit-upload-{{ section.id }}
+input[type="number"],
+#outfit-upload-{{ section.id }}
+select {
+
+  width: 100%;
+
+  height: 52px;
+
+  padding: 0 15px;
+
+  border: 1px solid var(--ouc-border);
+
+  border-radius: 0;
+
+  background: #fff;
+
+  color: var(--ouc-text);
+
+  font-family: inherit;
+
+  font-size: 14px;
+
+  outline: none;
+
+  appearance: auto;
+
+}
+
+
+#outfit-upload-{{ section.id }}
+input[type="text"]:focus,
+#outfit-upload-{{ section.id }}
+input[type="email"]:focus,
+#outfit-upload-{{ section.id }}
+input[type="tel"]:focus,
+#outfit-upload-{{ section.id }}
+input[type="number"]:focus,
+#outfit-upload-{{ section.id }}
+select:focus {
+
+  border-color: #777;
+
+  box-shadow:
+    0 0 0 1px #777;
+
+}
+
+
+/* ==========================================
+   PHONE / PRICE
+========================================== */
+
+#outfit-upload-{{ section.id }} .ouc-phone {
+
+  display: grid;
+
+  grid-template-columns: 105px 1fr;
+
+  gap: 8px;
+
+}
+
+
+#outfit-upload-{{ section.id }} .ouc-price {
+
+  display: grid;
+
+  grid-template-columns: 115px 1fr;
+
+  gap: 8px;
+
+}
+
+
+/* ==========================================
+   SUBTITLE
+========================================== */
+
+#outfit-upload-{{ section.id }} .ouc-subtitle {
+
+  margin: 38px 0 20px;
+
+  font-size: 13px;
+
+  font-weight: 500;
+
+}
+
+
+#outfit-upload-{{ section.id }} .ouc-subtitle span {
+
+  color: #999;
+
+  font-weight: 400;
+
+}
+
+
+/* ==========================================
+   HELP
+========================================== */
+
+#outfit-upload-{{ section.id }} .ouc-help {
+
+  margin: -10px 0 25px;
+
+  color: var(--ouc-muted);
+
+  font-size: 13px;
+
+  line-height: 1.6;
+
+}
+
+
+/* ==========================================
+   UPLOADS
+========================================== */
+
+#outfit-upload-{{ section.id }} .ouc-upload-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 16px;
+
+}
+
+
+#outfit-upload-{{ section.id }} .ouc-upload {
+
+  position: relative;
+
+  min-width: 0;
+
+}
+
+
+#outfit-upload-{{ section.id }}
+.ouc-upload input[type="file"] {
+
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  opacity: 0;
+
+  overflow: hidden;
+
+}
+
+
+#outfit-upload-{{ section.id }} .ouc-upload-wide {
+
+  grid-column: 1 / -1;
+
+}
+
+
+#outfit-upload-{{ section.id }} .ouc-upload-label {
+
+  min-height: 175px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 25px;
+
+  border: 1px dashed #c9c5bf;
+
+  background: #faf9f7;
+
+  cursor: pointer;
+
+  text-align: center;
+
+  transition:
+    border-color .2s ease,
+    background-color .2s ease;
+
+}
+
+
+#outfit-upload-{{ section.id }}
+.ouc-upload-label:hover {
+
+  border-color: #777;
+
+  background: #f5f4f1;
+
+}
+
+
+#outfit-upload-{{ section.id }} .ouc-upload-icon {
+
+  width: 35px;
+
+  height: 35px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin-bottom: 12px;
+
+  border: 1px solid #bbb;
+
+  border-radius: 50%;
+
+  font-size: 20px;
+
+}
+
+
+#outfit-upload-{{ section.id }}
+.ouc-upload-label strong {
+
+  margin-bottom: 6px;
+
+  font-size: 13px;
+
+  font-weight: 500;
+
+}
+
+
+#outfit-upload-{{ section.id }}
+.ouc-upload-label small {
+
+  color: #999;
+
+  font-size: 11px;
+
+}
+
+
+#outfit-upload-{{ section.id }} .ouc-file-name {
+
+  display: block;
+
+  max-width: 100%;
+
+  margin-top: 12px;
+
+  overflow: hidden;
+
+  color: #555;
+
+  font-size: 11px;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+}
+
+
+/* ==========================================
+   PACKAGING
+========================================== */
+
+#outfit-upload-{{ section.id }}
+.ouc-packaging-upload {
+
+  margin-top: 16px;
+
+}
+
+
+/* ==========================================
+   DISCLAIMER
+========================================== */
+
+#outfit-upload-{{ section.id }} .ouc-disclaimer {
+
+  margin-top: 55px;
+
+  border-top:
+    1px solid var(--ouc-border);
+
+  border-bottom:
+    1px solid var(--ouc-border);
+
+}
+
+
+#outfit-upload-{{ section.id }}
+.ouc-disclaimer-toggle {
+
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 20px 0;
+
+  border: 0;
+
+  background: transparent;
+
+  color: var(--ouc-text);
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  font-weight: 500;
+
+  cursor: pointer;
+
+  text-align: left;
+
+}
+
+
+#outfit-upload-{{ section.id }}
+.ouc-disclaimer-plus {
+
+  font-size: 20px;
+
+  transition:
+    transform .25s ease;
+
+}
+
+
+#outfit-upload-{{ section.id }}
+.ouc-disclaimer-toggle[aria-expanded="true"]
+.ouc-disclaimer-plus {
+
+  transform:
+    rotate(45deg);
+
+}
+
+
+#outfit-upload-{{ section.id }}
+.ouc-disclaimer-content {
+
+  display: none;
+
+  padding: 0 0 25px;
+
+  color: #666;
+
+  font-size: 13px;
+
+  line-height: 1.75;
+
+}
+
+
+#outfit-upload-{{ section.id }}
+.ouc-disclaimer-content.is-open {
+
+  display: block;
+
+}
+
+
+#outfit-upload-{{ section.id }}
+.ouc-disclaimer-content p {
+
+  margin:
+    0 0 15px;
+
+}
+
+
+#outfit-upload-{{ section.id }}
+.ouc-disclaimer-content ul {
+
+  margin: 0;
+
+  padding-left: 20px;
+
+}
+
+
+#outfit-upload-{{ section.id }}
+.ouc-disclaimer-content li {
+
+  margin-bottom: 8px;
+
+}
+
+
+/* ==========================================
+   AGREEMENT / CHECKBOX
+   Isolated from Shopify theme checkbox styles
+========================================== */
+
+#outfit-upload-{{ section.id }}
+.ouc-agreement {
+
+  margin-top: 28px;
+
+}
+
+
+#outfit-upload-{{ section.id }}
+.ouc-checkbox {
+
+  position: relative;
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 12px;
+
+  width: 100%;
+
+  margin: 0;
+
+  padding: 0;
+
+  cursor: pointer;
+
+}
+
+
+/* Completely hide native checkbox
+   without affecting page layout */
+
+#outfit-upload-{{ section.id }}
+.ouc-checkbox input[type="checkbox"] {
+
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  margin: 0;
+  padding: 0;
+
+  opacity: 0;
+
+  overflow: hidden;
+
+  clip: rect(0, 0, 0, 0);
+
+  clip-path: inset(50%);
+
+  white-space: nowrap;
+
+  border: 0;
+
+}
+
+
+/* Custom checkbox */
+
+#outfit-upload-{{ section.id }}
+.ouc-checkmark {
+
+  position: relative;
+
+  flex: 0 0 20px;
+
+  width: 20px;
+
+  height: 20px;
+
+  margin-top: 1px;
+
+  border: 1px solid #aaa;
+
+  background: #fff;
+
+  transition:
+    background-color .15s ease,
+    border-color .15s ease;
+
+  pointer-events: none;
+
+}
+
+
+/* Checked state */
+
+#outfit-upload-{{ section.id }}
+.ouc-checkbox
+input[type="checkbox"]:checked
++ .ouc-checkmark {
+
+  background: #171717;
+
+  border-color: #171717;
+
+}
+
+
+/* Checkmark */
+
+#outfit-upload-{{ section.id }}
+.ouc-checkbox
+input[type="checkbox"]:checked
++ .ouc-checkmark::after {
+
+  content: "";
+
+  position: absolute;
+
+  left: 6px;
+
+  top: 2px;
+
+  width: 5px;
+
+  height: 10px;
+
+  border-right: 1px solid #fff;
+
+  border-bottom: 1px solid #fff;
+
+  transform: rotate(45deg);
+
+}
+
+
+/* Keyboard focus */
+
+#outfit-upload-{{ section.id }}
+.ouc-checkbox
+input[type="checkbox"]:focus-visible
++ .ouc-checkmark {
+
+  outline: 2px solid #777;
+
+  outline-offset: 3px;
+
+}
+
+
+/* Agreement text */
+
+#outfit-upload-{{ section.id }}
+.ouc-agreement-text {
+
+  display: block;
+
+  color: #555;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+
+  cursor: pointer;
+
+}
+
+
+/* Error */
+
+#outfit-upload-{{ section.id }}
+.ouc-agreement.has-error
+.ouc-checkmark {
+
+  border-color: #a40000;
+
+}
+
+
+/* ==========================================
+   SUBMIT
+========================================== */
+
+#outfit-upload-{{ section.id }}
+.ouc-submit-wrapper {
+
+  display: flex;
+
+  justify-content: center;
+
+  margin-top: 40px;
+
+}
+
+
+#outfit-upload-{{ section.id }}
+.ouc-submit {
+
+  min-width: 220px;
+
+  min-height: 54px;
+
+  padding: 15px 35px;
+
+  border: 1px solid #171717;
+
+  background: #171717;
+
+  color: #fff;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  font-weight: 500;
+
+  letter-spacing: .14em;
+
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  transition:
+    background-color .2s ease,
+    color .2s ease,
+    opacity .2s ease;
+
+}
+
+
+#outfit-upload-{{ section.id }}
+.ouc-submit:hover {
+
+  background: #fff;
+
+  color: #171717;
+
+}
+
+
+#outfit-upload-{{ section.id }}
+.ouc-submit:disabled {
+
+  opacity: .55;
+
+  cursor: not-allowed;
+
+}
+
+
+/* ==========================================
+   LOADER
+========================================== */
+
+#outfit-upload-{{ section.id }}
+.ouc-submit-loader {
+
+  display: none;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 4px;
+
+}
+
+
+#outfit-upload-{{ section.id }}
+.ouc-submit-loader span {
+
+  width: 4px;
+
+  height: 4px;
+
+  border-radius: 50%;
+
+  background: currentColor;
+
+  animation:
+    ouc-loading 1s infinite ease-in-out;
+
+}
+
+
+#outfit-upload-{{ section.id }}
+.ouc-submit-loader span:nth-child(2) {
+
+  animation-delay: .15s;
+
+}
+
+
+#outfit-upload-{{ section.id }}
+.ouc-submit-loader span:nth-child(3) {
+
+  animation-delay: .3s;
+
+}
+
+
+@keyframes ouc-loading {
+
+  0%, 80%, 100% {
+
+    transform: scale(.7);
+
+    opacity: .5;
+
+  }
+
+  40% {
+
+    transform: scale(1);
+
+    opacity: 1;
+
+  }
+
+}
+
+
+/* ==========================================
+   SUCCESS
+========================================== */
+
+#outfit-upload-{{ section.id }}
+.ouc-success {
+
+  display: none;
+
+  margin-top: 30px;
+
+  padding: 40px;
+
+  border: 1px solid #ddd;
+
+  background: #faf9f7;
+
+  text-align: center;
+
+}
+
+
+#outfit-upload-{{ section.id }}
+.ouc-success.is-visible {
+
+  display: block;
+
+}
+
+
+#outfit-upload-{{ section.id }}
+.ouc-success-icon {
+
+  width: 45px;
+
+  height: 45px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin: 0 auto 18px;
+
+  border: 1px solid #222;
+
+  border-radius: 50%;
+
+  font-size: 20px;
+
+}
+
+
+#outfit-upload-{{ section.id }}
+.ouc-success h3 {
+
+  margin: 0 0 10px;
+
+  font-size: 20px;
+
+  font-weight: 500;
+
+}
+
+
+#outfit-upload-{{ section.id }}
+.ouc-success p {
+
+  max-width: 600px;
+
+  margin: 0 auto;
+
+  color: #666;
+
+  font-size: 14px;
+
+  line-height: 1.7;
+
+}
+
+
+/* ==========================================
+   ERROR
+========================================== */
+
+#outfit-upload-{{ section.id }}
+.ouc-form-error {
+
+  display: none;
+
+  margin-top: 20px;
+
+  padding: 15px;
+
+  border: 1px solid #e0b5b5;
+
+  background: #fff6f6;
+
+  color: #9b2222;
+
+  font-size: 13px;
+
+  text-align: center;
+
+}
+
+
+#outfit-upload-{{ section.id }}
+.ouc-form-error.is-visible {
+
+  display: block;
+
+}
+
+
+#outfit-upload-{{ section.id }}
+.ouc-error {
+
+  display: none;
+
+  margin-top: 6px;
+
+  color: #a40000;
+
+  font-size: 11px;
+
+}
+
+
+#outfit-upload-{{ section.id }}
+.ouc-field.has-error
+input,
+#outfit-upload-{{ section.id }}
+.ouc-field.has-error
+select {
+
+  border-color: #a40000;
+
+}
+
+
+#outfit-upload-{{ section.id }}
+.ouc-field.has-error
+.ouc-error {
+
+  display: block;
+
+}
+
+
+#outfit-upload-{{ section.id }}
+.ouc-agreement.has-error
+.ouc-error {
+
+  display: block;
+
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media screen and (max-width: 900px) {
+
+  #outfit-upload-{{ section.id }}
+  .ouc-grid-4 {
+
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+  }
+
+
+  #outfit-upload-{{ section.id }}
+  .ouc-grid-3 {
+
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+  }
+
+}
+
+
+@media screen and (max-width: 749px) {
+
+  #outfit-upload-{{ section.id }}
+  .ouc-container {
+
+    width:
+      calc(100% - 30px);
+
+    padding-top: 45px;
+
+    padding-bottom: 55px;
+
+  }
+
+
+  #outfit-upload-{{ section.id }}
+  .ouc-header {
+
+    margin-bottom: 40px;
+
+  }
+
+
+  #outfit-upload-{{ section.id }}
+  .ouc-header h1 {
+
+    font-size: 30px;
+
+  }
+
+
+  #outfit-upload-{{ section.id }}
+  .ouc-grid-2,
+  #outfit-upload-{{ section.id }}
+  .ouc-grid-3,
+  #outfit-upload-{{ section.id }}
+  .ouc-grid-4 {
+
+    grid-template-columns: 1fr;
+
+    gap: 20px;
+
+  }
+
+
+  #outfit-upload-{{ section.id }}
+  .ouc-upload-grid {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+  #outfit-upload-{{ section.id }}
+  .ouc-upload-wide {
+
+    grid-column: auto;
+
+  }
+
+
+  #outfit-upload-{{ section.id }}
+  .ouc-phone {
+
+    grid-template-columns: 90px 1fr;
+
+  }
+
+
+  #outfit-upload-{{ section.id }}
+  .ouc-price {
+
+    grid-template-columns: 105px 1fr;
+
+  }
+
+
+  #outfit-upload-{{ section.id }}
+  .ouc-submit {
+
+    width: 100%;
+
+  }
+
+
+  #outfit-upload-{{ section.id }}
+  .ouc-agreement-text {
+
+    font-size: 12px;
+
+  }
+
+}
+
+</style>
+
+
+<script>
+
+(function() {
+
+  var root = document.getElementById(
+    'outfit-upload-{{ section.id }}'
+  );
+
+  if (!root) return;
+
+
+  var form = root.querySelector(
+    '#ouc-form-{{ section.id }}'
+  );
+
+  if (!form) return;
+
+
+  /* ==========================================
+     FORMSUBMIT CONFIGURATION
+  ========================================== */
+
+  var FORMSUBMIT_ENDPOINT =
+    'https://formsubmit.co/ajax/website@brandent.in';
+
+
+  /* ==========================================
+     IMAGE COMPRESSION
+  ========================================== */
+
+  var COMPRESS_MAX_DIMENSION = 1600;
+
+  var COMPRESS_QUALITY = 0.75;
+
+
+  function compressImage(
+    file,
+    maxDimension,
+    quality
+  ) {
+
+    return new Promise(
+      function(resolve) {
+
+        if (
+          !file.type ||
+          file.type.indexOf('image/') !== 0
+        ) {
+
+          resolve(file);
+
+          return;
+
+        }
+
+
+        var objectUrl =
+          URL.createObjectURL(file);
+
+        var img = new Image();
+
+
+        img.onload = function() {
+
+          URL.revokeObjectURL(objectUrl);
+
+
+          var largestSide =
+            Math.max(
+              img.width,
+              img.height
+            );
+
+
+          var scale =
+            Math.min(
+              1,
+              maxDimension / largestSide
+            );
+
+
+          var canvas =
+            document.createElement('canvas');
+
+
+          canvas.width =
+            Math.round(
+              img.width * scale
+            );
+
+
+          canvas.height =
+            Math.round(
+              img.height * scale
+            );
+
+
+          var ctx =
+            canvas.getContext('2d');
+
+
+          if (!ctx) {
+
+            resolve(file);
+
+            return;
+
+          }
+
+
+          ctx.drawImage(
+            img,
+            0,
+            0,
+            canvas.width,
+            canvas.height
+          );
+
+
+          canvas.toBlob(
+            function(blob) {
+
+              if (!blob) {
+
+                resolve(file);
+
+                return;
+
+              }
+
+
+              var newName =
+                file.name.replace(
+                  /\.[^.]+$/,
+                  '.jpg'
+                );
+
+
+              resolve(
+                new File(
+                  [blob],
+                  newName,
+                  {
+                    type: 'image/jpeg'
+                  }
+                )
+              );
+
+            },
+            'image/jpeg',
+            quality
+          );
+
+        };
+
+
+        img.onerror = function() {
+
+          URL.revokeObjectURL(objectUrl);
+
+          resolve(file);
+
+        };
+
+
+        img.src = objectUrl;
+
+      }
+    );
+
+  }
+
+
+  async function buildCompressedFormData(
+    formElement
+  ) {
+
+    var formData =
+      new FormData();
+
+
+    var fileInputs =
+      formElement.querySelectorAll(
+        'input[type="file"]'
+      );
+
+
+    var fileInputNames = [];
+
+
+    fileInputs.forEach(
+      function(input) {
+
+        fileInputNames.push(
+          input.name
+        );
+
+      }
+    );
+
+
+    /* Copy non-file fields */
+
+    var elements =
+      formElement.elements;
+
+
+    for (
+      var i = 0;
+      i < elements.length;
+      i++
+    ) {
+
+      var el = elements[i];
+
+
+      if (
+        !el.name ||
+        fileInputNames.indexOf(el.name) !== -1
+      ) {
+
+        continue;
+
+      }
+
+
+      if (
+        el.type === 'checkbox' &&
+        !el.checked
+      ) {
+
+        continue;
+
+      }
+
+
+      if (
+        el.type === 'radio' &&
+        !el.checked
+      ) {
+
+        continue;
+
+      }
+
+
+      formData.append(
+        el.name,
+        el.value
+      );
+
+    }
+
+
+    /* Compress files */
+
+    for (
+      var j = 0;
+      j < fileInputs.length;
+      j++
+    ) {
+
+      var input =
+        fileInputs[j];
+
+
+      for (
+        var k = 0;
+        k < input.files.length;
+        k++
+      ) {
+
+        var compressedFile =
+          await compressImage(
+            input.files[k],
+            COMPRESS_MAX_DIMENSION,
+            COMPRESS_QUALITY
+          );
+
+
+        formData.append(
+          input.name,
+          compressedFile,
+          compressedFile.name
+        );
+
+      }
+
+    }
+
+
+    return formData;
+
+  }
+
+
+  /* ==========================================
+     FILE DISPLAY
+  ========================================== */
+
+  var fileInputs =
+    root.querySelectorAll(
+      'input[type="file"]'
+    );
+
+
+  fileInputs.forEach(
+    function(input) {
+
+      input.addEventListener(
+        'change',
+        function() {
+
+          var label =
+            input.nextElementSibling;
+
+
+          if (!label) return;
+
+
+          var nameElement =
+            label.querySelector(
+              '.ouc-file-name'
+            );
+
+
+          if (!nameElement) return;
+
+
+          if (
+            !input.files ||
+            input.files.length === 0
+          ) {
+
+            nameElement.textContent =
+              input.multiple
+                ? 'No files selected'
+                : 'No file selected';
+
+            return;
+
+          }
+
+
+          if (
+            input.files.length === 1
+          ) {
+
+            nameElement.textContent =
+              input.files[0].name;
+
+          } else {
+
+            nameElement.textContent =
+              input.files.length +
+              ' files selected';
+
+          }
+
+        }
+      );
+
+    }
+  );
+
+
+  /* ==========================================
+     DISCLAIMER
+  ========================================== */
+
+  var disclaimerButton =
+    root.querySelector(
+      '.ouc-disclaimer-toggle'
+    );
+
+
+  var disclaimerContent =
+    root.querySelector(
+      '.ouc-disclaimer-content'
+    );
+
+
+  if (
+    disclaimerButton &&
+    disclaimerContent
+  ) {
+
+    disclaimerButton.addEventListener(
+      'click',
+      function() {
+
+        var expanded =
+          disclaimerButton.getAttribute(
+            'aria-expanded'
+          ) === 'true';
+
+
+        disclaimerButton.setAttribute(
+          'aria-expanded',
+          String(!expanded)
+        );
+
+
+        disclaimerContent.classList.toggle(
+          'is-open',
+          !expanded
+        );
+
+      }
+    );
+
+  }
+
+
+  /* ==========================================
+     CLEAR ERRORS
+  ========================================== */
+
+  function clearErrors() {
+
+    var fields =
+      root.querySelectorAll(
+        '.ouc-field'
+      );
+
+
+    fields.forEach(
+      function(field) {
+
+        field.classList.remove(
+          'has-error'
+        );
+
+
+        var error =
+          field.querySelector(
+            '.ouc-error'
+          );
+
+
+        if (error) {
+
+          error.textContent = '';
+
+        }
+
+      }
+    );
+
+
+    var agreement =
+      root.querySelector(
+        '.ouc-agreement'
+      );
+
+
+    if (agreement) {
+
+      agreement.classList.remove(
+        'has-error'
+      );
+
+
+      var agreementError =
+        agreement.querySelector(
+          '.ouc-error'
+        );
+
+
+      if (agreementError) {
+
+        agreementError.textContent = '';
+
+      }
+
+    }
+
+
+    var uploadLabels =
+      root.querySelectorAll(
+        '.ouc-upload-label'
+      );
+
+
+    uploadLabels.forEach(
+      function(label) {
+
+        label.style.borderColor = '';
+
+      }
+    );
+
+
+    var formError =
+      root.querySelector(
+        '.ouc-form-error'
+      );
+
+
+    if (formError) {
+
+      formError.classList.remove(
+        'is-visible'
+      );
+
+    }
+
+  }
+
+
+  /* ==========================================
+     FIELD ERROR
+  ========================================== */
+
+  function showFieldError(
+    element,
+    message
+  ) {
+
+    var field =
+      element.closest(
+        '.ouc-field'
+      );
+
+
+    if (!field) return;
+
+
+    field.classList.add(
+      'has-error'
+    );
+
+
+    var error =
+      field.querySelector(
+        '.ouc-error'
+      );
+
+
+    if (error) {
+
+      error.textContent =
+        message;
+
+    }
+
+  }
+
+
+  /* ==========================================
+     VALIDATION
+  ========================================== */
+
+  function validateForm() {
+
+    clearErrors();
+
+
+    var valid = true;
+
+
+    var requiredFields =
+      form.querySelectorAll(
+        '[required]'
+      );
+
+
+    requiredFields.forEach(
+      function(field) {
+
+        /* CHECKBOX */
+
+        if (
+          field.type === 'checkbox'
+        ) {
+
+          if (!field.checked) {
+
+            var agreement =
+              root.querySelector(
+                '.ouc-agreement'
+              );
+
+
+            if (agreement) {
+
+              agreement.classList.add(
+                'has-error'
+              );
+
+
+              var error =
+                agreement.querySelector(
+                  '.ouc-error'
+                );
+
+
+              if (error) {
+
+                error.textContent =
+                  'Please accept the disclaimer before continuing.';
+
+              }
+
+            }
+
+
+            valid = false;
+
+          }
+
+
+          return;
+
+        }
+
+
+        /* FILE */
+
+        if (
+          field.type === 'file'
+        ) {
+
+          if (
+            !field.files ||
+            field.files.length === 0
+          ) {
+
+            var upload =
+              field.closest(
+                '.ouc-upload'
+              );
+
+
+            if (upload) {
+
+              var label =
+                upload.querySelector(
+                  '.ouc-upload-label'
+                );
+
+
+              if (label) {
+
+                label.style.borderColor =
+                  '#a40000';
+
+              }
+
+            }
+
+
+            valid = false;
+
+          }
+
+
+          return;
+
+        }
+
+
+        /* TEXT / SELECT */
+
+        if (
+          !field.value ||
+          !String(field.value).trim()
+        ) {
+
+          showFieldError(
+            field,
+            'This field is required.'
+          );
+
+
+          valid = false;
+
+        }
+
+      }
+    );
+
+
+    /* EMAIL VALIDATION */
+
+    var email =
+      form.querySelector(
+        '[name="email"]'
+      );
+
+
+    if (
+      email &&
+      email.value &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+        email.value
+      )
+    ) {
+
+      showFieldError(
+        email,
+        'Please enter a valid email address.'
+      );
+
+
+      valid = false;
+
+    }
+
+
+    /* PHONE VALIDATION */
+
+    var phone =
+      form.querySelector(
+        '[name="phone"]'
+      );
+
+
+    if (
+      phone &&
+      phone.value &&
+      !/^[0-9\s()+\-]{7,20}$/.test(
+        phone.value
+      )
+    ) {
+
+      showFieldError(
+        phone,
+        'Please enter a valid phone number.'
+      );
+
+
+      valid = false;
+
+    }
+
+
+    return valid;
+
+  }
+
+
+  /* ==========================================
+     SUBMIT
+  ========================================== */
+
+  form.addEventListener(
+    'submit',
+    async function(event) {
+
+      event.preventDefault();
+
+
+      if (!validateForm()) {
+
+        var firstError =
+          root.querySelector(
+            '.has-error'
+          );
+
+
+        if (firstError) {
+
+          firstError.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+          });
+
+        }
+
+
+        return;
+
+      }
+
+
+      /* BUTTON */
+
+      var submitButton =
+        form.querySelector(
+          '.ouc-submit'
+        );
+
+
+      var submitText =
+        form.querySelector(
+          '.ouc-submit-text'
+        );
+
+
+      var loader =
+        form.querySelector(
+          '.ouc-submit-loader'
+        );
+
+
+      var success =
+        form.querySelector(
+          '.ouc-success'
+        );
+
+
+      var errorMessage =
+        form.querySelector(
+          '.ouc-form-error'
+        );
+
+
+      submitButton.disabled =
+        true;
+
+
+      if (submitText) {
+
+        submitText.style.display =
+          'none';
+
+      }
+
+
+      if (loader) {
+
+        loader.style.display =
+          'flex';
+
+      }
+
+
+      try {
+
+        /* Build compressed FormData */
+
+        var formData =
+          await buildCompressedFormData(
+            form
+          );
+
+
+        /* Submit */
+
+        var response =
+          await fetch(
+            FORMSUBMIT_ENDPOINT,
+            {
+              method: 'POST',
+
+              body: formData,
+
+              headers: {
+                'Accept': 'application/json'
+              }
+            }
+          );
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            'FormSubmit returned status ' +
+            response.status
+          );
+
+        }
+
+
+        var result =
+          await response.json();
+
+
+        console.log(
+          'FormSubmit SUCCESS:',
+          result
+        );
+
+
+        /* Reset form */
+
+        form.reset();
+
+
+        /* Reset file labels */
+
+        fileInputs.forEach(
+          function(input) {
+
+            var label =
+              input.nextElementSibling;
+
+
+            if (!label) return;
+
+
+            var nameElement =
+              label.querySelector(
+                '.ouc-file-name'
+              );
+
+
+            if (!nameElement) return;
+
+
+            nameElement.textContent =
+              input.multiple
+                ? 'No files selected'
+                : 'No file selected';
+
+          }
+        );
+
+
+        /* Hide submit button */
+
+        submitButton.style.display =
+          'none';
+
+
+        /* Show success */
+
+        if (success) {
+
+          success.classList.add(
+            'is-visible'
+          );
+
+
+          success.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+          });
+
+        }
+
+
+      } catch (error) {
+
+        console.error(
+          'FormSubmit ERROR:',
+          error
+        );
+
+
+        if (errorMessage) {
+
+          errorMessage.textContent =
+            'We could not submit your form. Please check your information and try again.';
+
+
+          errorMessage.classList.add(
+            'is-visible'
+          );
+
+        }
+
+
+        submitButton.disabled =
+          false;
+
+
+        if (submitText) {
+
+          submitText.style.display =
+            'inline';
+
+        }
+
+
+        if (loader) {
+
+          loader.style.display =
+            'none';
+
+        }
+
+      }
+
+    }
+  );
+
+
+})();
+
+</script>
+
+
+{% schema %}
+
+{
+  "name": "Outfit Upload Form",
+  "tag": "section",
+  "class": "section-outfit-upload-form",
+
+  "settings": [
+
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Outfit Upload Form"
+    },
+
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Intro text",
+      "default": "Fill in your outfit details below to get started."
+    },
+
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Maximum width",
+      "min": 800,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "default": 1100
+    },
+
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 24,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 38
+    },
+
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 20,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 70
+    },
+
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 20,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    }
+
+  ],
+
+  "presets": [
+    {
+      "name": "Outfit Upload Form"
+    }
+  ]
+
+}
+
+{% endschema %}
+```

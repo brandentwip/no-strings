@@ -1,0 +1,427 @@
+{% comment %}
+
+# ELEGANT PRELOADER
+
+Add to theme.liquid:
+{% render 'elegant-preloader' %}
+
+Features:
+
+* Elegant full-screen loader
+* Logo animation
+* Minimal loading line
+* First visit/session display
+* Responsive mobile design
+* Reduced-motion support
+* 5-second safety fallback
+  ============================================================
+  {% endcomment %}
+
+<div
+  id="ElegantPreloader"
+  class="ep-preloader"
+  aria-hidden="true"
+>
+  <div class="ep-content">
+
+<div class="ep-logo-wrap">
+  <img
+    src="https://cdn.shopify.com/s/files/1/0975/4853/3944/files/cropped-Logo-NSC-white-PNG-format-removebg-preview.png?v=1787316688"
+    alt="{{ shop.name | escape }}"
+    class="ep-logo"
+    width="220"
+    height="auto"
+    loading="eager"
+    fetchpriority="high"
+  >
+</div>
+
+<div class="ep-loader">
+  <span class="ep-loader-progress"></span>
+</div>
+
+
+  </div>
+</div>
+
+<style>
+
+  /* ==========================================================
+     ELEGANT PRELOADER
+     ========================================================== */
+
+  #ElegantPreloader {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483647;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100dvh;
+
+    background: #f7f5f1;
+
+    opacity: 1;
+    visibility: visible;
+
+    pointer-events: auto;
+
+    transition:
+      opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+
+    overflow: hidden;
+  }
+
+
+  /* ----------------------------------------------------------
+     HIDDEN STATE
+     ---------------------------------------------------------- */
+
+  #ElegantPreloader.ep-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+
+  /* ----------------------------------------------------------
+     CONTENT
+     ---------------------------------------------------------- */
+
+  #ElegantPreloader .ep-content {
+    width: min(240px, 60vw);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    transform: translateY(0);
+
+    animation: epContentIn 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+
+  /* ----------------------------------------------------------
+     LOGO
+     ---------------------------------------------------------- */
+
+  #ElegantPreloader .ep-logo-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+  }
+
+
+  #ElegantPreloader .ep-logo {
+    display: block;
+
+    width: 190px;
+    max-width: 100%;
+    height: auto;
+
+    object-fit: contain;
+
+    opacity: 0.92;
+
+    transform: scale(0.96);
+
+    animation:
+      epLogoIn 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both,
+      epLogoBreath 2.4s ease-in-out 1.2s infinite;
+  }
+
+
+  /* ----------------------------------------------------------
+     LOADING LINE
+     ---------------------------------------------------------- */
+
+  #ElegantPreloader .ep-loader {
+    position: relative;
+
+    width: 190px;
+    max-width: 100%;
+
+    height: 1px;
+
+    margin-top: 30px;
+
+    overflow: hidden;
+
+    background: rgba(20, 20, 20, 0.14);
+  }
+
+
+  #ElegantPreloader .ep-loader-progress {
+    position: absolute;
+
+    top: 0;
+    left: -100%;
+
+    width: 100%;
+    height: 1px;
+
+    display: block;
+
+    background: #151515;
+
+    animation:
+      epProgress 1.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  }
+
+
+  /* ----------------------------------------------------------
+     ANIMATIONS
+     ---------------------------------------------------------- */
+
+  @keyframes epContentIn {
+
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+  }
+
+
+  @keyframes epLogoIn {
+
+    from {
+      opacity: 0;
+      transform: scale(0.92);
+    }
+
+    to {
+      opacity: 0.92;
+      transform: scale(0.96);
+    }
+
+  }
+
+
+  @keyframes epLogoBreath {
+
+    0%,
+    100% {
+      opacity: 0.82;
+      transform: scale(0.96);
+    }
+
+    50% {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+  }
+
+
+  @keyframes epProgress {
+
+    0% {
+      left: -100%;
+    }
+
+    45% {
+      left: 0%;
+    }
+
+    100% {
+      left: 100%;
+    }
+
+  }
+
+
+  /* ----------------------------------------------------------
+     MOBILE
+     ---------------------------------------------------------- */
+
+  @media screen and (max-width: 749px) {
+
+    #ElegantPreloader .ep-content {
+      width: 180px;
+    }
+
+    #ElegantPreloader .ep-logo {
+      width: 155px;
+    }
+
+    #ElegantPreloader .ep-loader {
+      width: 155px;
+      margin-top: 25px;
+    }
+
+  }
+
+
+  /* ----------------------------------------------------------
+     LARGE DESKTOP
+     ---------------------------------------------------------- */
+
+  @media screen and (min-width: 1200px) {
+
+    #ElegantPreloader .ep-content {
+      width: 270px;
+    }
+
+    #ElegantPreloader .ep-logo {
+      width: 210px;
+    }
+
+    #ElegantPreloader .ep-loader {
+      width: 210px;
+    }
+
+  }
+
+
+  /* ----------------------------------------------------------
+     REDUCED MOTION
+     ---------------------------------------------------------- */
+
+  @media (prefers-reduced-motion: reduce) {
+
+    #ElegantPreloader .ep-content,
+    #ElegantPreloader .ep-logo,
+    #ElegantPreloader .ep-loader-progress {
+      animation: none !important;
+    }
+
+    #ElegantPreloader {
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+  }
+
+</style>
+
+<script>
+
+  (function () {
+
+    'use strict';
+
+    var preloader = document.getElementById('ElegantPreloader');
+
+    if (!preloader) {
+      return;
+    }
+
+
+    /* ========================================================
+       SESSION CONTROL
+       ========================================================
+
+       The preloader appears once per browser session.
+
+       If you want it on EVERY page load, remove this section
+       and the sessionStorage check below.
+    ======================================================== */
+
+    var storageKey = 'elegantPreloaderShown';
+
+
+    try {
+
+      if (sessionStorage.getItem(storageKey) === 'true') {
+
+        preloader.classList.add('ep-hidden');
+
+        setTimeout(function () {
+
+          if (preloader && preloader.parentNode) {
+            preloader.parentNode.removeChild(preloader);
+          }
+
+        }, 850);
+
+        return;
+
+      }
+
+      sessionStorage.setItem(storageKey, 'true');
+
+    } catch (error) {
+
+      /* If storage is unavailable, continue normally */
+
+    }
+
+
+    /* ========================================================
+       HIDE PRELOADER
+    ======================================================== */
+
+    var hidden = false;
+
+    function hidePreloader() {
+
+      if (hidden) {
+        return;
+      }
+
+      hidden = true;
+
+      preloader.classList.add('ep-hidden');
+
+      setTimeout(function () {
+
+        if (preloader && preloader.parentNode) {
+          preloader.parentNode.removeChild(preloader);
+        }
+
+      }, 850);
+
+    }
+
+
+    /* ========================================================
+       PAGE LOAD
+    ======================================================== */
+
+    if (document.readyState === 'complete') {
+
+      setTimeout(function () {
+        hidePreloader();
+      }, 450);
+
+    } else {
+
+      window.addEventListener('load', function () {
+
+        setTimeout(function () {
+          hidePreloader();
+        }, 450);
+
+      });
+
+    }
+
+
+    /* ========================================================
+       SAFETY FALLBACK
+
+       Never allow the preloader to remain stuck.
+    ======================================================== */
+
+    setTimeout(function () {
+
+      hidePreloader();
+
+    }, 5000);
+
+
+  })();
+
+</script>
