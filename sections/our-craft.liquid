@@ -1,0 +1,318 @@
+{%- comment -%}
+  Our Craft — single-file section for Haus of Handmade.
+  Upload to: sections/our-craft.liquid
+{%- endcomment -%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+{%- assign rows = section.blocks | where: 'type', 'row' -%}
+{%- assign steps = section.blocks | where: 'type', 'step' -%}
+{%- assign trust_items = section.blocks | where: 'type', 'trust' -%}
+
+<div class="oc" style="--oc-hero-h: {{ section.settings.hero_height }}; --oc-hero-opacity: {{ section.settings.hero_opacity | divided_by: 100.0 }}; --oc-pull-opacity: {{ section.settings.quote_opacity | divided_by: 100.0 }};">
+
+  {%- comment -%} HERO {%- endcomment -%}
+  <section class="oc-hero">
+    <div class="oc-hero__media">
+      {%- if section.settings.hero_image != blank -%}
+        {{ section.settings.hero_image | image_url: width: 2400 | image_tag:
+          widths: '800, 1200, 1600, 2000, 2400', sizes: '100vw', loading: 'eager', fetchpriority: 'high',
+          alt: section.settings.hero_image.alt | default: section.settings.hero_heading | strip_newlines }}
+      {%- else -%}
+        {{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder' }}
+      {%- endif -%}
+    </div>
+    <div class="oc-hero__overlay">
+      {%- if section.settings.hero_eyebrow != blank -%}<p class="oc-hero__eyebrow">{{ section.settings.hero_eyebrow | escape }}</p>{%- endif -%}
+      {%- if section.settings.hero_heading != blank -%}<h1 class="oc-hero__heading">{{ section.settings.hero_heading | escape | newline_to_br }}</h1>{%- endif -%}
+      {%- if section.settings.hero_sub != blank -%}<p class="oc-hero__sub">{{ section.settings.hero_sub | escape }}</p>{%- endif -%}
+    </div>
+  </section>
+
+  {%- comment -%} INTRO {%- endcomment -%}
+  {%- if section.settings.divider != blank -%}<div class="oc-divider" aria-hidden="true">{{ section.settings.divider | escape }}</div>{%- endif -%}
+  {%- if section.settings.intro != blank -%}<div class="oc-intro">{{ section.settings.intro }}</div>{%- endif -%}
+
+  {%- comment -%} IMAGE + TEXT ROWS {%- endcomment -%}
+  {%- for block in rows -%}
+    <section class="oc-editorial{% if block.settings.image_position == 'right' %} oc-editorial--right{% endif %}" {{ block.shopify_attributes }}>
+      <div class="oc-editorial__image">
+        {%- if block.settings.image != blank -%}
+          {{ block.settings.image | image_url: width: 1400 | image_tag:
+            widths: '450, 700, 900, 1200, 1400', sizes: '(max-width: 768px) 100vw, 50vw', loading: 'lazy',
+            alt: block.settings.image.alt | default: block.settings.heading | strip_newlines }}
+        {%- else -%}
+          {{ 'image' | placeholder_svg_tag: 'placeholder' }}
+        {%- endif -%}
+      </div>
+      <div class="oc-editorial__text">
+        {%- if block.settings.number != blank -%}<p class="oc-editorial__num">{{ block.settings.number | escape }}</p>{%- endif -%}
+        {%- if block.settings.heading != blank -%}<h2 class="oc-editorial__heading">{{ block.settings.heading | escape | newline_to_br }}</h2>{%- endif -%}
+        {%- if block.settings.body != blank -%}<div class="oc-editorial__body">{{ block.settings.body }}</div>{%- endif -%}
+      </div>
+    </section>
+  {%- endfor -%}
+
+  {%- comment -%} PULL QUOTE {%- endcomment -%}
+  {%- if section.settings.quote != blank -%}
+    <section class="oc-pull">
+      <div class="oc-pull__media">
+        {%- if section.settings.quote_image != blank -%}
+          {{ section.settings.quote_image | image_url: width: 2000 | image_tag:
+            widths: '800, 1200, 1600, 2000', sizes: '100vw', loading: 'lazy', alt: '' }}
+        {%- else -%}
+          {{ 'image' | placeholder_svg_tag: 'placeholder' }}
+        {%- endif -%}
+      </div>
+      <div class="oc-pull__content">
+        <div class="oc-pull__mark" aria-hidden="true">"</div>
+        <blockquote class="oc-pull__quote">{{ section.settings.quote | escape }}</blockquote>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} PROCESS {%- endcomment -%}
+  {%- if steps.size > 0 -%}
+    <section class="oc-process">
+      {%- if section.settings.process_label != blank -%}<p class="oc-label">{{ section.settings.process_label | escape }}</p>{%- endif -%}
+      <div class="oc-process__grid" style="--oc-cols: {{ steps.size | at_most: 4 }};">
+        {%- for block in steps -%}
+          <div class="oc-process__step" {{ block.shopify_attributes }}>
+            <div class="oc-process__num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</div>
+            {%- if block.settings.title != blank -%}<h3 class="oc-process__title">{{ block.settings.title | escape }}</h3>{%- endif -%}
+            {%- if block.settings.text != blank -%}<p class="oc-process__body">{{ block.settings.text | escape }}</p>{%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} SHOP {%- endcomment -%}
+  {%- if section.settings.show_shop -%}
+    {%- if section.settings.divider != blank -%}<div class="oc-divider" aria-hidden="true">{{ section.settings.divider | escape }}</div>{%- endif -%}
+    <section class="oc-shop">
+      {%- if section.settings.shop_label != blank -%}<p class="oc-label">{{ section.settings.shop_label | escape }}</p>{%- endif -%}
+      <div class="oc-shop__grid">
+        {%- for product in section.settings.products -%}
+          <a class="oc-shop__card" href="{{ product.url }}">
+            <div class="oc-shop__img">
+              {%- if product.featured_image != blank -%}
+                {{ product.featured_image | image_url: width: 900 | image_tag:
+                  widths: '300, 450, 600, 900', sizes: '(max-width: 768px) 50vw, 25vw', loading: 'lazy',
+                  alt: product.featured_image.alt | default: product.title }}
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'placeholder' }}
+              {%- endif -%}
+            </div>
+            <div class="oc-shop__info">
+              <p class="oc-shop__name">{{ product.title | escape }}</p>
+              <p class="oc-shop__price">
+                {{ product.price | money }}
+                {%- if product.compare_at_price > product.price -%}
+                  <s>{{ product.compare_at_price | money }}</s>
+                  {%- assign pct = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
+                  <span class="oc-shop__badge">{{ pct }}% off</span>
+                {%- endif -%}
+              </p>
+            </div>
+          </a>
+        {%- else -%}
+          {%- for i in (1..4) -%}
+            <div class="oc-shop__card">
+              <div class="oc-shop__img">{{ 'product-apparel-1' | placeholder_svg_tag: 'placeholder' }}</div>
+              <div class="oc-shop__info"><p class="oc-shop__name">Example product</p><p class="oc-shop__price">{{ 385000 | money }}</p></div>
+            </div>
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} TRUST STRIP {%- endcomment -%}
+  {%- if trust_items.size > 0 -%}
+    <div class="oc-trust">
+      {%- for block in trust_items -%}
+        <div class="oc-trust__item" {{ block.shopify_attributes }}>
+          {%- case block.settings.icon -%}
+            {%- when 'returns' -%}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            {%- when 'delivery' -%}<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            {%- when 'shipping' -%}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            {%- when 'secure' -%}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          {%- endcase -%}
+          <span class="oc-trust__text">{{ block.settings.text | escape }}</span>
+        </div>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+  :root { --oc-bg:#FAF8F5; --oc-dark:#1A1A18; --oc-mid:#6B6560; --oc-line:rgba(26,26,24,0.1); --oc-serif:'Cormorant Garamond',Georgia,serif; --oc-sans:'DM Sans',sans-serif; }
+  .oc, .oc *, .oc *::before, .oc *::after { box-sizing: border-box; }
+  .oc { background: var(--oc-bg); color: var(--oc-dark); font-family: var(--oc-sans); font-weight: 300; }
+  .oc a { color: inherit; text-decoration: none; }
+  .oc img, .oc svg.placeholder { display: block; width: 100%; }
+  .oc h1, .oc h2, .oc h3, .oc p, .oc blockquote { margin: 0; }
+
+  .oc-divider { text-align: center; padding: 56px 0 48px; color: var(--oc-mid); font-size: 18px; letter-spacing: 0.3em; }
+  .oc-label { text-align: center; font-size: 11px; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 56px; }
+
+  .oc-hero { position: relative; width: 100%; height: calc(var(--oc-hero-h, 92) * 1vh); min-height: 560px; overflow: hidden; background: #2a2520; }
+  .oc-hero__media, .oc-hero__media img, .oc-hero__media svg { width: 100%; height: 100%; object-fit: cover; }
+  .oc-hero__media { opacity: var(--oc-hero-opacity, 0.72); }
+  .oc-hero__overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 0 24px 80px; text-align: center; }
+  .oc-hero__eyebrow { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.75); margin-bottom: 20px; }
+  .oc-hero__heading { font-family: var(--oc-serif); font-size: clamp(42px, 7vw, 88px); font-weight: 300; font-style: italic; color: #fff; line-height: 1.1; max-width: 820px; }
+  .oc-hero__sub { margin-top: 24px; font-size: 13px; letter-spacing: 0.06em; color: rgba(255,255,255,0.7); max-width: 400px; line-height: 1.8; }
+
+  .oc-intro { max-width: 680px; margin: 0 auto; padding: 0 24px 80px; text-align: center; }
+  .oc-intro p { font-family: var(--oc-serif); font-size: clamp(22px, 3vw, 32px); font-weight: 300; line-height: 1.65; }
+
+  .oc-editorial { display: grid; grid-template-columns: 1fr 1fr; min-height: 600px; }
+  .oc-editorial--right .oc-editorial__image { order: 2; }
+  .oc-editorial__image { position: relative; overflow: hidden; background: #d4cfc9; min-height: 560px; }
+  .oc-editorial__image img, .oc-editorial__image svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .oc-editorial__text { display: flex; flex-direction: column; justify-content: center; padding: clamp(40px, 6vw, 96px) clamp(32px, 5vw, 80px); background: var(--oc-bg); }
+  .oc-editorial__num { font-family: var(--oc-serif); font-size: 13px; letter-spacing: 0.25em; color: var(--oc-mid); margin-bottom: 24px; }
+  .oc-editorial__heading { font-family: var(--oc-serif); font-size: clamp(32px, 4vw, 52px); font-weight: 400; line-height: 1.2; margin-bottom: 20px; }
+  .oc-editorial__body { font-size: 14px; line-height: 1.9; color: var(--oc-mid); max-width: 380px; }
+  .oc-editorial__body p + p { margin-top: 1em; }
+
+  .oc-pull { position: relative; width: 100%; min-height: 480px; overflow: hidden; background: var(--oc-dark); }
+  .oc-pull__media, .oc-pull__media img, .oc-pull__media svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .oc-pull__media { opacity: var(--oc-pull-opacity, 0.3); }
+  .oc-pull__content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 480px; padding: 80px 24px; text-align: center; }
+  .oc-pull__mark { font-family: var(--oc-serif); font-size: 72px; color: rgba(255,255,255,0.2); line-height: 0.5; margin-bottom: 32px; }
+  .oc-pull__quote { font-family: var(--oc-serif); font-size: clamp(28px, 4.5vw, 58px); font-style: italic; font-weight: 300; color: #fff; line-height: 1.3; max-width: 860px; }
+
+  .oc-process { padding: 80px 0; }
+  .oc-process__grid { display: grid; grid-template-columns: repeat(var(--oc-cols, 4), 1fr); }
+  .oc-process__step { padding: 40px 36px; border-right: 1px solid var(--oc-line); }
+  .oc-process__step:last-child { border-right: none; }
+  .oc-process__num { font-family: var(--oc-serif); font-size: 48px; font-weight: 300; color: rgba(26,26,24,0.12); line-height: 1; margin-bottom: 16px; }
+  .oc-process__title { font-family: var(--oc-serif); font-size: 22px; font-weight: 400; margin-bottom: 12px; }
+  .oc-process__body { font-size: 13px; line-height: 1.85; color: var(--oc-mid); }
+
+  .oc-shop { padding: 0 0 80px; }
+  .oc-shop__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: rgba(26,26,24,0.06); }
+  .oc-shop__card { display: block; background: var(--oc-bg); overflow: hidden; }
+  .oc-shop__img { position: relative; aspect-ratio: 3/4; background: #e8e3dd; overflow: hidden; }
+  .oc-shop__img img, .oc-shop__img svg { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+  .oc-shop__card:hover .oc-shop__img img { transform: scale(1.04); }
+  .oc-shop__info { padding: 14px 16px 20px; }
+  .oc-shop__name { font-size: 13px; font-weight: 400; margin-bottom: 6px; }
+  .oc-shop__price { font-size: 13px; color: var(--oc-mid); }
+  .oc-shop__price s { margin-left: 6px; font-size: 12px; }
+  .oc-shop__badge { display: inline-block; margin-left: 6px; color: #c0392b; font-size: 11px; font-weight: 500; }
+
+  .oc-trust { border-top: 1px solid var(--oc-line); border-bottom: 1px solid var(--oc-line); display: flex; justify-content: center; }
+  .oc-trust__item { flex: 1; display: flex; align-items: center; justify-content: center; gap: 12px; padding: 24px 20px; border-right: 1px solid var(--oc-line); }
+  .oc-trust__item:last-child { border-right: none; }
+  .oc-trust__item svg { width: 20px; height: 20px; stroke: var(--oc-dark); fill: none; stroke-width: 1.5; flex-shrink: 0; }
+  .oc-trust__text { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+
+  @media (max-width: 768px) {
+    .oc-hero { height: 85vh; }
+    .oc-editorial { grid-template-columns: 1fr; }
+    .oc-editorial--right .oc-editorial__image { order: 0; }
+    .oc-editorial__image { min-height: 360px; }
+    .oc-process__grid { grid-template-columns: 1fr 1fr; }
+    .oc-process__step:nth-child(2n) { border-right: none; }
+    .oc-process__step:nth-child(n+3) { border-top: 1px solid var(--oc-line); }
+    .oc-shop__grid { grid-template-columns: 1fr 1fr; }
+    .oc-trust { flex-wrap: wrap; }
+    .oc-trust__item { flex: 1 1 50%; border-right: none; border-bottom: 1px solid var(--oc-line); }
+    .oc-trust__item:nth-child(odd) { border-right: 1px solid var(--oc-line); }
+    .oc-trust__item:last-child { border-bottom: none; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Our Craft",
+  "settings": [
+    { "type": "header", "content": "Hero" },
+    { "type": "image_picker", "id": "hero_image", "label": "Background image" },
+    { "type": "range", "id": "hero_opacity", "label": "Image opacity", "min": 20, "max": 100, "step": 4, "unit": "%", "default": 72 },
+    { "type": "range", "id": "hero_height", "label": "Height", "min": 50, "max": 100, "step": 5, "unit": "vh", "default": 90 },
+    { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "Our Craft" },
+    { "type": "textarea", "id": "hero_heading", "label": "Heading", "info": "Line breaks are preserved.", "default": "Four hours of someone's day,\nin every shirt." },
+    { "type": "textarea", "id": "hero_sub", "label": "Subheading", "default": "Every piece we make carries the hands, the time, and the care of the craftswomen behind it." },
+
+    { "type": "header", "content": "Intro" },
+    { "type": "text", "id": "divider", "label": "Divider symbol", "info": "Leave blank to hide. Also used above the shop grid.", "default": "❋" },
+    { "type": "richtext", "id": "intro", "label": "Intro text", "default": "<p>We don't make clothes on a conveyor belt. Every shirt, every co-ord, every kurta begins with a woman who knows her craft — and ends with a piece that shows it.</p>" },
+
+    { "type": "header", "content": "Pull quote" },
+    { "type": "image_picker", "id": "quote_image", "label": "Background image" },
+    { "type": "range", "id": "quote_opacity", "label": "Image opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 30 },
+    { "type": "textarea", "id": "quote", "label": "Quote", "info": "Leave blank to hide the quote section.", "default": "When something is made well, you don't have to explain it. You just wear it." },
+
+    { "type": "header", "content": "Process" },
+    { "type": "text", "id": "process_label", "label": "Label", "default": "How we make it" },
+
+    { "type": "header", "content": "Shop" },
+    { "type": "checkbox", "id": "show_shop", "label": "Show product grid", "default": true },
+    { "type": "text", "id": "shop_label", "label": "Label", "default": "Shop the craft" },
+    { "type": "product_list", "id": "products", "label": "Products", "limit": 8 }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Image + text row",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "select", "id": "image_position", "label": "Image position", "default": "left",
+          "options": [ { "value": "left", "label": "Left" }, { "value": "right", "label": "Right" } ] },
+        { "type": "text", "id": "number", "label": "Label", "default": "01 — The Stitch" },
+        { "type": "textarea", "id": "heading", "label": "Heading", "info": "Line breaks are preserved.", "default": "Stitched like it\nneeds to last." },
+        { "type": "richtext", "id": "body", "label": "Text", "default": "<p>Machine-made clothes are sewn fast. Ours are sewn right.</p>" }
+      ]
+    },
+    {
+      "type": "step",
+      "name": "Process step",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Step title" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Describe this step." }
+      ]
+    },
+    {
+      "type": "trust",
+      "name": "Trust item",
+      "limit": 6,
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "default": "returns",
+          "options": [
+            { "value": "returns", "label": "Home (returns)" },
+            { "value": "delivery", "label": "Truck (delivery)" },
+            { "value": "shipping", "label": "Arrow (shipping)" },
+            { "value": "secure", "label": "Shield (secure)" }
+          ] },
+        { "type": "text", "id": "text", "label": "Text", "default": "Easy Returns" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Our Craft",
+      "blocks": [
+        { "type": "row", "settings": { "image_position": "left", "number": "01 — The Stitch", "heading": "Stitched like it\nneeds to last.", "body": "<p>Machine-made clothes are sewn fast. Ours are sewn right. Every seam is finished by hand, every stitch checked before a piece leaves the workshop. You'll feel the difference the first time you wear it — and still feel it three years later.</p>" } },
+        { "type": "row", "settings": { "image_position": "right", "number": "02 — The Fabric", "heading": "Handloom cotton.\nNothing else.", "body": "<p>We source directly from small handloom clusters — fabrics that breathe, that soften with every wash, that hold their colour without compromise. The kind of cloth that mass production simply cannot replicate.</p>" } },
+        { "type": "row", "settings": { "image_position": "left", "number": "03 — The Batch", "heading": "Small batches.\nOn purpose.", "body": "<p>We make limited runs — not because we can't scale, but because we won't. Smaller batches mean more attention per piece, less waste, and something that not everyone else will be wearing.</p>" } },
+        { "type": "step", "settings": { "title": "We source the fabric", "text": "Every piece starts with handloom cotton sourced directly from artisan clusters. We feel, wash, and test before a single yard is cut." } },
+        { "type": "step", "settings": { "title": "We cut with intention", "text": "Cutting is done by hand, piece by piece — no bulk cutting, no waste. Each pattern is measured for the size it will become." } },
+        { "type": "step", "settings": { "title": "We stitch with care", "text": "Our craftswomen stitch at their own pace — not against a clock. Every seam is flat-finished, every hem hand-turned before the next step begins." } },
+        { "type": "step", "settings": { "title": "We check before we ship", "text": "A final quality check happens on every single piece — stitching, sizing, finish, and feel — before it's folded and packed for you." } },
+        { "type": "trust", "settings": { "icon": "returns", "text": "Easy Returns" } },
+        { "type": "trust", "settings": { "icon": "delivery", "text": "Cash on Delivery" } },
+        { "type": "trust", "settings": { "icon": "shipping", "text": "Free Shipping" } },
+        { "type": "trust", "settings": { "icon": "secure", "text": "Secure Checkout" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

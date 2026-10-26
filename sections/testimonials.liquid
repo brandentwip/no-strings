@@ -1,0 +1,338 @@
+{{ 'https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Fraunces:ital,opsz,wght@1,9..144,400&family=Jost:wght@300;400;500&display=swap' | stylesheet_tag }}
+
+<style>
+  /* ============================================================
+     nostringscouture — "Know our customers" section
+     All selectors are scoped under .nsc-story so nothing leaks
+     into the rest of the theme.
+     ============================================================ */
+  .nsc-story{
+    --nsc-ink:#2A1015;
+    --nsc-ink-soft:#3D1E22;
+    --nsc-ivory:#F7F1E6;
+    --nsc-ivory-deep:#EFE5D4;
+    --nsc-gold:#B8935A;
+    --nsc-gold-bright:#D4AC72;
+    --nsc-text:#2A1015;
+    --nsc-text-soft:#6B4C48;
+
+    background:var(--nsc-ivory-deep);
+    color:var(--nsc-text);
+    font-family:'Jost', sans-serif;
+    font-weight:300;
+    overflow-x:hidden;
+  }
+  .nsc-story, .nsc-story *{ box-sizing:border-box; }
+  .nsc-story h1, .nsc-story h2, .nsc-story h3, .nsc-story h4{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    letter-spacing:-0.01em;
+    color:var(--nsc-ink);
+    margin:0;
+  }
+  .nsc-story p, .nsc-story ul, .nsc-story blockquote{ margin:0; padding:0; }
+  .nsc-story a{ color:inherit; text-decoration:none; }
+
+  .nsc-story__eyebrow{
+    font-family:'Jost', sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.22em;
+    font-size:11px;
+    color:var(--nsc-gold);
+    font-weight:500;
+    display:block;
+  }
+  .nsc-story__wrap{ max-width:1240px; margin:0 auto; padding:0 48px; }
+  @media(max-width:768px){ .nsc-story__wrap{ padding:0 22px; } }
+
+  /* fallback image block */
+  .nsc-img-block{
+    background:linear-gradient(150deg,#D9C4A8 0%, #C79A66 45%, #8C5A44 100%);
+    background-size:cover; background-position:center;
+    position:relative; overflow:hidden;
+  }
+  .nsc-img-block::before{
+    content:''; position:absolute; inset:0;
+    background-image:repeating-linear-gradient(115deg, rgba(255,255,255,0.05) 0 2px, transparent 2px 26px);
+  }
+  .nsc-img-block.nsc-has-image::before{ display:none; }
+
+  /* know our customers */
+  .nsc-customers{ background:var(--nsc-ivory-deep); padding:100px 0 110px; }
+  .nsc-customers__head{ text-align:center; margin-bottom:60px; }
+  .nsc-customers__head h2{ font-style:italic; font-weight:400; color:var(--nsc-gold); font-size:clamp(30px,3.6vw,46px); margin-top:14px; }
+  .nsc-testimonial-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:26px; }
+  @media(max-width:1000px){ .nsc-testimonial-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media(max-width:560px){ .nsc-testimonial-grid{ grid-template-columns:1fr; } }
+
+  .nsc-testi-card{ background:var(--nsc-ivory); border-radius:2px; overflow:hidden; }
+  .nsc-testi-card__media{ position:relative; aspect-ratio:4/5; overflow:hidden; background:var(--nsc-ink); }
+  .nsc-testi-card__media .nsc-img-block{ height:100%; }
+  .nsc-testi-card__video-wrap{ position:absolute; inset:0; overflow:hidden; }
+  .nsc-testi-card__video-wrap iframe{
+    position:absolute; inset:0; width:100%; height:100%; border:0; pointer-events:none;
+  }
+  .nsc-testi-card__unmute{
+    position:absolute; top:14px; left:14px; z-index:2; background:rgba(20,7,9,0.55); color:var(--nsc-ivory);
+    font-size:10.5px; letter-spacing:0.06em; text-transform:uppercase; padding:6px 12px; border-radius:100px;
+    cursor:pointer;
+  }
+  .nsc-testi-card__caption{
+    position:absolute; left:14px; right:14px; bottom:16px; z-index:2; background:rgba(20,7,9,0.6);
+    color:var(--nsc-ivory); font-size:12px; padding:8px 12px; border-radius:2px; text-align:center; line-height:1.4;
+  }
+  .nsc-testi-card__body{ padding:22px 20px; }
+  .nsc-testi-card__body h4{ font-family:'Fraunces'; font-size:15.5px; font-weight:500; line-height:1.35; margin-bottom:10px; }
+  .nsc-testi-card__body p{ font-size:12.5px; color:var(--nsc-text-soft); line-height:1.65; font-style:italic; margin-bottom:16px; }
+  .nsc-testi-card__meta{ border-top:1px solid rgba(42,16,21,0.08); padding-top:12px; font-size:15.5px; color:var(--nsc-text-soft); display:flex; flex-direction:column; gap:2px; }
+  .nsc-testi-card__meta .nsc-t-name{ color:var(--nsc-ink); font-weight:500; }
+  .nsc-testi-card__save{
+    margin-top:10px; display:inline-block; background:var(--nsc-ivory-deep); color:var(--nsc-gold);
+    font-size:10.5px; letter-spacing:0.03em; padding:5px 10px; border-radius:100px; font-weight:500;
+  }
+
+  /* featured testimonial — single wide quote below the cards */
+  .nsc-featured-testimonial{ padding:0 0 110px; background:var(--nsc-ivory-deep); }
+  .nsc-featured-testimonial__card{
+    position:relative;
+    border:1px solid rgba(42,16,21,0.10);
+    background:var(--nsc-ivory);
+    padding:58px 80px 64px;
+    overflow:hidden;
+  }
+  .nsc-featured-testimonial__quote-mark{
+    position:absolute; left:52px; top:48px;
+    font-family:'Fraunces', serif; font-size:74px; line-height:1;
+    color:rgba(184,147,90,0.48); font-style:italic;
+  }
+  .nsc-featured-testimonial__quote{
+    position:relative; z-index:1; max-width:1160px; margin:0 auto;
+    font-family:'Fraunces', serif;
+    font-size:clamp(23px,2.2vw,31px);
+    line-height:1.55; font-weight:500; font-style:italic;
+    color:var(--nsc-ink);
+  }
+  .nsc-featured-testimonial__meta{
+    position:relative; z-index:1; display:flex; align-items:center; gap:12px;
+    margin-top:30px; font-size:12px; color:var(--nsc-text-soft);
+  }
+  .nsc-featured-testimonial__name{ color:var(--nsc-ink); font-weight:500; }
+  .nsc-featured-testimonial__dot{ color:var(--nsc-gold); }
+  .nsc-featured-testimonial__saved{
+    display:inline-block; background:var(--nsc-ivory-deep); color:var(--nsc-gold);
+    font-size:10.5px; letter-spacing:.03em; padding:7px 12px; border-radius:100px;
+    font-weight:500; margin-left:4px;
+  }
+  @media(max-width:768px){
+    .nsc-featured-testimonial{ padding-bottom:75px; }
+    .nsc-featured-testimonial__card{ padding:44px 28px 42px; }
+    .nsc-featured-testimonial__quote-mark{ left:18px; top:25px; font-size:56px; }
+    .nsc-featured-testimonial__quote{ font-size:22px; line-height:1.5; }
+    .nsc-featured-testimonial__meta{ flex-wrap:wrap; gap:8px; margin-top:24px; }
+  }
+</style>
+
+<div class="nsc-story">
+
+  <section class="nsc-customers">
+    <div class="nsc-story__wrap">
+      <div class="nsc-customers__head">
+        <span class="nsc-story__eyebrow">{{ section.settings.customers_eyebrow }}</span>
+        <h2>{{ section.settings.customers_heading }}</h2>
+      </div>
+
+      <div class="nsc-testimonial-grid">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'testimonial' -%}
+            {%- liquid
+              assign vimeo_id = ''
+              if block.settings.vimeo_url != blank
+                assign vimeo_clean = block.settings.vimeo_url | split: '?' | first
+                assign vimeo_parts = vimeo_clean | split: '/'
+                assign vimeo_id = vimeo_parts | last
+              endif
+            -%}
+            <div class="nsc-testi-card" {{ block.shopify_attributes }}>
+              <div class="nsc-testi-card__media">
+                {%- if vimeo_id != blank -%}
+                  <div class="nsc-testi-card__video-wrap">
+                    <iframe
+                      src="https://player.vimeo.com/video/{{ vimeo_id }}?background=1&autoplay=1&loop=1&muted=1&playsinline=1"
+                      allow="autoplay; fullscreen; picture-in-picture"
+                      title="{{ block.settings.customer_name | escape }} testimonial video"
+                      data-nsc-vimeo-player
+                    ></iframe>
+                  </div>
+                  {%- if block.settings.unmute_label != blank -%}
+                    <span class="nsc-testi-card__unmute" data-nsc-unmute-btn>{{ block.settings.unmute_label }}</span>
+                  {%- endif -%}
+                {%- else -%}
+                  <div class="nsc-img-block{% if block.settings.image %} nsc-has-image{% endif %}"
+                    {%- if block.settings.image %} style="background-image:url({{ block.settings.image | image_url: width: 800 }});"{% endif %}>
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.video_caption != blank -%}
+                  <div class="nsc-testi-card__caption">{{ block.settings.video_caption }}</div>
+                {%- endif -%}
+              </div>
+              <div class="nsc-testi-card__body">
+                <h4>{{ block.settings.headline }}</h4>
+                <p>{{ block.settings.quote }}</p>
+                <div class="nsc-testi-card__meta">
+                  <span class="nsc-t-name">{{ block.settings.customer_name }}</span>
+                  <span>{{ block.settings.location }}</span>
+                </div>
+                {%- if block.settings.amount_saved != blank -%}
+                  <span class="nsc-testi-card__save">{{ block.settings.amount_saved }}</span>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+  {% if section.settings.show_featured_testimonial %}
+    <section class="nsc-featured-testimonial">
+      <div class="nsc-story__wrap">
+        <div class="nsc-featured-testimonial__card">
+          <span class="nsc-featured-testimonial__quote-mark" aria-hidden="true">“</span>
+          {% if section.settings.featured_testimonial_quote != blank %}
+            <blockquote class="nsc-featured-testimonial__quote">
+              {{ section.settings.featured_testimonial_quote }}
+            </blockquote>
+          {% endif %}
+          <div class="nsc-featured-testimonial__meta">
+            {% if section.settings.featured_testimonial_name != blank %}
+              <span class="nsc-featured-testimonial__name">{{ section.settings.featured_testimonial_name }}</span>
+            {% endif %}
+            {% if section.settings.featured_testimonial_name != blank and section.settings.featured_testimonial_location != blank %}
+              <span class="nsc-featured-testimonial__dot">·</span>
+            {% endif %}
+            {% if section.settings.featured_testimonial_location != blank %}
+              <span>{{ section.settings.featured_testimonial_location }}</span>
+            {% endif %}
+            {% if section.settings.featured_testimonial_saved != blank %}
+              <span class="nsc-featured-testimonial__saved">{{ section.settings.featured_testimonial_saved }}</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </section>
+  {% endif %}
+
+  <script>
+    (function () {
+      function nscInitPlayers(iframes) {
+        iframes.forEach(function (iframe) {
+          if (iframe.dataset.nscInit) return;
+          iframe.dataset.nscInit = 'true';
+          var player = new window.Vimeo.Player(iframe);
+          player.setMuted(true);
+          var card = iframe.closest('.nsc-testi-card__media');
+          var btn = card ? card.querySelector('[data-nsc-unmute-btn]') : null;
+          if (!btn) return;
+          var muted = true;
+          var unmuteLabel = btn.textContent;
+          btn.addEventListener('click', function () {
+            muted = !muted;
+            player.setMuted(muted);
+            btn.textContent = muted ? unmuteLabel : 'Mute';
+          });
+        });
+      }
+
+      function nscReady() {
+        var iframes = Array.prototype.slice.call(
+          document.querySelectorAll('.nsc-story [data-nsc-vimeo-player]:not([data-nsc-init])')
+        );
+        if (!iframes.length) return;
+
+        if (window.Vimeo && window.Vimeo.Player) {
+          nscInitPlayers(iframes);
+          return;
+        }
+        if (window.nscVimeoScriptLoading) {
+          var tries = 0;
+          var iv = setInterval(function () {
+            tries += 1;
+            if (window.Vimeo && window.Vimeo.Player) {
+              clearInterval(iv);
+              nscInitPlayers(iframes);
+            } else if (tries > 50) {
+              clearInterval(iv);
+            }
+          }, 100);
+          return;
+        }
+        window.nscVimeoScriptLoading = true;
+        var script = document.createElement('script');
+        script.src = 'https://player.vimeo.com/api/player.js';
+        script.onload = function () {
+          nscInitPlayers(iframes);
+        };
+        document.head.appendChild(script);
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', nscReady);
+      } else {
+        nscReady();
+      }
+    })();
+  </script>
+</div>
+
+{% schema %}
+{
+  "name": "NSC · Know our customers",
+  "settings": [
+    { "type": "header", "content": "Heading" },
+    { "type": "text", "id": "customers_eyebrow", "label": "Eyebrow", "default": "Real stories" },
+    { "type": "text", "id": "customers_heading", "label": "Heading", "default": "Know our customers" },
+
+    { "type": "header", "content": "Featured testimonial" },
+    { "type": "checkbox", "id": "show_featured_testimonial", "label": "Show featured testimonial", "default": true },
+    { "type": "textarea", "id": "featured_testimonial_quote", "label": "Quote", "default": "Renting from nostringscouture meant I could wear an Anita Dongre lehenga for my cousin's sangeet without the guilt of a one-time-wear price tag. The fit was perfect, the piece arrived days early, and returning it was as easy as ordering it." },
+    { "type": "text", "id": "featured_testimonial_name", "label": "Customer name", "default": "Priya Malhotra" },
+    { "type": "text", "id": "featured_testimonial_location", "label": "Location", "default": "Mumbai" },
+    { "type": "text", "id": "featured_testimonial_saved", "label": "Amount saved", "default": "Saved ₹85,000" }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        { "type": "text", "id": "vimeo_url", "label": "Vimeo video URL", "info": "e.g. https://vimeo.com/123456789. Leave blank to use the fallback photo instead." },
+        { "type": "image_picker", "id": "image", "label": "Fallback photo", "info": "Used only when no Vimeo URL is set above." },
+        { "type": "text", "id": "unmute_label", "label": "Video badge label (mute toggle)", "default": "Unmute" },
+        { "type": "text", "id": "video_caption", "label": "Video caption", "default": "\"...and found so many designer outfits\"" },
+        { "type": "text", "id": "headline", "label": "Headline", "default": "Experiment with your style, without the stress of repeating" },
+        { "type": "textarea", "id": "quote", "label": "Quote", "default": "\"You never have to repeat an outfit, because pieces are given for just one-time use, and the pricing is a cherry on top.\"" },
+        { "type": "text", "id": "customer_name", "label": "Customer name", "default": "Arushi Sharma" },
+        { "type": "text", "id": "location", "label": "Location", "default": "Chandigarh" },
+        { "type": "text", "id": "amount_saved", "label": "Amount saved badge", "default": "Saved ₹98,500" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "NSC · Know our customers",
+      "settings": {
+        "show_featured_testimonial": true,
+        "featured_testimonial_quote": "The team was incredibly responsive from start to finish. My measurements were double-checked two weeks before the event, and they even caught an error my own tailor had missed. I don't usually buy clothes online because I like to try things on first, but the lehenga fit perfectly. Delivery and pickup were seamless across two cities, dropped off in Delhi, picked up in Agra. Saved on cost and on suitcase space. Would absolutely recommend.",
+        "featured_testimonial_name": "Priya Malhotra",
+        "featured_testimonial_location": "Mumbai",
+        "featured_testimonial_saved": "Saved ₹85,000"
+      },
+      "blocks": [
+        { "type": "testimonial", "settings": { "video_caption": "\"...and found so many designer outfits\"", "headline": "Experiment with your style, without the stress of repeating", "quote": "\"You never have to repeat an outfit, because pieces are given for just one-time use, and the pricing is a cherry on top.\"", "customer_name": "Arushi Sharma", "location": "Chandigarh", "amount_saved": "Saved ₹98,500" } },
+        { "type": "testimonial", "settings": { "video_caption": "\"I chose a platform...\"", "headline": "The perfect companion for a happy closet", "quote": "\"nostringscouture is a great fit for someone like me who doesn't like repeating outfits or storing heavy lehengas in my closet.\"", "customer_name": "Anushka Sharma", "location": "Toronto, Canada", "amount_saved": "Saved ₹98,500" } },
+        { "type": "testimonial", "settings": { "video_caption": "\"...free experience\"", "headline": "NSC was the perfect choice for me", "quote": "\"The seamless process spared me the whole experience and trouble of going to multiple stores and trying on several garments.\"", "customer_name": "Nilfa Saha Karmakar", "location": "Delhi", "amount_saved": "Saved ₹75,500" } },
+        { "type": "testimonial", "settings": { "video_caption": "\"...to actually choose and wear\"", "headline": "It was seamless, start to finish", "quote": "\"What I love most is that I don't need to spend a fortune on an outfit I'd probably only wear once or twice.\"", "customer_name": "Reeti Sahai", "location": "New Delhi", "amount_saved": "Saved ₹98,500" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

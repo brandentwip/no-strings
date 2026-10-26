@@ -1,0 +1,471 @@
+{% style %}
+  .id-faq-{{ section.id }} {
+    background: {{ section.settings.background_color }};
+    padding: 70px 20px;
+  }
+
+  .id-faq-{{ section.id }} .faq-container {
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .id-faq-{{ section.id }} .faq-main-title {
+    text-align: center;
+    font-size: 46px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    margin: 0 0 60px;
+    color: {{ section.settings.heading_color }};
+    font-family: 'Jost', sans-serif;
+  }
+
+  .id-faq-{{ section.id }} .faq-list {
+    border: 1px solid #d6d2cc;
+    background: #ffffff;
+  }
+
+  .id-faq-{{ section.id }} .faq-item {
+    border-bottom: 1px solid #d6d2cc;
+  }
+
+  .id-faq-{{ section.id }} .faq-item:last-child {
+    border-bottom: none;
+  }
+
+  .id-faq-{{ section.id }} .faq-question {
+    width: 100%;
+    border: none;
+    background: transparent;
+    padding: 18px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    text-align: left;
+    font-family: 'Jost', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.6;
+    cursor: pointer;
+    color: #1d1d1d;
+  }
+
+  .id-faq-{{ section.id }} .faq-question-text {
+    flex: 1;
+  }
+
+  .id-faq-{{ section.id }} .faq-icon {
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+  }
+
+  .id-faq-{{ section.id }} .faq-answer {
+    background: #fafafa;
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s ease;
+  }
+
+  .id-faq-{{ section.id }} .faq-answer-inner {
+    overflow: hidden;
+  }
+
+  .id-faq-{{ section.id }} .faq-answer-content {
+    padding: 0 20px 20px;
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #666666;
+    overflow-wrap: anywhere;
+  }
+
+  .id-faq-{{ section.id }} .faq-answer-content p {
+    margin: 0;
+  }
+
+  .id-faq-{{ section.id }} .faq-answer-content a {
+    color: #1d1d1d;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .id-faq-{{ section.id }} .faq-item.active .faq-answer {
+    grid-template-rows: 1fr;
+  }
+
+  .id-faq-{{ section.id }} .faq-item.active .faq-icon {
+    transform: rotate(45deg);
+  }
+
+  .id-faq-{{ section.id }} .faq-question:focus-visible {
+    outline: 2px solid #1d1d1d;
+    outline-offset: -3px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .id-faq-{{ section.id }} {
+      padding: 50px 15px;
+    }
+
+    .id-faq-{{ section.id }} .faq-main-title {
+      font-size: 32px;
+      line-height: 1.3;
+      letter-spacing: 1px;
+      margin-bottom: 35px;
+    }
+
+    .id-faq-{{ section.id }} .faq-question {
+      font-size: 14px;
+      padding: 16px 14px;
+      gap: 12px;
+    }
+
+    .id-faq-{{ section.id }} .faq-answer-content {
+      padding: 0 14px 18px;
+      font-size: 13px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .id-faq-{{ section.id }} .faq-answer,
+    .id-faq-{{ section.id }} .faq-icon {
+      transition: none;
+    }
+  }
+{% endstyle %}
+
+<section
+  class="id-faq-{{ section.id }}"
+  id="id-faq-{{ section.id }}"
+>
+  <div class="faq-container">
+
+    {% if section.settings.heading != blank %}
+      <h2 class="faq-main-title">
+        {{ section.settings.heading | escape }}
+      </h2>
+    {% endif %}
+
+    <div class="faq-list">
+      {% for block in section.blocks %}
+        {% if block.type == 'faq' %}
+          <div
+            class="faq-item{% if block.settings.open_by_default %} active{% endif %}"
+            {{ block.shopify_attributes }}
+          >
+            <button
+              class="faq-question"
+              type="button"
+              aria-expanded="{% if block.settings.open_by_default %}true{% else %}false{% endif %}"
+              aria-controls="faq-answer-{{ section.id }}-{{ block.id }}"
+              id="faq-question-{{ section.id }}-{{ block.id }}"
+            >
+              <span class="faq-question-text">
+                {{ block.settings.question | escape }}
+              </span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+
+            <div
+              class="faq-answer"
+              id="faq-answer-{{ section.id }}-{{ block.id }}"
+              role="region"
+              aria-labelledby="faq-question-{{ section.id }}-{{ block.id }}"
+            >
+              <div class="faq-answer-inner">
+                <div class="faq-answer-content">
+                  {{ block.settings.answer }}
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+<script>
+  (function () {
+    var sectionId = 'id-faq-{{ section.id }}';
+
+    function initFAQ(section) {
+      if (!section || section.dataset.faqInitialized === 'true') return;
+
+      section.dataset.faqInitialized = 'true';
+
+      var items = section.querySelectorAll('.faq-item');
+
+      items.forEach(function (item) {
+        var button = item.querySelector('.faq-question');
+
+        if (!button) return;
+
+        button.addEventListener('click', function () {
+          var isOpen = item.classList.contains('active');
+
+          item.classList.toggle('active', !isOpen);
+          button.setAttribute('aria-expanded', String(!isOpen));
+        });
+      });
+    }
+
+    function initCurrentSection() {
+      initFAQ(document.getElementById(sectionId));
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initCurrentSection);
+    } else {
+      initCurrentSection();
+    }
+
+    document.addEventListener('shopify:section:load', function (event) {
+      if (event.detail && event.detail.sectionId === '{{ section.id }}') {
+        initFAQ(document.getElementById(sectionId));
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "General FAQ",
+  "tag": "section",
+  "class": "custom-faq-section",
+  "max_blocks": 50,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Main heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#f8f7f5"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#1d1d1d"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQ Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "How can I list my designer outfit with nostringscouture?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Simply fill out our submission form with details of your garment, including the designer, original purchase price, condition and photographs. Our team will review your submission and get in touch with the next steps. Here is the link- (add link)</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_by_default",
+          "label": "Open by default",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "General FAQ",
+      "blocks": [
+        {
+          "type": "faq",
+          "settings": {
+            "question": "1. How can I list my designer outfit with nostringscouture?",
+            "answer": "<p>Simply fill out our submission form with details of your garment, including the designer, original purchase price, condition and photographs. Our team will review your submission and get in touch with the next steps. Here is the link- (add link)</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "2. Can I choose whether to rent or sell my outfit?",
+            "answer": "<p>Absolutely. You can indicate whether you’d prefer to rent, sell or explore both options. Our team will assess your garment and recommend the most suitable option based on its style, condition and potential demand.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "3. Is there a fee to list my garment?",
+            "answer": "<p>There is no upfront fee to submit your garment for consideration. Any applicable commission or service charges will be communicated and agreed upon before your garment is listed.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "4. How is the rental or selling price of my garment determined?",
+            "answer": "<p>Our team recommends pricing based on factors such as the designer, original retail value, condition, age, style and current market demand. The recommended price and applicable commission will be shared with you for approval before listing.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "5. Will I have to give my garment to nostringscouture?",
+            "answer": "<p>Depending on the listing arrangement, we may require your garment to be physically available with us for quality checks, storage, fittings, rentals or sale fulfilment. Our team will communicate the requirements before proceeding.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "6. What happens after my garment is accepted?",
+            "answer": "<p>Once accepted, we will coordinate the necessary quality checks, photography and listing details. Your garment will then be showcased on our platform, making it accessible to customers looking to rent or purchase designer wear.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "7. Will nostringscouture promote my garment?",
+            "answer": "<p>Yes. We handle the presentation and promotion of garments listed on our platform through our website and relevant marketing channels. While we aim to maximise visibility, rentals and sales depend on customer demand.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "8. Can I list more than one garment?",
+            "answer": "<p>Of course! You can submit multiple designer pieces for consideration. Each garment will be reviewed individually to ensure it meets our curation and quality standards.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "9. Can I list a garment that has been worn?",
+            "answer": "<p>Yes. We accept select pre-loved designer garments that are in excellent condition. Each piece undergoes an evaluation to ensure it meets our standards for quality, authenticity and overall presentation.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "12. Can I change the selling or rental price after listing?",
+            "answer": "<p>You can contact our team to request a pricing revision. Any changes will be reviewed and mutually agreed upon, subject to existing bookings or confirmed transactions.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "13. What happens if my garment is lost, stolen or severely damaged while listed with NSC?",
+            "answer": "<p>We take appropriate precautions when handling and storing garments. However, unforeseen circumstances may arise during storage, transportation, fittings or rentals. Any loss, theft or significant damage will be assessed and handled in accordance with the terms agreed upon at the time of listing, including any applicable liability </p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "14. What happens once my garment is sold?",
+            "answer": "<p>Once a sale is successfully completed, we will coordinate the fulfilment process and arrange for your agreed earnings to be transferred in accordance with the payment terms.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Can I purchase garments from nostringscouture?",
+            "answer": "<p>Yes! Alongside our rental collection, we offer a curated selection of designer garments available for purchase. Explore beautiful pieces from coveted designers at prices below their original retail value.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "2. Are the garments available for purchase new or pre-owned?",
+            "answer": "<p>Our collection may include both new and pre-loved designer pieces. Each product listing will specify the garment’s condition, allowing you to make an informed purchase.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "3. Are all the designer garments authentic?",
+            "answer": "<p>Authenticity is central to our curation process. We assess garments before accepting them onto our platform to ensure they meet our standards. Any available authenticity documentation can be requested from our team.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "4. How do I know the condition of a pre-loved garment?",
+            "answer": "<p>Every pre-loved piece is evaluated before being listed. We aim to provide accurate descriptions and photographs highlighting its condition, including any notable signs of wear or imperfections.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "5. Can I try on a garment before purchasing it?",
+            "answer": "<p>Selected garments may be available for in-store trials by appointment. Please contact us to confirm availability and arrange a fitting.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "6. Can I request additional photographs or videos before purchasing?",
+            "answer": "<p>Absolutely. Our team can assist with additional photographs, videos and garment details to help you make a confident purchase decision.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "7. Can purchased garments be altered to my measurements?",
+            "answer": "<p>Alteration options depend on the garment’s construction, fabric and existing measurements. Our team can advise you on the alterations that may be possible before you complete your purchase.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "8. Are purchased garments cleaned before delivery?",
+            "answer": "<p>Pre-loved garments are evaluated and prepared before dispatch. Where appropriate, professional cleaning is arranged based on the garment’s fabric, embroidery and embellishments.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "10. Can I negotiate the selling price of a garment?",
+            "answer": "<p>Prices are determined based on the garment’s designer, condition, original value and other relevant factors. If you’re interested in a particular piece, our team can assist with any pricing-related enquiries.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "11. Can I reserve a garment before purchasing it?",
+            "answer": "<p>Please contact our team to enquire about reserving a garment. Reservations, where available, are subject to confirmation and applicable payment terms.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "12. Can I rent a garment first and purchase it later?",
+            "answer": "<p>Certain garments may be available for both rental and purchase. If you fall in love with a piece, contact our team to check whether purchasing it is an option.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "13. Do you deliver purchased garments across India?",
+            "answer": "<p>Yes, we offer delivery across India, subject to serviceability. Shipping timelines and applicable charges will be communicated during the purchase process.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Do you have a physical store?",
+            "answer": "<p>We have display area for our outfits in Delhi. Visit us at M11, 1st &amp; 2nd Floor, Part 2, Main Market, Greater Kailash II, New Delhi, Delhi 110048</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

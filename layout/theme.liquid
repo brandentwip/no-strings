@@ -48,6 +48,141 @@
     {% endif %}
 
     {{ content_for_header }}
+
+    <style>
+      /* =========================================
+         WEBKUL BOOKING FORM - CUSTOM OVERRIDES
+         ========================================= */
+
+      /* Full width booking widget */
+      #wk-bc-widget,
+      #wk-bc-widget-wrapper,
+      #wk-bc-widget-iframe,
+      #wk-bc-widget .wk-bc-widget,
+      #wk-bc-widget .wk-bc-widget-body,
+      #wk-bc-widget .wk-booking-product-info,
+      #wk-bc-widget .wk-booking-process-wrapper,
+      #wk-bc-widget form,
+      #wk-bc-widget .wk-form-wrapper,
+      #wk-bc-widget .wk-control-block {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
+      }
+
+
+      /* =========================================
+         MEASUREMENT FIELDS
+         Chest / Waist / Hips = 50%
+         ========================================= */
+
+      #wk-bc-widget .wk-control-block {
+        display: flex !important;
+        flex-wrap: wrap !important;
+      }
+
+      #wk-bc-widget .wk-form-group:has(input.Chest),
+      #wk-bc-widget .wk-form-group:has(input.Waist),
+      #wk-bc-widget .wk-form-group:has(input.Hips) {
+        width: 50% !important;
+        max-width: 50% !important;
+        flex: 0 0 50% !important;
+        box-sizing: border-box;
+        padding-right: 8px;
+      }
+
+      #wk-bc-widget input.Chest,
+      #wk-bc-widget input.Waist,
+      #wk-bc-widget input.Hips {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
+      }
+
+
+      /* =========================================
+         BOOK NOW BUTTON
+         Outline style
+         ========================================= */
+
+      #wk-bc-widget button[type="submit"],
+      #wk-bc-widget button[name="add"],
+      #wk-bc-widget [id*="ProductSubmitButton"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-height: 56px !important;
+
+         margin-top: 2% !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        padding: 14px 20px !important;
+
+        background: transparent !important;
+        background-color: transparent !important;
+
+        border: 1px solid #33251f !important;
+        border-radius: 0 !important;
+
+        color: #33251f !important;
+
+        font-size: 16px !important;
+        font-weight: 600 !important;
+        line-height: 1.2 !important;
+
+        text-align: center !important;
+        box-shadow: none !important;
+
+        cursor: pointer;
+        box-sizing: border-box;
+      }
+
+      /* Button hover */
+      #wk-bc-widget button[type="submit"]:hover,
+      #wk-bc-widget button[name="add"]:hover,
+      #wk-bc-widget [id*="ProductSubmitButton"]:hover {
+        background: #33251f !important;
+        background-color: #33251f !important;
+        color: #ffffff !important;
+      }
+
+
+      /* =========================================
+         MOBILE
+         Keep measurement fields 50/50
+         ========================================= */
+
+      @media screen and (max-width: 749px) {
+
+        #wk-bc-widget,
+        #wk-bc-widget-wrapper,
+        #wk-bc-widget-iframe,
+        #wk-bc-widget .wk-bc-widget,
+        #wk-bc-widget .wk-bc-widget-body,
+        #wk-bc-widget form {
+          width: 100% !important;
+          max-width: 100% !important;
+        }
+
+        #wk-bc-widget .wk-form-group:has(input.Chest),
+        #wk-bc-widget .wk-form-group:has(input.Waist),
+        #wk-bc-widget .wk-form-group:has(input.Hips) {
+          width: 50% !important;
+          max-width: 50% !important;
+          flex: 0 0 50% !important;
+        }
+
+        #wk-bc-widget button[type="submit"],
+        #wk-bc-widget button[name="add"],
+        #wk-bc-widget [id*="ProductSubmitButton"] {
+          margin-top: 2% !important;
+          width: 100% !important;
+          max-width: 100% !important;
+        }
+      }
+    </style>
   </head>
 
   <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}">

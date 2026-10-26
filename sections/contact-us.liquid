@@ -2,32 +2,14 @@
   ============================================================================
   sections/contact-us.liquid — nostringscouture "Contact Us" section
   ----------------------------------------------------------------------------
-  WHY IT WASN'T SHOWING UP
-  Sections only appear in the theme editor's "Add section" list when the
-  file has a valid {% schema %} block at the bottom, AND it does NOT contain
-  a full <html>/<head>/<body> document (that's only valid in a top-level
-  template with {% layout none %}). This version fixes both.
-
-  HOW TO USE
-  1. Save this as sections/contact-us.liquid (you've already got the filename
-     right).
-  2. Create a Page called "Contact" in Shopify admin, with a JSON template.
-     Easiest path:
-       - Online Store → Pages → Add page → title "Contact" → Save.
-       - Online Store → Themes → Customize → open the Contact page from the
-         page picker at the top.
-       - Shopify will offer to create templates/page.contact.json for you.
-       - Click "Add section" and choose "Contact us" (this section) from the
-         list — it'll appear now that the schema block exists below.
-  3. The header/announcement bar and footer are intentionally left OUT of
-     this section, so your theme's own header/footer sections (already in
-     your theme.liquid or JSON templates) keep working normally — this
-     section just drops into the content area between them.
-  4. Update the WhatsApp number, address, and social links in the "Settings"
-     panel in the theme customizer once this section is added — they're
-     exposed as section settings below instead of being hardcoded.
+  Address and studio hours now live inside a popup, opened from the
+  location icon in the "Reach us" list. Edit both in the theme customizer
+  (Studio / pickup address, Studio hours).
   ============================================================================
 {% endcomment %}
+
+{%- assign studio_address = section.settings.studio_address | default: 'M11, 1st & 2nd Floor, Part 2, Main Market, Greater Kailash II, New Delhi, Delhi 110048 (Above Toni & Guy salon)' -%}
+{%- assign studio_hours = section.settings.studio_hours | default: '11:00 AM – 7:00 PM' -%}
 
 <style>
 .contact-us-section{
@@ -106,6 +88,7 @@
 .contact-us-section .contact-channel .c-icon{
   width:40px; height:40px; border-radius:50%; border:1px solid rgba(184,147,90,0.4);
   display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  background:transparent; padding:0;
 }
 .contact-us-section .contact-channel .c-icon svg{width:17px; height:17px; stroke:var(--gold); fill:none; stroke-width:1.4;}
 .contact-us-section .contact-channel .c-text a,
@@ -114,9 +97,59 @@
 .contact-us-section .contact-channel .c-value{font-size:15px; color:var(--ink); font-family:'Fraunces'; font-style:italic;}
 .contact-us-section .contact-channel .c-value.plain{font-family:'Jost'; font-style:normal; font-size:14px;}
 
-.contact-us-section .contact-hours{display:flex; flex-direction:column; gap:8px; font-size:13.5px; color:var(--text-soft);}
-.contact-us-section .contact-hours .row{display:flex; justify-content:space-between; max-width:280px;}
-.contact-us-section .contact-hours .row span:last-child{color:var(--ink);}
+/* location popup trigger */
+.contact-us-section button.c-icon{cursor:pointer; transition:all .25s ease;}
+.contact-us-section button.c-icon:hover,
+.contact-us-section button.c-icon:focus-visible{background:var(--gold); border-color:var(--gold); outline:none;}
+.contact-us-section button.c-icon:hover svg,
+.contact-us-section button.c-icon:focus-visible svg{stroke:var(--ivory);}
+.contact-us-section .c-link-btn{
+  background:none; border:none; padding:0; cursor:pointer;
+  font-family:'Jost',sans-serif; font-size:14px; font-weight:300; color:var(--ink);
+  text-decoration:underline; text-decoration-color:rgba(184,147,90,0.6); text-underline-offset:4px;
+  transition:color .25s ease;
+}
+.contact-us-section .c-link-btn:hover{color:var(--gold);}
+
+/* location popup */
+.contact-us-section .loc-modal{
+  position:fixed; inset:0; z-index:9999; display:none;
+  align-items:center; justify-content:center; padding:22px;
+  background:rgba(42,16,21,0.55);
+}
+.contact-us-section .loc-modal.is-open{display:flex;}
+.contact-us-section .loc-modal-card{
+  position:relative; background:var(--ivory); width:100%; max-width:420px;
+  padding:40px 36px 34px; border-radius:2px; text-align:center;
+  box-shadow:0 24px 60px rgba(42,16,21,0.3);
+  animation:cu-pop .25s ease;
+}
+@keyframes cu-pop{from{opacity:0; transform:translateY(10px);}to{opacity:1; transform:none;}}
+@media (prefers-reduced-motion: reduce){.contact-us-section .loc-modal-card{animation:none;}}
+.contact-us-section .loc-modal-close{
+  position:absolute; top:12px; right:14px; width:34px; height:34px;
+  background:none; border:none; cursor:pointer; font-size:24px; line-height:1;
+  color:var(--ink); transition:color .25s ease;
+}
+.contact-us-section .loc-modal-close:hover{color:var(--gold);}
+.contact-us-section .loc-modal-pin{
+  width:48px; height:48px; border-radius:50%; border:1px solid rgba(184,147,90,0.5);
+  display:flex; align-items:center; justify-content:center; margin:0 auto 18px;
+}
+.contact-us-section .loc-modal-pin svg{width:20px; height:20px; stroke:var(--gold); fill:none; stroke-width:1.4;}
+.contact-us-section .loc-modal-card h3{font-size:22px; margin:8px 0 18px;}
+.contact-us-section .loc-modal-address{font-size:14.5px; line-height:1.8; color:var(--ink); margin-bottom:22px;}
+.contact-us-section .loc-modal-time{
+  display:inline-block; padding-top:18px; border-top:1px solid rgba(42,16,21,0.1);
+  font-size:13.5px; color:var(--text-soft); width:100%;
+}
+.contact-us-section .loc-modal-time strong{display:block; color:var(--ink); font-weight:500; font-size:15px; margin-top:4px;}
+.contact-us-section .loc-modal-dir{
+  display:inline-block; margin-top:24px; background:var(--ink); color:var(--ivory) !important;
+  padding:13px 26px; border-radius:2px; font-size:12px; letter-spacing:0.08em; text-transform:uppercase;
+  transition:background .25s ease, color .25s ease;
+}
+.contact-us-section .loc-modal-dir:hover{background:var(--gold); color:var(--ink) !important;}
 
 .contact-us-section .contact-social-row{display:flex; gap:12px; margin-top:6px;}
 .contact-us-section .btn-icon{
@@ -170,6 +203,9 @@
   padding:14px 16px; border-radius:2px; font-size:13.5px; margin-bottom:24px;
 }
 .contact-us-section .form-error ul{margin:6px 0 0 18px;}
+.cf-note b {
+  font-weight: 800;
+}
 </style>
 
 <div class="contact-us-section">
@@ -218,30 +254,18 @@
             </div>
           </div>
 
-          {% if section.settings.studio_address != blank %}
+          {% if studio_address != blank %}
           <div class="contact-channel">
-            <span class="c-icon"><svg viewBox="0 0 24 24"><path d="M20 10.5c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10.5" r="2.5"/></svg></span>
+            <button type="button" class="c-icon" data-loc-open="{{ section.id }}" aria-label="View studio location" aria-haspopup="dialog">
+              <svg viewBox="0 0 24 24"><path d="M20 10.5c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10.5" r="2.5"/></svg>
+            </button>
             <div class="c-text">
               <span class="c-label">Studio &amp; pickup point</span>
-              <span class="c-value plain">{{ section.settings.studio_address }}</span>
+              <button type="button" class="c-link-btn" data-loc-open="{{ section.id }}">View location</button>
             </div>
           </div>
           {% endif %}
         </div>
-
-        {% if section.settings.hours_weekday != blank or section.settings.hours_weekend != blank %}
-        <div class="contact-info-block">
-          <h4>Studio hours</h4>
-          <div class="contact-hours">
-            {% if section.settings.hours_weekday != blank %}
-              <div class="row"><span>Monday – Saturday</span><span>{{ section.settings.hours_weekday }}</span></div>
-            {% endif %}
-            {% if section.settings.hours_weekend != blank %}
-              <div class="row"><span>Sunday</span><span>{{ section.settings.hours_weekend }}</span></div>
-            {% endif %}
-          </div>
-        </div>
-        {% endif %}
 
         <div class="contact-info-block" style="margin-bottom:0;">
           <h4>Follow along</h4>
@@ -313,7 +337,7 @@
             <textarea id="ContactFormMessage-{{ section.id }}" name="contact[body]" placeholder="Tell us what you're looking for, or ask us anything..." required></textarea>
           </div>
           <button type="submit" class="cf-submit">Send message</button>
-          <p class="cf-note">By submitting, you agree to be contacted by {{ shop.name }} regarding your enquiry.</p>
+          <p class="cf-note">By submitting, you agree to be contacted by <b> nostringscouture </b> regarding your enquiry.</p>
 
         {% endform %}
       </div>
@@ -321,19 +345,61 @@
     </div>
   </section>
 
+  {% if studio_address != blank %}
+  <!-- LOCATION POPUP -->
+  <div class="loc-modal" id="loc-modal-{{ section.id }}" role="dialog" aria-modal="true" aria-labelledby="loc-title-{{ section.id }}" aria-hidden="true">
+    <div class="loc-modal-card">
+      <button type="button" class="loc-modal-close" data-loc-close aria-label="Close">&times;</button>
+      <div class="loc-modal-pin"><svg viewBox="0 0 24 24"><path d="M20 10.5c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10.5" r="2.5"/></svg></div>
+      <span class="eyebrow">Studio &amp; pickup point</span>
+      <h3 id="loc-title-{{ section.id }}">Location</h3>
+      <p class="loc-modal-address">{{ studio_address }}</p>
+      {% if studio_hours != blank %}
+      <div class="loc-modal-time">Open daily<strong>{{ studio_hours }}</strong></div>
+      {% endif %}
+      <a class="loc-modal-dir" href="https://www.google.com/maps/search/?api=1&query={{ studio_address | url_encode }}" target="_blank" rel="noopener">Get directions</a>
+    </div>
+  </div>
+  {% endif %}
+
 </div>
 
 <script>
 (function(){
   var row = document.getElementById('cf-topic-row-{{ section.id }}');
   var input = document.getElementById('cf-topic-input-{{ section.id }}');
-  if (!row || !input) return;
-  row.querySelectorAll('.cf-topic').forEach(function(el){
-    el.addEventListener('click', function(){
-      row.querySelectorAll('.cf-topic').forEach(function(t){ t.classList.remove('selected'); });
-      this.classList.add('selected');
-      input.value = this.getAttribute('data-topic');
+  if (row && input) {
+    row.querySelectorAll('.cf-topic').forEach(function(el){
+      el.addEventListener('click', function(){
+        row.querySelectorAll('.cf-topic').forEach(function(t){ t.classList.remove('selected'); });
+        this.classList.add('selected');
+        input.value = this.getAttribute('data-topic');
+      });
     });
+  }
+
+  /* location popup */
+  var modal = document.getElementById('loc-modal-{{ section.id }}');
+  if (!modal) return;
+  var lastFocus = null;
+  function openModal(){
+    lastFocus = document.activeElement;
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden','false');
+    var c = modal.querySelector('[data-loc-close]'); if (c) c.focus();
+  }
+  function closeModal(){
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden','true');
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  document.querySelectorAll('[data-loc-open="{{ section.id }}"]').forEach(function(b){
+    b.addEventListener('click', openModal);
+  });
+  modal.querySelector('[data-loc-close]').addEventListener('click', closeModal);
+  modal.addEventListener('click', function(e){ if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
   });
 })();
 </script>
@@ -351,10 +417,9 @@
     { "type": "header", "content": "Contact details" },
     { "type": "text", "id": "whatsapp_number", "label": "WhatsApp number", "info": "Include country code, e.g. +91 98765 43210", "default": "+91 98765 43210" },
     { "type": "text", "id": "contact_email", "label": "Contact email", "info": "Defaults to your store email if left blank" },
-    { "type": "text", "id": "studio_address", "label": "Studio / pickup address", "default": "A-14, Defence Colony, New Delhi 110024" },
-    { "type": "header", "content": "Studio hours" },
-    { "type": "text", "id": "hours_weekday", "label": "Monday–Saturday hours", "default": "11:00 AM – 7:30 PM" },
-    { "type": "text", "id": "hours_weekend", "label": "Sunday hours", "default": "By appointment only" },
+    { "type": "header", "content": "Location popup" },
+    { "type": "textarea", "id": "studio_address", "label": "Studio / pickup address", "info": "Shown in the popup when the location icon is clicked", "default": "M11, 1st & 2nd Floor, Part 2, Main Market, Greater Kailash II, New Delhi, Delhi 110048 (Above Toni & Guy salon)" },
+    { "type": "text", "id": "studio_hours", "label": "Studio hours", "info": "Shown in the popup", "default": "11:00 AM – 7:00 PM" },
     { "type": "header", "content": "Social links" },
     { "type": "url", "id": "instagram_url", "label": "Instagram URL" },
     { "type": "url", "id": "facebook_url", "label": "Facebook URL" },

@@ -1,0 +1,336 @@
+{% comment %}
+  ============================================================================
+  sections/outfit-spotlight.liquid — nostringscouture "Outfit Spotlight"
+  ----------------------------------------------------------------------------
+  PRODUCT-DRIVEN. Pick a product in the section settings and the section
+  fills itself in:
+
+    Photos ........ product images 1, 2, 3 (or upload your own overrides)
+    Designer ...... product Vendor
+    Outfit name ... product Title
+    Reason text ... "Why we picked it" override  >  metafield custom.why_we_picked
+                    >  start of the product description
+    Best for ...... typed in the section settings (not from the product)
+    Sizes ......... the product's "Size" option (e.g. XS to XL), or typed override
+    Fit ........... typed in the section settings (not from the product)
+    Price ......... product price (+ "to rent" text)
+    Struck price .. product "Compare-at price" (only shown if higher than price)
+    Buttons ....... link to the product page
+
+  Metafields are optional. To use them: Shopify admin → Settings → Custom data
+  → Products → add definitions with namespace.key  custom.best_for,
+  custom.fit and custom.why_we_picked (single line / multi-line text).
+
+  HOW TO USE
+  1. Save as sections/outfit-spotlight.liquid.
+  2. Theme editor → Add section → "Outfit spotlight" → choose a Product.
+  ============================================================================
+{% endcomment %}
+
+{%- assign p = section.settings.product -%}
+
+{%- assign img_main = section.settings.main_image | default: p.images[0] -%}
+{%- assign img_side_1 = section.settings.side_image_1 | default: p.images[1] -%}
+{%- assign img_side_2 = section.settings.side_image_2 | default: p.images[2] -%}
+
+{%- assign designer = section.settings.designer_override | default: p.vendor -%}
+{%- assign product_name = section.settings.name_override | default: p.title -%}
+
+{%- assign why_text = section.settings.why_text | default: p.metafields.custom.why_we_picked.value -%}
+{%- if why_text == blank -%}
+  {%- assign why_text = p.description | strip_html | strip_newlines | truncate: 150 -%}
+{%- endif -%}
+
+{%- assign sizes_text = '' -%}
+{%- for option in p.options_with_values -%}
+  {%- assign oname = option.name | downcase -%}
+  {%- if oname == 'size' or oname == 'sizes' -%}
+    {%- if option.values.size > 1 -%}
+      {%- assign sizes_text = option.values.first | append: ' to ' | append: option.values.last -%}
+    {%- else -%}
+      {%- assign sizes_text = option.values.first -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- assign stat_1 = section.settings.stat_1_value -%}
+{%- assign stat_2 = section.settings.stat_2_value | default: sizes_text -%}
+{%- assign stat_3 = section.settings.stat_3_value -%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+.outfit-spotlight{
+  --ink:#2A1015;
+  --ivory-deep:#EFE5D4;
+  --gold:#B8935A;
+  --text-soft:#6B4C48;
+  background:var(--ivory-deep);
+  color:var(--ink);
+  font-family:'Jost',sans-serif;
+  font-weight:300;
+  padding:50px 0;
+}
+.outfit-spotlight *{box-sizing:border-box;}
+.outfit-spotlight a{color:inherit; text-decoration:none;}
+.outfit-spotlight .os-wrap{
+  max-width:1240px; margin:0 auto; padding:0 29px;
+  display:grid; grid-template-columns:minmax(0,562px) minmax(0,1fr); gap:72px; align-items:center;
+}
+@media(max-width:900px){
+  .outfit-spotlight{padding:30px 0 40px;}
+  .outfit-spotlight .os-wrap{grid-template-columns:1fr; gap:34px; padding:0 22px;}
+}
+.outfit-spotlight .os-empty{
+  max-width:1240px; margin:0 auto; padding:60px 29px; text-align:center;
+  font-size:14px; color:var(--text-soft);
+}
+
+/* ---------- images ---------- */
+.outfit-spotlight .os-gallery{
+  display:grid; grid-template-columns:1fr 0.377fr; grid-template-rows:1fr 1fr; gap:14px;
+  aspect-ratio:562 / 680; width:100%;
+}
+@media(max-width:900px){.outfit-spotlight .os-gallery{aspect-ratio:4 / 4.6;}}
+.outfit-spotlight .os-img{position:relative; overflow:hidden; border-radius:2px; background:#D8BC9C; min-height:0;}
+.outfit-spotlight .os-img.main{grid-row:1 / span 2;}
+.outfit-spotlight .os-img img,
+.outfit-spotlight .os-img picture{display:block; width:100%; height:100%;}
+.outfit-spotlight .os-img img{object-fit:cover;}
+.outfit-spotlight .os-ph{
+  width:100%; height:100%;
+  background:
+    repeating-linear-gradient(115deg, rgba(255,255,255,0.07) 0 1px, transparent 1px 34px),
+    linear-gradient(160deg,#D8BC9C 0%, #C79A63 55%, #8E5A44 100%);
+}
+.outfit-spotlight .os-badge{
+  position:absolute; top:18px; left:18px; z-index:2;
+  background:var(--ink); color:var(--gold); border-radius:100px;
+  padding:10px 14px; font-size:10.5px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase;
+}
+
+/* ---------- text ---------- */
+.outfit-spotlight .os-eyebrow{
+  font-size:11px; font-weight:500; letter-spacing:0.22em; text-transform:uppercase; color:var(--gold);
+}
+.outfit-spotlight .os-heading{
+  font-family:'Fraunces',serif; font-weight:500; letter-spacing:-0.02em; line-height:1.05;
+  font-size:clamp(34px,4.3vw,54px); margin:22px 0 0; color:var(--ink);
+}
+.outfit-spotlight .os-heading em{font-style:italic; font-weight:400; color:var(--gold);}
+.outfit-spotlight .os-designer{
+  margin-top:36px; font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold);
+}
+.outfit-spotlight .os-product{
+  font-family:'Fraunces',serif; font-weight:500; font-size:clamp(22px,2.2vw,27px);
+  margin:10px 0 0; color:var(--ink); letter-spacing:-0.01em;
+}
+.outfit-spotlight .os-why{
+  margin-top:24px; font-size:14.5px; line-height:1.85; color:var(--text-soft); max-width:430px;
+}
+.outfit-spotlight .os-why .lead{
+  font-family:'Fraunces',serif; font-style:italic; font-weight:600; color:var(--ink);
+}
+
+.outfit-spotlight .os-stats{
+  display:flex; margin-top:34px; max-width:480px;
+  border-top:1px solid rgba(42,16,21,0.18); border-bottom:1px solid rgba(42,16,21,0.18);
+}
+.outfit-spotlight .os-stat{padding:18px 24px 18px 0;}
+.outfit-spotlight .os-stat + .os-stat{padding-left:24px; border-left:1px solid rgba(42,16,21,0.18);}
+.outfit-spotlight .os-stat .k{
+  font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--text-soft); margin-bottom:8px;
+}
+.outfit-spotlight .os-stat .v{
+  font-family:'Fraunces',serif; font-size:17px; font-weight:400; color:var(--ink);
+}
+@media(max-width:480px){
+  .outfit-spotlight .os-stat{padding-right:14px;}
+  .outfit-spotlight .os-stat + .os-stat{padding-left:14px;}
+  .outfit-spotlight .os-stat .v{font-size:15px;}
+}
+
+.outfit-spotlight .os-price{display:flex; align-items:baseline; gap:14px; margin-top:34px;}
+.outfit-spotlight .os-price .old{font-family:'Fraunces',serif; font-size:15px; color:var(--text-soft); text-decoration:line-through; opacity:0.8;}
+.outfit-spotlight .os-price .now{font-family:'Fraunces',serif; font-style:italic; font-weight:500; font-size:19px; color:var(--ink);}
+
+.outfit-spotlight .os-actions{display:flex; align-items:center; gap:22px; margin-top:22px; flex-wrap:wrap;}
+.outfit-spotlight .os-btn{
+  background:var(--ink); color:#F7F1E6 !important; padding:19px 30px; border-radius:2px;
+  font-size:12px; letter-spacing:0.12em; text-transform:uppercase; font-weight:400;
+  transition:background .25s ease, color .25s ease;
+}
+.outfit-spotlight .os-btn:hover{background:var(--gold); color:var(--ink) !important;}
+.outfit-spotlight .os-link{
+  font-size:13px; letter-spacing:0.02em; padding-bottom:3px; color:var(--ink);
+  border-bottom:1px solid rgba(42,16,21,0.35); transition:all .25s ease;
+}
+.outfit-spotlight .os-link:hover{color:var(--gold); border-color:var(--gold);}
+
+.outfit-spotlight .os-note{
+  display:flex; align-items:center; gap:10px; margin-top:30px; font-size:12.5px; color:var(--text-soft);
+}
+.outfit-spotlight .os-note::before{
+  content:''; width:7px; height:7px; border-radius:50%; background:var(--gold); flex-shrink:0;
+}
+</style>
+
+{% if p != blank %}
+<section class="outfit-spotlight">
+  <div class="os-wrap">
+
+    <!-- IMAGES -->
+    <div class="os-gallery">
+
+      <div class="os-img main">
+        {% if section.settings.badge != blank %}<span class="os-badge">{{ section.settings.badge }}</span>{% endif %}
+        {% if img_main != blank %}
+          <a href="{{ p.url }}" aria-label="{{ product_name | escape }}" style="display:block;width:100%;height:100%;">
+            <picture>
+              {% if section.settings.main_image_mobile != blank %}
+                <source media="(max-width: 749px)" srcset="{{ section.settings.main_image_mobile | image_url: width: 800 }}">
+              {% endif %}
+              <img src="{{ img_main | image_url: width: 1000 }}"
+                   srcset="{{ img_main | image_url: width: 600 }} 600w, {{ img_main | image_url: width: 1000 }} 1000w, {{ img_main | image_url: width: 1400 }} 1400w"
+                   sizes="(max-width: 900px) 70vw, 400px"
+                   alt="{{ img_main.alt | default: product_name | escape }}"
+                   loading="lazy">
+            </picture>
+          </a>
+        {% else %}
+          <div class="os-ph"></div>
+        {% endif %}
+      </div>
+
+      <div class="os-img">
+        {% if img_side_1 != blank %}
+          <img src="{{ img_side_1 | image_url: width: 500 }}"
+               srcset="{{ img_side_1 | image_url: width: 300 }} 300w, {{ img_side_1 | image_url: width: 500 }} 500w"
+               sizes="(max-width: 900px) 25vw, 150px"
+               alt="{{ img_side_1.alt | default: product_name | escape }}" loading="lazy">
+        {% else %}
+          <div class="os-ph"></div>
+        {% endif %}
+      </div>
+
+      <div class="os-img">
+        {% if img_side_2 != blank %}
+          <img src="{{ img_side_2 | image_url: width: 500 }}"
+               srcset="{{ img_side_2 | image_url: width: 300 }} 300w, {{ img_side_2 | image_url: width: 500 }} 500w"
+               sizes="(max-width: 900px) 25vw, 150px"
+               alt="{{ img_side_2.alt | default: product_name | escape }}" loading="lazy">
+        {% else %}
+          <div class="os-ph"></div>
+        {% endif %}
+      </div>
+
+    </div>
+
+    <!-- TEXT (pulled from the selected product) -->
+    <div class="os-content">
+      {% if section.settings.eyebrow != blank %}<div class="os-eyebrow">{{ section.settings.eyebrow }}</div>{% endif %}
+
+      <h2 class="os-heading">{{ section.settings.heading }}{% if section.settings.heading_italic != blank %} <em>{{ section.settings.heading_italic }}</em>{% endif %}</h2>
+
+      {% if designer != blank %}<div class="os-designer">{{ designer }}</div>{% endif %}
+      <h3 class="os-product">{{ product_name }}</h3>
+
+      {% if why_text != blank %}
+        <p class="os-why">
+          {% if section.settings.why_label != blank %}<span class="lead">{{ section.settings.why_label }}</span> {% endif %}{{ why_text }}
+        </p>
+      {% endif %}
+
+      {% if stat_1 != blank or stat_2 != blank or stat_3 != blank %}
+      <div class="os-stats">
+        {% if stat_1 != blank %}
+          <div class="os-stat"><div class="k">{{ section.settings.stat_1_label }}</div><div class="v">{{ stat_1 }}</div></div>
+        {% endif %}
+        {% if stat_2 != blank %}
+          <div class="os-stat"><div class="k">{{ section.settings.stat_2_label }}</div><div class="v">{{ stat_2 }}</div></div>
+        {% endif %}
+        {% if stat_3 != blank %}
+          <div class="os-stat"><div class="k">{{ section.settings.stat_3_label }}</div><div class="v">{{ stat_3 }}</div></div>
+        {% endif %}
+      </div>
+      {% endif %}
+
+      <div class="os-price">
+        {% if p.compare_at_price > p.price %}<span class="old">{{ p.compare_at_price | money_without_trailing_zeros }}</span>{% endif %}
+        <span class="now">{{ p.price | money_without_trailing_zeros }}{% if section.settings.price_suffix != blank %} {{ section.settings.price_suffix }}{% endif %}</span>
+      </div>
+
+      <div class="os-actions">
+        {% if section.settings.button_label != blank %}
+          <a class="os-btn" href="{{ p.url }}">{{ section.settings.button_label }}</a>
+        {% endif %}
+        {% if section.settings.link_label != blank %}
+          <a class="os-link" href="{{ p.url }}">{{ section.settings.link_label }}</a>
+        {% endif %}
+      </div>
+
+      {% if section.settings.note != blank %}<div class="os-note">{{ section.settings.note }}</div>{% endif %}
+    </div>
+
+  </div>
+</section>
+{% elsif request.design_mode %}
+<section class="outfit-spotlight">
+  <div class="os-empty">Outfit spotlight: choose a product in this section's settings to show it here.</div>
+</section>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Outfit spotlight",
+  "tag": "section",
+  "class": "section-outfit-spotlight",
+  "settings": [
+    { "type": "header", "content": "Product" },
+    { "type": "product", "id": "product", "label": "Spotlight product", "info": "Photos, name, designer, sizes and price are pulled from this product." },
+
+    { "type": "header", "content": "Heading" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Outfit spotlight · 20 Oct to 2 Nov" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The piece everyone will" },
+    { "type": "text", "id": "heading_italic", "label": "Heading (italic gold part)", "default": "ask about" },
+    { "type": "text", "id": "badge", "label": "Badge on image", "default": "Pick of the fortnight" },
+
+    { "type": "header", "content": "Image overrides (optional)" },
+    { "type": "paragraph", "content": "Leave empty to use the product's own photos (1st, 2nd and 3rd image)." },
+    { "type": "image_picker", "id": "main_image", "label": "Main image", "info": "1000 × 1250 px (4:5)" },
+    { "type": "image_picker", "id": "main_image_mobile", "label": "Main image (mobile)", "info": "800 × 1000 px" },
+    { "type": "image_picker", "id": "side_image_1", "label": "Side image 1", "info": "300 × 400 px (3:4) or larger" },
+    { "type": "image_picker", "id": "side_image_2", "label": "Side image 2", "info": "300 × 400 px (3:4) or larger" },
+
+    { "type": "header", "content": "Text overrides (optional)" },
+    { "type": "paragraph", "content": "Leave empty to use the product's own details." },
+    { "type": "text", "id": "designer_override", "label": "Designer name", "info": "Default: product vendor" },
+    { "type": "text", "id": "name_override", "label": "Outfit name", "info": "Default: product title" },
+    { "type": "text", "id": "why_label", "label": "Reason label", "default": "Why we picked it:" },
+    { "type": "textarea", "id": "why_text", "label": "Reason text", "info": "Default: metafield custom.why_we_picked, else the product description" },
+
+    { "type": "header", "content": "Best for" },
+    { "type": "text", "id": "stat_1_label", "label": "Label", "default": "Best for" },
+    { "type": "text", "id": "stat_1_value", "label": "Text (type here)", "default": "Sangeet", "info": "Not taken from the product. Type it here." },
+
+    { "type": "header", "content": "Sizes" },
+    { "type": "text", "id": "stat_2_label", "label": "Label", "default": "Sizes" },
+    { "type": "text", "id": "stat_2_value", "label": "Text (optional)", "info": "Leave empty to use the product's Size option automatically (e.g. XS to XL)" },
+
+    { "type": "header", "content": "Fit" },
+    { "type": "text", "id": "stat_3_label", "label": "Label", "default": "Fit" },
+    { "type": "text", "id": "stat_3_value", "label": "Text (type here)", "default": "Made to measure", "info": "Not taken from the product. Type it here." },
+
+    { "type": "header", "content": "Price & buttons" },
+    { "type": "text", "id": "price_suffix", "label": "Text after price", "default": "to rent", "info": "Price comes from the product; compare-at price is shown struck through" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Rent this piece" },
+    { "type": "text", "id": "link_label", "label": "Text link label", "default": "View details" },
+    { "type": "text", "id": "note", "label": "Footer note", "default": "A new spotlight arrives on 3 November" }
+  ],
+  "presets": [
+    { "name": "Outfit spotlight" }
+  ]
+}
+{% endschema %}

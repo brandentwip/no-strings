@@ -1,0 +1,180 @@
+{% doc %}
+  @prompt
+    Need a size chart popup button an d use https://cdn.shopify.com/s/files/1/0975/4853/3944/files/unnamed-1536.png.bv.webp?v=1791016440" this image
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-size-chart-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+  }
+
+  .ai-size-chart-{{ ai_gen_id }}__trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 0;
+    border: 0;
+    border-bottom: 1px solid currentColor;
+    background: transparent;
+    color: #000000;
+    font: inherit;
+    font-size: 13px;
+    line-height: 1.4;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .ai-size-chart-{{ ai_gen_id }}__trigger:focus-visible,
+  .ai-size-chart-{{ ai_gen_id }}__close:focus-visible {
+    outline: 2px solid #000000;
+    outline-offset: 3px;
+  }
+
+  .ai-size-chart-{{ ai_gen_id }}__dialog {
+    width: min(90vw, 760px);
+    max-width: 760px;
+    max-height: 90vh;
+    padding: 22px;
+    border: 1px solid #d6d6d6;
+    background: #ffffff;
+    color: #000000;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+  }
+
+  .ai-size-chart-{{ ai_gen_id }}__dialog::backdrop {
+    background: rgba(0, 0, 0, 0.58);
+  }
+
+  .ai-size-chart-{{ ai_gen_id }}__dialog-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .ai-size-chart-{{ ai_gen_id }}__title {
+    margin: 0;
+    color: #000000;
+    font-size: 20px;
+    line-height: 1.3;
+  }
+
+  .ai-size-chart-{{ ai_gen_id }}__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    border: 1px solid #000000;
+    background: #ffffff;
+    color: #000000;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .ai-size-chart-{{ ai_gen_id }}__image-wrap {
+    width: 100%;
+    max-height: calc(90vh - 110px);
+    overflow: auto;
+    text-align: center;
+  }
+
+  .ai-size-chart-{{ ai_gen_id }}__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: calc(90vh - 110px);
+    object-fit: contain;
+    margin: 0 auto;
+  }
+{% endstyle %}
+
+<size-chart-{{ ai_gen_id }} class="ai-size-chart-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <button class="ai-size-chart-{{ ai_gen_id }}__trigger" type="button" aria-haspopup="dialog" aria-controls="ai-size-chart-dialog-{{ ai_gen_id }}">
+    {{ block.settings.button_label | escape }}
+  </button>
+  <dialog class="ai-size-chart-{{ ai_gen_id }}__dialog" id="ai-size-chart-dialog-{{ ai_gen_id }}" aria-labelledby="ai-size-chart-title-{{ ai_gen_id }}">
+    <div class="ai-size-chart-{{ ai_gen_id }}__dialog-head">
+      <h2 class="ai-size-chart-{{ ai_gen_id }}__title" id="ai-size-chart-title-{{ ai_gen_id }}">{{ block.settings.chart_title | escape }}</h2>
+      <button class="ai-size-chart-{{ ai_gen_id }}__close" type="button" aria-label="Close size chart">&times;</button>
+    </div>
+    <div class="ai-size-chart-{{ ai_gen_id }}__image-wrap">
+      <img class="ai-size-chart-{{ ai_gen_id }}__image" src="{{ block.settings.chart_image_url | escape }}" alt="{{ block.settings.image_alt | escape }}" loading="lazy">
+    </div>
+  </dialog>
+</size-chart-{{ ai_gen_id }}>
+
+<script>
+  (() => {
+    const elementName = 'size-chart-{{ ai_gen_id }}';
+    if (customElements.get(elementName)) return;
+    class SizeChart{{ ai_gen_id }} extends HTMLElement {
+      connectedCallback() {
+        this.dialog = this.querySelector('dialog');
+        this.trigger = this.querySelector('button[aria-haspopup="dialog"]');
+        this.closeButton = this.querySelector('.ai-size-chart-{{ ai_gen_id }}__close');
+        this.trigger.addEventListener('click', () => this.dialog.showModal());
+        this.closeButton.addEventListener('click', () => this.dialog.close());
+        this.dialog.addEventListener('click', (event) => {
+          if (event.target === this.dialog) this.dialog.close();
+        });
+      }
+    }
+    customElements.define(elementName, SizeChart{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Size chart popup",
+  "settings": [
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Size chart"
+    },
+    {
+      "type": "text",
+      "id": "chart_title",
+      "label": "Chart title",
+      "default": "Size chart"
+    },
+    {
+      "type": "text",
+      "id": "chart_image_url",
+      "label": "Chart image URL",
+      "default": "https://cdn.shopify.com/s/files/1/0975/4853/3944/files/unnamed-1536.png.bv.webp?v=1791016440"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image description",
+      "default": "Clothing size chart"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    }
+  ],
+  "presets": [
+    {
+      "name": "Size chart popup"
+    }
+  ],
+  "tag": null,
+  "class": "size-chart-popup-block"
+}
+{% endschema %}

@@ -1,0 +1,363 @@
+{%- comment -%}
+  Designer Showcase – split section (cream names grid + dark CTA panel)
+  Save as: sections/designer-showcase.liquid
+{%- endcomment -%}
+
+{%- style -%}
+  #ds-{{ section.id }} {
+    --ds-cream: {{ section.settings.left_bg }};
+    --ds-dark: {{ section.settings.right_bg }};
+    --ds-gold: {{ section.settings.accent }};
+    --ds-name: {{ section.settings.name_color }};
+    --ds-text: {{ section.settings.right_text }};
+    --ds-heading-font: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};
+    --ds-body-font: {{ section.settings.body_font.family }}, {{ section.settings.body_font.fallback_families }};
+  }
+  {{ section.settings.heading_font | font_face: font_display: 'swap' }}
+  {{ section.settings.body_font | font_face: font_display: 'swap' }}
+
+  #ds-{{ section.id }} {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    min-height: {{ section.settings.min_height }}px;
+    font-family: var(--ds-body-font);
+    overflow: hidden;
+  }
+
+  /* ---------- LEFT ---------- */
+  #ds-{{ section.id }} .ds-left {
+    background: var(--ds-cream);
+    padding: {{ section.settings.padding_y }}px 56px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  #ds-{{ section.id }} .ds-eyebrow {
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ds-gold);
+    margin: 0 0 18px;
+    font-weight: 500;
+  }
+  #ds-{{ section.id }} .ds-left-title {
+    font-family: var(--ds-heading-font);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(34px, 3.6vw, 56px);
+    line-height: 1.1;
+    color: var(--ds-gold);
+    margin: 0 0 56px;
+  }
+  #ds-{{ section.id }} .ds-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    max-width: 720px;
+    row-gap: 56px;
+    column-gap: 24px;
+    align-items: center;
+    justify-items: center;
+  }
+  #ds-{{ section.id }} .ds-name {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--ds-name);
+    text-decoration: none;
+    line-height: 1.15;
+    min-height: 64px;
+    transition: opacity .25s ease, transform .25s ease;
+  }
+  #ds-{{ section.id }} a.ds-name:hover { opacity: .65; transform: translateY(-2px); }
+
+  /* name styles */
+  #ds-{{ section.id }} .ds-name--caps .ds-name__main {
+    font-family: var(--ds-body-font);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 19px;
+    font-weight: 500;
+  }
+  #ds-{{ section.id }} .ds-name--serif-caps .ds-name__main {
+    font-family: var(--ds-heading-font);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 20px;
+    font-weight: 500;
+  }
+  #ds-{{ section.id }} .ds-name--italic .ds-name__main {
+    font-family: var(--ds-heading-font);
+    font-style: italic;
+    font-size: 32px;
+    font-weight: 400;
+  }
+  #ds-{{ section.id }} .ds-name--bold .ds-name__main {
+    font-family: var(--ds-heading-font);
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+  #ds-{{ section.id }} .ds-name--mono .ds-name__main {
+    font-family: var(--ds-heading-font);
+    font-size: 40px;
+    font-weight: 700;
+  }
+  #ds-{{ section.id }} .ds-name__sub {
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-top: 6px;
+    font-weight: 500;
+    opacity: .9;
+  }
+  #ds-{{ section.id }} .ds-name--italic .ds-name__sub,
+  #ds-{{ section.id }} .ds-name--serif-caps .ds-name__sub { font-size: 13px; }
+
+  /* ---------- RIGHT ---------- */
+  #ds-{{ section.id }} .ds-right {
+    position: relative;
+    background: var(--ds-dark);
+    color: var(--ds-text);
+    padding: {{ section.settings.padding_y }}px 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+  }
+  #ds-{{ section.id }} .ds-right-inner { position: relative; z-index: 2; max-width: 640px; }
+  #ds-{{ section.id }} .ds-right .ds-eyebrow { margin-bottom: 28px; }
+  #ds-{{ section.id }} .ds-right-title {
+    font-family: var(--ds-heading-font);
+    font-weight: 700;
+    font-size: clamp(40px, 5vw, 76px);
+    line-height: 1.05;
+    margin: 0 0 36px;
+    color: var(--ds-text);
+  }
+  #ds-{{ section.id }} .ds-right-title em {
+    font-style: italic;
+    font-weight: 600;
+    color: var(--ds-gold);
+  }
+  #ds-{{ section.id }} .ds-copy {
+    font-size: 19px;
+    line-height: 2.1;
+    font-weight: 300;
+    margin: 0 0 44px;
+    color: var(--ds-text);
+    opacity: .88;
+  }
+  #ds-{{ section.id }} .ds-buttons { display: flex; flex-wrap: wrap; gap: 24px; }
+  #ds-{{ section.id }} .ds-btn {
+    display: inline-block;
+    padding: 26px 50px;
+    font-size: 16px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-family: var(--ds-body-font);
+    font-weight: 400;
+    border: 1px solid var(--ds-text);
+    transition: all .3s ease;
+  }
+  #ds-{{ section.id }} .ds-btn--solid { background: var(--ds-text); color: var(--ds-dark); }
+  #ds-{{ section.id }} .ds-btn--solid:hover { background: transparent; color: var(--ds-text); }
+  #ds-{{ section.id }} .ds-btn--outline { background: transparent; color: var(--ds-text); }
+  #ds-{{ section.id }} .ds-btn--outline:hover { background: var(--ds-text); color: var(--ds-dark); }
+
+  /* decorative curve */
+  #ds-{{ section.id }} .ds-curve {
+    position: absolute;
+    top: 0; right: 4%;
+    height: 100%;
+    width: auto;
+    z-index: 1;
+    pointer-events: none;
+    opacity: .75;
+  }
+  #ds-{{ section.id }} .ds-curve path {
+    fill: none;
+    stroke: var(--ds-gold);
+    stroke-width: 2;
+    stroke-opacity: .55;
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 989px) {
+    #ds-{{ section.id }} { grid-template-columns: 1fr; min-height: 0; }
+    #ds-{{ section.id }} .ds-left,
+    #ds-{{ section.id }} .ds-right { padding: 64px 24px; }
+    #ds-{{ section.id }} .ds-left { padding: 56px 14px; }
+    #ds-{{ section.id }} .ds-grid { grid-template-columns: repeat(3, 1fr); row-gap: 28px; column-gap: 8px; }
+    #ds-{{ section.id }} .ds-name { min-height: 48px; }
+    #ds-{{ section.id }} .ds-name--caps .ds-name__main { font-size: 11px; letter-spacing: 0.08em; }
+    #ds-{{ section.id }} .ds-name--serif-caps .ds-name__main { font-size: 12px; letter-spacing: 0.07em; }
+    #ds-{{ section.id }} .ds-name--italic .ds-name__main { font-size: 19px; }
+    #ds-{{ section.id }} .ds-name--bold .ds-name__main { font-size: 24px; }
+    #ds-{{ section.id }} .ds-name--mono .ds-name__main { font-size: 26px; }
+    #ds-{{ section.id }} .ds-name__sub,
+    #ds-{{ section.id }} .ds-name--italic .ds-name__sub,
+    #ds-{{ section.id }} .ds-name--serif-caps .ds-name__sub { font-size: 8px; letter-spacing: 0.12em; margin-top: 4px; }
+    #ds-{{ section.id }} .ds-copy { font-size: 17px; line-height: 1.9; }
+    #ds-{{ section.id }} .ds-btn { padding: 20px 32px; font-size: 14px; }
+    #ds-{{ section.id }} .ds-buttons { gap: 14px; }
+  }
+{%- endstyle -%}
+
+<section id="ds-{{ section.id }}" class="ds-section">
+
+  <div class="ds-left">
+    {%- if section.settings.left_eyebrow != blank -%}
+      <p class="ds-eyebrow">{{ section.settings.left_eyebrow }}</p>
+    {%- endif -%}
+    {%- if section.settings.left_title != blank -%}
+      <h2 class="ds-left-title">{{ section.settings.left_title }}</h2>
+    {%- endif -%}
+
+    <div class="ds-grid">
+      {%- for block in section.blocks -%}
+        {%- assign tag = 'div' -%}
+        {%- if block.settings.link != blank -%}{%- assign tag = 'a' -%}{%- endif -%}
+        <{{ tag }}
+          class="ds-name ds-name--{{ block.settings.style }}"
+          {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %}
+          {% if block.settings.color != blank and block.settings.color != 'rgba(0,0,0,0)' %}style="color: {{ block.settings.color }};"{% endif %}
+          {{ block.shopify_attributes }}>
+          <span class="ds-name__main">{{ block.settings.name }}</span>
+          {%- if block.settings.subtitle != blank -%}
+            <span class="ds-name__sub">{{ block.settings.subtitle }}</span>
+          {%- endif -%}
+        </{{ tag }}>
+      {%- endfor -%}
+    </div>
+  </div>
+
+  <div class="ds-right">
+    <svg class="ds-curve" viewBox="0 0 300 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <path d="M250 -10 C 290 120, 270 230, 190 330 C 90 440, 60 520, 110 620 C 150 700, 140 770, 100 810"/>
+    </svg>
+
+    <div class="ds-right-inner">
+      {%- if section.settings.right_eyebrow != blank -%}
+        <p class="ds-eyebrow">{{ section.settings.right_eyebrow }}</p>
+      {%- endif -%}
+
+      <h2 class="ds-right-title">
+        {{ section.settings.title_line_1 }}<br>
+        {{ section.settings.title_line_2 }} <em>{{ section.settings.title_accent }}</em>
+      </h2>
+
+      {%- if section.settings.copy != blank -%}
+        <p class="ds-copy">{{ section.settings.copy }}</p>
+      {%- endif -%}
+
+      <div class="ds-buttons">
+        {%- if section.settings.btn_1_label != blank -%}
+          <a class="ds-btn ds-btn--solid" href="{{ section.settings.btn_1_link | default: '#' }}">{{ section.settings.btn_1_label }}</a>
+        {%- endif -%}
+        {%- if section.settings.btn_2_label != blank -%}
+          <a class="ds-btn ds-btn--outline" href="{{ section.settings.btn_2_link | default: '#' }}">{{ section.settings.btn_2_label }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+</section>
+
+{% schema %}
+{
+  "name": "Designer showcase",
+  "tag": "section",
+  "class": "section-designer-showcase",
+  "settings": [
+    { "type": "header", "content": "Left panel" },
+    { "type": "text", "id": "left_eyebrow", "label": "Eyebrow", "default": "Meet the names" },
+    { "type": "text", "id": "left_title", "label": "Heading", "default": "Our handpicked favourites" },
+
+    { "type": "header", "content": "Right panel" },
+    { "type": "text", "id": "right_eyebrow", "label": "Eyebrow", "default": "Designer couture, rented right" },
+    { "type": "text", "id": "title_line_1", "label": "Heading line 1", "default": "Wear the piece." },
+    { "type": "text", "id": "title_line_2", "label": "Heading line 2", "default": "Not the" },
+    { "type": "text", "id": "title_accent", "label": "Heading accent (italic gold)", "default": "price tag." },
+    {
+      "type": "textarea",
+      "id": "copy",
+      "label": "Paragraph",
+      "default": "Rent curated designer pieces from India's finest designers, or list the pieces sitting unworn in your own closet, for rent or for sale. No storing, no re-wearing, no hassle. No strings attached."
+    },
+    { "type": "text", "id": "btn_1_label", "label": "Button 1 label", "default": "Browse the edit" },
+    { "type": "url", "id": "btn_1_link", "label": "Button 1 link" },
+    { "type": "text", "id": "btn_2_label", "label": "Button 2 label", "default": "List your outfit" },
+    { "type": "url", "id": "btn_2_link", "label": "Button 2 link" },
+
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "left_bg", "label": "Left background", "default": "#F9F1E5" },
+    { "type": "color", "id": "right_bg", "label": "Right background", "default": "#2B0F14" },
+    { "type": "color", "id": "accent", "label": "Gold accent", "default": "#B8935A" },
+    { "type": "color", "id": "name_color", "label": "Designer name colour", "default": "#5A4038" },
+    { "type": "color", "id": "right_text", "label": "Right panel text / buttons", "default": "#F9F1E5" },
+
+    { "type": "header", "content": "Typography" },
+    { "type": "font_picker", "id": "heading_font", "label": "Heading font (serif)", "default": "playfair_display_n5" },
+    { "type": "font_picker", "id": "body_font", "label": "Body font (sans)", "default": "jost_n4" },
+
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "padding_y", "label": "Vertical padding", "min": 40, "max": 160, "step": 8, "unit": "px", "default": 96 },
+    { "type": "range", "id": "min_height", "label": "Minimum height", "min": 400, "max": 1000, "step": 20, "unit": "px", "default": 760 }
+  ],
+  "blocks": [
+    {
+      "type": "designer",
+      "name": "Designer",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name", "default": "Designer name" },
+        { "type": "text", "id": "subtitle", "label": "Subtitle (optional)" },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Style",
+          "default": "caps",
+          "options": [
+            { "value": "caps", "label": "Sans caps" },
+            { "value": "serif-caps", "label": "Serif caps" },
+            { "value": "italic", "label": "Italic script" },
+            { "value": "bold", "label": "Bold serif" },
+            { "value": "mono", "label": "Monogram" }
+          ]
+        },
+        { "type": "color", "id": "color", "label": "Custom colour (optional)" },
+        { "type": "url", "id": "link", "label": "Link (optional)" }
+      ]
+    }
+  ],
+  "max_blocks": 24,
+  "presets": [
+    {
+      "name": "Designer showcase",
+      "blocks": [
+        { "type": "designer", "settings": { "name": "Abhinav Mishra", "style": "serif-caps" } },
+        { "type": "designer", "settings": { "name": "Aisha Rao", "style": "italic" } },
+        { "type": "designer", "settings": { "name": "Aneesh Agarwaal", "style": "caps" } },
+        { "type": "designer", "settings": { "name": "Anita Dongre", "style": "serif-caps", "color": "#C9A46B" } },
+        { "type": "designer", "settings": { "name": "Arpita Mehta", "style": "serif-caps" } },
+        { "type": "designer", "settings": { "name": "Astha Narang", "style": "caps" } },
+        { "type": "designer", "settings": { "name": "Chamee & Palak", "style": "italic" } },
+        { "type": "designer", "settings": { "name": "Jade", "subtitle": "Monica & Karishma", "style": "bold" } },
+        { "type": "designer", "settings": { "name": "Payal Singhal", "style": "serif-caps" } },
+        { "type": "designer", "settings": { "name": "Ridhima Bhasin", "style": "caps" } },
+        { "type": "designer", "settings": { "name": "Sawan Gandhi", "style": "caps" } },
+        { "type": "designer", "settings": { "name": "SG", "style": "mono" } },
+        { "type": "designer", "settings": { "name": "Tamanna", "subtitle": "Punjabi Kapoor", "style": "serif-caps" } },
+        { "type": "designer", "settings": { "name": "Tarun Tahiliani", "style": "serif-caps" } },
+        { "type": "designer", "settings": { "name": "Vani", "style": "italic", "color": "#D4A5A0" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

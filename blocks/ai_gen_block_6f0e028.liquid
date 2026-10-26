@@ -1,0 +1,179 @@
+{% doc %}
+  @prompt
+    Create a reusable product-page badge block for the Product information area, matching the attached reference image. Use a soft warm cream/beige rectangular background with comfortable padding, a thin muted-gold shield outline icon on the left, and dark warm-gray text on the right. Make the block full width within its container, with a clean premium fashion-rental aesthetic and responsive spacing. The default text should read: “Refundable security deposit Equal to the rental value. Our team will reach out to collect this separately before delivery. The deposit is refunded after the outfit is received back, subject to the store’s rental policy.” Include theme-editor settings so the merchant can edit the message, background color, text color, icon color, border radius, and spacing. The block should be suitable for adding to the currently selected Product information section on the product template.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-rental-badge-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin-top: {{ block.settings.margin_top }}px;
+    margin-bottom: {{ block.settings.margin_bottom }}px;
+  }
+
+  .ai-rental-badge__inner-{{ ai_gen_id }} {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: {{ block.settings.padding_vertical }}px {{ block.settings.padding_horizontal }}px;
+    background: {{ block.settings.background_color }};
+    border-radius: {{ block.settings.border_radius }}px;
+  }
+
+  .ai-rental-badge__icon-{{ ai_gen_id }} {
+    flex: 0 0 auto;
+    width: 28px;
+    height: 32px;
+    color: {{ block.settings.icon_color }};
+    margin-top: 2px;
+  }
+
+  .ai-rental-badge__message-{{ ai_gen_id }} {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    color: {{ block.settings.text_color }};
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1.55;
+    letter-spacing: 0.01em;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-rental-badge__inner-{{ ai_gen_id }} {
+      gap: 12px;
+      padding: {{ block.settings.padding_vertical | times: 0.85 | round }}px {{ block.settings.padding_horizontal | times: 0.8 | round }}px;
+    }
+
+    .ai-rental-badge__icon-{{ ai_gen_id }} {
+      width: 24px;
+      height: 28px;
+    }
+
+    .ai-rental-badge__message-{{ ai_gen_id }} {
+      font-size: 12px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-rental-badge-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-rental-badge__inner-{{ ai_gen_id }}">
+    <svg class="ai-rental-badge__icon-{{ ai_gen_id }}" viewBox="0 0 32 38" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+      <path d="M16 2.5L28 7.2V17.8C28 25.6 23.2 32.2 16 35.5C8.8 32.2 4 25.6 4 17.8V7.2L16 2.5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+      <path d="M10.5 18.8L14.1 22.4L21.8 14.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <p class="ai-rental-badge__message-{{ ai_gen_id }}">{{ block.settings.message | escape | newline_to_br }}</p>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Rental deposit badge",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "message",
+      "label": "Message",
+      "default": "Refundable security deposit Equal to the rental value. Our team will reach out to collect this separately before delivery. The deposit is refunded after the outfit is received back, subject to the store’s rental policy."
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#F5EFE5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#403C37"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon",
+      "default": "#A38C62"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical",
+      "label": "Vertical padding",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "label": "Horizontal padding",
+      "min": 8,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    }
+  ],
+  "presets": [
+    {
+      "name": "Rental deposit badge"
+    }
+  ],
+  "tag": null,
+  "class": "rental-deposit-badge-block"
+}
+{% endschema %}
