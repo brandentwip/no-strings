@@ -10,6 +10,14 @@
   assign variant = closest.product.selected_or_first_available_variant
   assign inventory_quantity = variant.inventory_quantity
   assign inventory_policy = variant.inventory_policy
+  assign requires_size_selection = false
+
+  for product_option in product.options_with_values
+    assign option_name = product_option.name | downcase
+    if option_name == 'size' and product_option.values.size > 1
+      assign requires_size_selection = true
+    endif
+  endfor
 
   if variant.inventory_management == 'shopify'
     assign inventory_managed = true
@@ -33,6 +41,10 @@
       assign can_add_to_cart = false
       assign add_to_cart_text = 'products.product.unavailable' | t
     endif
+  endif
+
+  if requires_size_selection
+    assign can_add_to_cart = false
   endif
 %}
 
@@ -65,7 +77,7 @@
           type="hidden"
           name="id"
           ref="variantId"
-          value="{{ product.selected_or_first_available_variant.id }}"
+          value="{% unless requires_size_selection %}{{ product.selected_or_first_available_variant.id }}{% endunless %}"
         >
         {%- if block_settings.gift_card_form and product.gift_card? -%}
           {%- render 'gift-card-recipient-form', product: product, form: form, section: section, block: block -%}

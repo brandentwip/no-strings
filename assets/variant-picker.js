@@ -37,12 +37,24 @@ export default class VariantPicker extends Component {
 
     fieldsets.forEach((fieldset) => {
       const radios = Array.from(fieldset?.querySelectorAll('input') ?? []);
+
+      if (fieldset.hasAttribute('data-requires-selection')) {
+        radios.forEach((radio) => {
+          radio.checked = false;
+          radio.dataset.currentChecked = 'false';
+        });
+      }
+
       this.#radios.push(radios);
 
       const initialCheckedIndex = radios.findIndex((radio) => radio.dataset.currentChecked === 'true');
-      if (initialCheckedIndex !== -1) {
-        this.#checkedIndices.push([initialCheckedIndex]);
-      }
+      this.#checkedIndices.push(initialCheckedIndex === -1 ? [] : [initialCheckedIndex]);
+    });
+
+    this.querySelectorAll('select[data-requires-selection]').forEach((select) => {
+      const placeholderIndex = Array.from(select.options).findIndex((option) => option.value === '');
+      select.selectedIndex = placeholderIndex;
+      Array.from(select.options).forEach((option) => option.removeAttribute('selected'));
     });
 
     this.addEventListener('change', this.variantChanged.bind(this));
@@ -192,6 +204,9 @@ export default class VariantPicker extends Component {
     }
 
     if (target instanceof HTMLInputElement) {
+      const selectedValueLabel = target.closest('fieldset')?.querySelector('[data-option-selected-value]');
+      if (selectedValueLabel) selectedValueLabel.textContent = target.value;
+
       const fieldsetIndex = Number.parseInt(target.dataset.fieldsetIndex || '');
       const inputIndex = Number.parseInt(target.dataset.inputIndex || '');
 
@@ -446,6 +461,15 @@ export default class VariantPicker extends Component {
       throw new Error('No new variant picker source found');
     }
 
+    const requiredOptionStates = Array.from(this.querySelectorAll('[data-requires-selection]')).map((option) => {
+      const selectedRadio = option.querySelector('input[type="radio"]:checked');
+      const select = option instanceof HTMLSelectElement ? option : option.querySelector('select');
+
+      return {
+        value: selectedRadio?.value ?? select?.value ?? '',
+      };
+    });
+
     // For combined listings, the product might have changed, so update the related data attribute.
     if (newVariantPickerSource instanceof HTMLElement) {
       const newProductId = newVariantPickerSource.dataset.productId;
@@ -467,6 +491,36 @@ export default class VariantPicker extends Component {
         return key;
       },
     });
+
+    Array.from(this.querySelectorAll('[data-requires-selection]')).forEach((option, index) => {
+      const value = requiredOptionStates[index]?.value ?? '';
+      const radios = option.querySelectorAll('input[type="radio"]');
+      const select = option instanceof HTMLSelectElement ? option : option.querySelector('select');
+      const selectedValueLabel = option.querySelector('[data-option-selected-value]');
+      if (selectedValueLabel) selectedValueLabel.textContent = value;
+
+      if (radios.length > 0) {
+        radios.forEach((radio) => {
+          const selected = value !== '' && radio.value === value;
+          radio.checked = selected;
+          radio.dataset.currentChecked = String(selected);
+        });
+      } else if (select) {
+        Array.from(select.options).forEach((selectOption) => {
+          const selected = value !== '' && selectOption.value === value;
+          selectOption.selected = selected;
+          if (selected) {
+            selectOption.setAttribute('selected', 'selected');
+          } else {
+            selectOption.removeAttribute('selected');
+          }
+        });
+        if (value === '') {
+          select.selectedIndex = Array.from(select.options).findIndex((selectOption) => selectOption.value === '');
+        }
+      }
+    });
+
     this.updateVariantPickerCss();
 
     return newProduct;

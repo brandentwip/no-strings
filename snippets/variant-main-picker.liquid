@@ -57,6 +57,12 @@
         {%- liquid
           assign swatch_count = product_option.values | map: 'swatch' | compact | size
           assign variant_style = block_settings.variant_style
+          assign option_name = product_option.name | downcase
+          assign requires_selection = false
+
+          if option_name == 'size' and product_option.values.size > 1
+            assign requires_selection = true
+          endif
 
           if swatch_count > 0 and block_settings.show_swatches
             if block_settings.variant_style == 'dropdown'
@@ -91,12 +97,17 @@
             class="variant-option variant-option--buttons{% if variant_style == 'swatch' %} variant-option--swatches{% else %} variant-option--{{ settings.variant_button_width }}{% endif %}"
             data-fieldset-index="{{ fieldset_index }}"
             ref="fieldsets[]"
+            {% if requires_selection %}
+              data-requires-selection
+            {% endif %}
             {{ option_id_attribute }}
           >
             <legend>
               {{ product_option.name | escape -}}
               {%- if variant_style == 'swatch' -%}
-                <span class="variant-option__swatch-value">{{ product_option.selected_value }}</span>
+                <span class="variant-option__swatch-value" data-option-selected-value>
+                  {% unless requires_selection %}{{ product_option.selected_value }}{% endunless %}
+                </span>
               {%- endif %}
             </legend>
             {%- for product_option_value in product_option.values -%}
@@ -203,7 +214,14 @@
                 id="Option-{{ block.id }}-{{ forloop.index0 }}"
                 name="options[{{ product_option.name | escape }}]"
                 class="variant-option__select"
+                {% if requires_selection %}
+                  data-requires-selection
+                  required
+                {% endif %}
               >
+                {% if requires_selection %}
+                  <option value="" disabled>Select {{ product_option.name | downcase }}</option>
+                {% endif %}
                 {%- for product_option_value in product_option.values -%}
                   <option
                     value="{{ product_option_value | escape }}"

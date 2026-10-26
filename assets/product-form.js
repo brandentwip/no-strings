@@ -324,6 +324,8 @@ class ProductFormComponent extends Component {
   handleSubmit(event) {
     event.preventDefault();
 
+    if (!this.#hasRequiredVariantOptionsSelected()) return;
+
     if (this.#variantChangeInProgress) {
       this.#addToCartQueue.push(this.#createQueuedAddToCartItem());
       this.refs.addToCartButtonContainer?.animateAddToCart?.();
@@ -798,7 +800,8 @@ class ProductFormComponent extends Component {
       }
 
       const { variantId } = this.refs;
-      variantId.value = resource?.id ?? '';
+      const hasRequiredVariantOptionsSelected = this.#hasRequiredVariantOptionsSelected();
+      variantId.value = hasRequiredVariantOptionsSelected ? resource?.id ?? '' : '';
 
       const { addToCartButtonContainer: currentAddToCartButtonContainer, acceleratedCheckoutButtonContainer } =
         this.refs;
@@ -808,7 +811,7 @@ class ProductFormComponent extends Component {
       if (!currentAddToCartButtonContainer || (!currentAddToCartButton && !acceleratedCheckoutButtonContainer)) return;
 
       // Update the button state
-      if (resource == null || resource.available == false) {
+      if (!hasRequiredVariantOptionsSelected || resource == null || resource.available == false) {
         currentAddToCartButtonContainer.disable();
       } else {
         currentAddToCartButtonContainer.enable();
@@ -820,7 +823,7 @@ class ProductFormComponent extends Component {
       }
 
       if (acceleratedCheckoutButtonContainer) {
-        if (resource == null || resource.available == false) {
+        if (!hasRequiredVariantOptionsSelected || resource == null || resource.available == false) {
           acceleratedCheckoutButtonContainer?.setAttribute('hidden', 'true');
         } else {
           acceleratedCheckoutButtonContainer?.removeAttribute('hidden');
@@ -1105,6 +1108,17 @@ class ProductFormComponent extends Component {
     }
 
     return pickers.length === 1 ? pickers[0] ?? null : null;
+  }
+
+  #hasRequiredVariantOptionsSelected() {
+    const picker = this.#getVariantPicker();
+    if (!picker) return true;
+
+    return Array.from(picker.querySelectorAll('[data-requires-selection]')).every((option) => {
+      const selectedRadio = option.querySelector('input[type="radio"]:checked');
+      const select = option instanceof HTMLSelectElement ? option : option.querySelector('select');
+      return selectedRadio !== null || (select !== null && select.value !== '');
+    });
   }
 
   /**
